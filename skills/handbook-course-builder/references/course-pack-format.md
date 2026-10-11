@@ -5,7 +5,9 @@ This document defines the skill's integration boundary. The released package mus
 Do not substitute this document for that schema.
 
 This release uses `schemaVersion: "1.0"` and an integer `contentRevision`.
-The complete example is `assets/example-course.json`. Top-level fields are
+The notes-and-diagrams example is `assets/example-course.json`; it has no
+practice questions or exercise blocks. It illustrates the contract, not source
+verification for a real course. Top-level fields are
 `id`, `metadata`, `sources`, `assets`, `concepts`, `chapters`, `syllabus`,
 `practice`, `coverage`, and `provenance`, in addition to the two version fields.
 Every field is strict; use the schema's exact structure, not these headings as
@@ -49,12 +51,54 @@ The contract should represent:
 - Syllabus outcomes, schedule, assessments, scope, and policy references.
 - Concepts, canonical terms, aliases, notation, and prerequisites.
 - Ordered lessons and supported content blocks.
-- Declarative diagrams with captions and textual alternatives.
-- Worked reasoning and independent examples.
-- Original practice and explanation-based feedback.
+- Explanatory diagrams with meaningful relations, captions and textual alternatives.
+- Source examples summarized inline where useful.
+- Optional reinforcement and practice only when requested.
 - Coverage, omissions, and uncertainty.
 
 Do not invent unsupported properties because they sound useful. Request a contract change through the normal development workflow or record the idea outside the course.
+
+## Weekly notes block recipe
+
+Use the existing contract and reader; do not add `weeklyNotes`, `html`,
+`sourceSection`, or other unsupported JSON fields.
+
+- `chapters` contains the requested lessons in source order with stable IDs,
+  canonical titles, a concise summary, and source-grounded blocks.
+- `syllabus.weeks[].chapterIds` selects the actual assigned lessons in their
+  teaching order. Use the supplied mapping, not a fabricated calendar.
+- `syllabus.weeks[].title` names the actual assigned topics. A week with no
+  assigned lessons can be titled revision, consolidation, project, or wrap-up,
+  with `chapterIds: []`.
+- `syllabus.weeks[].notes` contains the plain-language overview, then a blank
+  line, then the closing weekly synthesis. The generic Weekly notes reader
+  renders the referenced chapter blocks between those two parts.
+- A source-notes section uses `kind: "callout"`, `tone: "note"`, its authored
+  readable heading in `title`, and connected paragraphs in `text`. Chapter and
+  weekly reading modes show these as ordinary headings and prose. Use warning
+  or misconception tones only for real warnings or distinctions, not every section.
+- Link canonical terms through `conceptIds`. Put actual source heading(s) in
+  `citations[].section` and the substantive PDF viewer range in `pdfPage` /
+  `pdfPageEnd`; the authored section title is not a claimed source anchor.
+- Insert `diagram` blocks immediately after the explanation they depend on.
+  Every node and edge has a concept-specific meaning; `alternative` describes
+  the diagram completely. Prefer compact mobile-readable geometry. For a
+  static diagram use one `steps` entry; the reader omits trace controls.
+- Close a lesson with a brief synthesis, for example a note section titled
+  “What this lesson adds.” A table can expose actual clauses, values, or model
+  changes beside the diagram where the source teaches them.
+
+The default deliverable includes useful diagrams, not a minimum number of
+nodes or animations. Do not require worked exercises for every lesson.
+Use `practice: []` when practice was not requested, and omit recall and
+independent-attempt blocks. Existing practice is preserved on notes updates.
+Keep assessments, policies, and administrative information in the syllabus,
+not repeated throughout the weekly overview or explanatory blocks.
+
+Weekly notes are reachable through **Weekly notes** in the selected course's
+workspace (tabs on desktop, **Course tools** on mobile). A direct route is
+`#/weekly/<courseId>/<weekId>` using the actual IDs. If no schedule exists,
+keep `syllabus.weeks: []` and use chapters without inventing weeks.
 
 ## Private data
 
@@ -94,6 +138,9 @@ For a failed import, keep existing courses and progress unchanged. A validator e
 ## Updates
 
 Maintain stable IDs for unchanged content. Preview changes before replacement.
+New notes on a different concept must not reuse an old quote's block ID merely
+to avoid an orphan warning. Never rewrite historic question or recall IDs to
+make old results appear to use new content.
 
 If a block is removed or a source locator changes:
 

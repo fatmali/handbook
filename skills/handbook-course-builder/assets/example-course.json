@@ -1,407 +1,147 @@
 {
   "schemaVersion": "1.0",
-  "id": "everyday-evidence",
-  "contentRevision": 2,
+  "id": "notes-example",
+  "contentRevision": 1,
   "metadata": {
-    "title": "Everyday evidence",
-    "subtitle": "An original demonstration course",
-    "description": "Learn to separate an observation, a hypothesis, and a test. Compare explanations and design a test that can tell them apart.",
+    "title": "Understanding observations and explanations",
+    "subtitle": "Original notes-and-diagrams example",
+    "description": "Distinguish what was observed from what might explain it, then use competing predictions to decide what evidence to seek.",
     "language": "en",
     "educationLevel": "unknown",
     "levelInference": {
       "evidence": [],
       "confidence": "unknown",
       "confirmed": false,
-      "unknowns": [
-        "Not aligned to an institutional syllabus."
-      ]
+      "unknowns": ["This illustrative example is not an institutional course."]
     },
     "cover": "leaf",
     "depth": "introductory",
     "createdAt": "2026-10-11T00:00:00Z",
-    "updatedAt": "2026-10-11T12:36:42.188Z"
+    "updatedAt": "2026-10-11T14:55:00Z"
   },
   "sources": [
     {
-      "id": "original-notes",
-      "title": "Handbook original teaching notes",
+      "id": "example-original",
+      "title": "Original illustrative teaching material",
       "author": "Handbook contributors",
       "edition": "1",
       "kind": "original",
-      "rights": "Original examples licensed MIT. No external source verification claimed.",
+      "rights": "Original example licensed MIT; no third-party course material included.",
       "verification": "original"
     }
   ],
   "assets": [],
   "concepts": [
     {
-      "id": "observation",
+      "id": "example-observation",
       "term": "Observation",
-      "aliases": [
-        "evidence"
-      ],
-      "definition": "A recorded event or measurement. An observation can constrain explanations without identifying a unique cause.",
+      "aliases": [],
+      "definition": "A recorded event or measurement, distinct from an explanation of why it occurred.",
       "prerequisiteIds": [],
-      "contrastIds": [
-        "hypothesis"
-      ],
-      "citations": [
-        {
-          "sourceId": "original-notes",
-          "verification": "unverified"
-        }
-      ]
+      "contrastIds": ["example-hypothesis"],
+      "citations": [{"sourceId": "example-original", "section": "Observation and explanation", "verification": "unverified"}]
     },
     {
-      "id": "hypothesis",
+      "id": "example-hypothesis",
       "term": "Hypothesis",
-      "aliases": [
-        "proposed explanation"
-      ],
-      "definition": "A proposed explanation that makes a prediction. Distinguish what it predicts from what you have actually observed.",
-      "prerequisiteIds": [
-        "observation"
-      ],
-      "contrastIds": [
-        "observation"
-      ],
-      "citations": [
-        {
-          "sourceId": "original-notes",
-          "verification": "unverified"
-        }
-      ]
-    },
-    {
-      "id": "controlled-test",
-      "term": "Controlled test",
-      "aliases": [
-        "comparison"
-      ],
-      "definition": "A comparison designed to distinguish predictions while keeping other relevant conditions stable.",
-      "prerequisiteIds": [
-        "hypothesis"
-      ],
-      "contrastIds": [],
-      "citations": [
-        {
-          "sourceId": "original-notes",
-          "verification": "unverified"
-        }
-      ]
+      "aliases": [],
+      "definition": "A candidate explanation whose predictions can be compared with evidence.",
+      "prerequisiteIds": ["example-observation"],
+      "contrastIds": ["example-observation"],
+      "citations": [{"sourceId": "example-original", "section": "Observation and explanation", "verification": "unverified"}]
     }
   ],
   "chapters": [
     {
-      "id": "evidence-01",
+      "id": "example-lesson-01",
       "number": 1,
-      "title": "A wet pavement is not a weather report",
-      "summary": "Move from noticing a result to comparing explanations.",
-      "outcomeIds": [
-        "evidence-outcome"
-      ],
+      "title": "Observation and explanation",
+      "summary": "An observed result can support several explanations. Their different predictions guide further inquiry.",
+      "outcomeIds": ["example-outcome"],
       "prerequisiteIds": [],
       "depth": "benchmark",
       "blocks": [
         {
-          "id": "evidence-opening",
-          "kind": "paragraph",
-          "text": "You walk outside and notice wet pavement. Rain is one hypothesis, but a sprinkler or street cleaner could produce the same observation. The visible result alone does not establish which event occurred. A useful next step is to ask what else each explanation predicts.",
-          "conceptIds": [
-            "observation",
-            "hypothesis"
-          ],
-          "citations": [
-            {
-              "sourceId": "original-notes",
-              "verification": "unverified"
-            }
-          ]
+          "id": "example-observed-result",
+          "kind": "callout",
+          "tone": "note",
+          "title": "What was observed and what is inferred",
+          "text": "You walk outside and see wet pavement. The observation describes the visible condition. Rain is one hypothesis about its cause, but a sprinkler or street cleaner could produce that condition too.\n\nAn explanation being compatible with the observation does not establish it as the actual cause. Separating the result from its possible causes keeps a plausible interpretation from silently becoming a recorded fact.",
+          "conceptIds": ["example-observation", "example-hypothesis"],
+          "citations": [{"sourceId": "example-original", "section": "Observation and explanation", "verification": "unverified"}]
         },
         {
-          "id": "evidence-graph",
+          "id": "example-distinguishing-predictions",
+          "kind": "callout",
+          "tone": "note",
+          "title": "Different predictions identify useful evidence",
+          "text": "The next question is what else each hypothesis predicts. Rain may wet exposed areas beyond this pavement; a sprinkler may leave a localized pattern near the watered area. Looking at those patterns can help distinguish the two explanations.\n\nThe comparison is only as useful as its assumptions. An earlier shower may have dried unevenly, and a sprinkler may operate while it rains. A result can weaken a candidate explanation without proving its rival. The goal is to seek discriminating evidence, not merely collect facts compatible with a preferred story.",
+          "conceptIds": ["example-observation", "example-hypothesis"],
+          "citations": [{"sourceId": "example-original", "section": "Comparing predictions", "verification": "unverified"}]
+        },
+        {
+          "id": "example-prediction-diagram",
           "kind": "diagram",
-          "title": "Observation, competing predictions, and a check",
-          "caption": "Original schematic. The arrows mean “prompts the next reasoning step,” not “proves.”",
-          "alternative": "Wet pavement prompts two rival explanations: rain and a sprinkler. Rain predicts widespread wetness; a sprinkler predicts localized wetness. Inspect nearby sheltered and unsheltered areas to compare those predictions.",
+          "title": "From an observed result to a useful comparison",
+          "caption": "Original static schematic. The arrows indicate reasoning roles, not proof that a particular cause occurred.",
+          "alternative": "Wet pavement is the observation. It supports candidate hypotheses such as rain or a sprinkler. Compare their predicted wetness patterns in nearby areas. The result may discriminate among candidates, but it does not automatically prove one.",
           "nodes": [
-            {
-              "id": "wet",
-              "label": "Wet pavement",
-              "detail": "This is the recorded observation, not a cause.",
-              "column": 0
-            },
-            {
-              "id": "rain",
-              "label": "Rain hypothesis",
-              "detail": "Predicts wetness across exposed areas.",
-              "column": 1
-            },
-            {
-              "id": "sprinkler",
-              "label": "Sprinkler hypothesis",
-              "detail": "Predicts wetness in the watered area.",
-              "column": 1
-            },
-            {
-              "id": "check",
-              "label": "Compare nearby areas",
-              "detail": "A distinguishing observation can weaken one explanation.",
-              "column": 2
-            }
+            {"id": "observed", "label": "Wet pavement", "detail": "The recorded result, not an asserted cause.", "column": 0},
+            {"id": "hypotheses", "label": "Rain or sprinkler?", "detail": "Candidate explanations compatible with the initial observation.", "column": 0},
+            {"id": "comparison", "label": "Compare patterns", "detail": "Seek observations on which the candidates make different predictions.", "column": 0}
           ],
           "edges": [
-            {
-              "from": "wet",
-              "to": "rain",
-              "label": "candidate"
-            },
-            {
-              "from": "wet",
-              "to": "sprinkler",
-              "label": "candidate"
-            },
-            {
-              "from": "rain",
-              "to": "check",
-              "label": "prediction"
-            },
-            {
-              "from": "sprinkler",
-              "to": "check",
-              "label": "prediction"
-            }
+            {"from": "observed", "to": "hypotheses", "label": "candidate causes"},
+            {"from": "hypotheses", "to": "comparison", "label": "different predictions"}
           ],
           "steps": [
-            {
-              "title": "Record what happened",
-              "explanation": "Start with wet pavement; do not silently add rain to the observation.",
-              "activeNodeIds": [
-                "wet"
-              ]
-            },
-            {
-              "title": "Keep rival explanations",
-              "explanation": "Both rain and a sprinkler can explain the initial result.",
-              "activeNodeIds": [
-                "rain",
-                "sprinkler"
-              ]
-            },
-            {
-              "title": "Seek a discriminating observation",
-              "explanation": "Compare predicted patterns. A result may weaken a hypothesis without proving its rival.",
-              "activeNodeIds": [
-                "check"
-              ]
-            }
+            {"title": "Reasoning roles", "explanation": "An observation prompts candidate explanations; their predictions guide a comparison. Compatibility is not proof.", "activeNodeIds": ["observed", "hypotheses", "comparison"]}
           ],
-          "conceptIds": [
-            "observation",
-            "hypothesis",
-            "controlled-test"
-          ],
-          "citations": [
-            {
-              "sourceId": "original-notes",
-              "verification": "unverified"
-            }
-          ]
+          "conceptIds": ["example-observation", "example-hypothesis"],
+          "citations": [{"sourceId": "example-original", "section": "Comparing predictions", "verification": "unverified"}]
         },
         {
-          "id": "evidence-example",
-          "kind": "example",
-          "title": "Why did the plant droop?",
-          "problem": "A plant droops. One explanation is too little water; another is damaged roots.",
-          "steps": [
-            "Record moisture and root condition instead of assuming that drooping means drought.",
-            "Predict that adding water helps a thirsty plant but does not repair damaged roots.",
-            "Compare otherwise similar plants, if feasible, and record the conditions and outcome. Do not change light, soil, and water simultaneously if you want to attribute the result."
-          ],
-          "conclusion": "A test is useful when its outcomes distinguish explanations. Even a successful intervention need not establish a single cause in every setting.",
-          "conceptIds": [
-            "hypothesis",
-            "controlled-test"
-          ],
-          "citations": [
-            {
-              "sourceId": "original-notes",
-              "verification": "unverified"
-            }
-          ]
-        },
-        {
-          "id": "evidence-caution",
+          "id": "example-lesson-synthesis",
           "kind": "callout",
-          "tone": "misconception",
-          "title": "Explains is not the same as proves",
-          "text": "If rain makes pavement wet, wet pavement does not logically prove rain. Other causes can produce the same result. Look for evidence that distinguishes hypotheses rather than only evidence compatible with your favorite one.",
-          "conceptIds": [
-            "hypothesis"
-          ],
-          "citations": [
-            {
-              "sourceId": "original-notes",
-              "verification": "unverified"
-            }
-          ]
-        },
-        {
-          "id": "evidence-recall",
-          "kind": "recall",
-          "prompt": "A room gets quieter after you close a window. What can you conclude, and what would you test next?",
-          "answer": "Closing the window is associated with reduced noise in this observation. To test whether it caused the change, compare open and closed conditions while recording outside activity and other sound sources. Do not infer that every source of noise was outdoors.",
-          "conceptIds": [
-            "controlled-test"
-          ],
-          "citations": [
-            {
-              "sourceId": "original-notes",
-              "verification": "unverified"
-            }
-          ]
+          "tone": "note",
+          "title": "What this lesson adds",
+          "text": "Keep the observation, candidate explanation, and predicted evidence separate. A useful next observation distinguishes alternatives; finding support for one explanation does not make every other explanation impossible.",
+          "conceptIds": ["example-observation", "example-hypothesis"],
+          "citations": []
         }
       ]
     }
   ],
   "syllabus": {
     "outcomes": [
-      {
-        "id": "evidence-outcome",
-        "text": "Distinguish an observation from an explanation and propose a discriminating test.",
-        "conceptIds": [
-          "observation",
-          "hypothesis",
-          "controlled-test"
-        ]
-      }
+      {"id": "example-outcome", "text": "Explain the difference between a recorded observation and a candidate explanation, and why comparing predictions is useful.", "conceptIds": ["example-observation", "example-hypothesis"]}
     ],
     "weeks": [
       {
-        "id": "evidence-week-1",
+        "id": "example-week-01",
         "number": 1,
-        "title": "Notice, explain, test",
-        "chapterIds": [
-          "evidence-01"
-        ],
+        "title": "Observation and explanation",
+        "chapterIds": ["example-lesson-01"],
         "assessmentIds": [],
-        "notes": "Self-paced demonstration; there are no official deadlines."
+        "notes": "This illustrative grouping connects two ideas: what we observe and what might explain it. The lesson uses wet pavement to show why an explanation needs more than compatibility with one result.\n\nThe connection is inference: distinguish the result from candidate causes, then compare what those causes predict. The diagram makes those roles visible without replacing the explanation."
       }
     ],
     "assessments": [],
-    "policies": [
-      {
-        "id": "evidence-policy",
-        "title": "Original demonstration",
-        "text": "This course is original teaching material, not a school syllabus, credential, or verified external reading.",
-        "citations": [
-          {
-            "sourceId": "original-notes",
-            "verification": "unverified"
-          }
-        ]
-      }
-    ]
+    "policies": []
   },
-  "practice": [
-    {
-      "id": "evidence-q1",
-      "revision": 1,
-      "chapterId": "evidence-01",
-      "conceptIds": [
-        "observation",
-        "hypothesis"
-      ],
-      "prompt": "You see wet pavement. Which claims stay within the evidence?",
-      "options": [
-        {
-          "id": "evidence-q1-a",
-          "text": "The pavement is wet.",
-          "correct": true,
-          "explanation": "This is the observation described."
-        },
-        {
-          "id": "evidence-q1-b",
-          "text": "Rain definitely caused it.",
-          "correct": false,
-          "explanation": "Wet pavement has alternative causes."
-        },
-        {
-          "id": "evidence-q1-c",
-          "text": "A sprinkler is a possible explanation.",
-          "correct": true,
-          "explanation": "It is a compatible hypothesis, not an established cause."
-        }
-      ],
-      "explanation": "Select statements supported by the observation, keeping possibilities separate from proof.",
-      "original": true,
-      "citations": [
-        {
-          "sourceId": "original-notes",
-          "verification": "unverified"
-        }
-      ]
-    },
-    {
-      "id": "evidence-q2",
-      "revision": 1,
-      "chapterId": "evidence-01",
-      "conceptIds": [
-        "controlled-test"
-      ],
-      "prompt": "Which actions make a comparison easier to interpret?",
-      "options": [
-        {
-          "id": "evidence-q2-a",
-          "text": "Keep relevant conditions stable.",
-          "correct": true,
-          "explanation": "Reducing competing changes helps attribute differences."
-        },
-        {
-          "id": "evidence-q2-b",
-          "text": "Change every condition at once.",
-          "correct": false,
-          "explanation": "That makes the cause of a difference ambiguous."
-        },
-        {
-          "id": "evidence-q2-c",
-          "text": "Write down predictions before inspecting the result.",
-          "correct": true,
-          "explanation": "This makes it harder to retrofit the prediction to the outcome."
-        }
-      ],
-      "explanation": "A controlled comparison exposes assumptions and makes rival predictions testable.",
-      "original": true,
-      "citations": [
-        {
-          "sourceId": "original-notes",
-          "verification": "unverified"
-        }
-      ]
-    }
-  ],
+  "practice": [],
   "coverage": {
-    "summary": "One small original lesson; not a comprehensive research-methods curriculum.",
+    "summary": "One original illustrative lesson with connected notes and a static diagram. No actual course syllabus, textbook alignment, dates, or assessments are claimed.",
     "gaps": [
-      {
-        "id": "evidence-gap",
-        "description": "No external textbook or institutional alignment has been verified.",
-        "status": "unverified",
-        "chapterIds": [
-          "evidence-01"
-        ],
-        "sourceIds": [
-          "original-notes"
-        ]
-      }
+      {"id": "example-source-gap", "description": "For a real course, read the supplied textbook and syllabus and replace illustrative content with faithful summaries and checked substantive source locators.", "status": "unverified", "chapterIds": ["example-lesson-01"], "sourceIds": ["example-original"]}
     ]
   },
   "provenance": {
-    "generatedAt": "2026-10-11T00:00:00Z",
-    "generator": "Handbook contributors",
-    "method": "Original explanatory examples and questions, authored for the generic renderer.",
+    "generatedAt": "2026-10-11T14:55:00Z",
+    "generator": "Handbook course-builder example",
+    "method": "Original notes-and-diagrams format example. The single weekly grouping illustrates renderer composition, not a fabricated official schedule. No external source verification claimed.",
     "contentLicense": "MIT",
-    "sourceRights": "No third-party instructional material redistributed.",
+    "sourceRights": "No third-party instructional sources distributed.",
     "originalExplanations": true
   }
 }

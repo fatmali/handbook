@@ -38,7 +38,8 @@ on builds.
 ## Use your own course
 
 Install [the course-builder skill](docs/skill-installation.md), give your agent
-your authorized materials and syllabus, and review a representative lesson.
+your authorized materials and syllabus, and review a representative week of notes
+and diagrams (or a source unit when no schedule exists).
 The skill asks about goals, prior knowledge, optional age/age band, explanation
 depth, scaffolding and optional timing. Course level is evidence-led and
 requires confirmation; age is never an ability or academic-level classifier.
@@ -47,6 +48,11 @@ Generate a Course Pack JSON, run the bundled validator, then choose **Import
 course** in Handbook. Review sources, gaps and update changes before confirming.
 The manual file handoff is the real v1 installation mechanism, not a remote
 “upload” API. Agents cannot implicitly write your browser storage.
+
+Course-builder **1.1.0** defaults to connected course-content notes with inline
+explanatory diagrams. It reads the actual source, preserves teaching order and
+syllabus weeks, and keeps real locators separate from authored headings.
+Exercise blocks and question banks are optional, not generation quotas.
 
 ## Learning tools
 
