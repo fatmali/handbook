@@ -86,8 +86,9 @@ function Handbook() {
   }, [onError, publish]);
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    if (!library) return;
     try { localStorage.setItem('handbook-theme', theme); } catch (error) { onError(error); }
-  }, [theme, onError]);
+  }, [theme, library, onError]);
   useEffect(() => {
     const hashChanged = () => {
       if (location.hash === '#main-content') return;
