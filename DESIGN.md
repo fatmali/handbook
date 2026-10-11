@@ -21,7 +21,9 @@ Only book objects use stronger offset shadows and page-edge depth.
 
 Desktop places the floating 224px rail at a 20px inset. Below 780px, a compact
 labeled navigation replaces it. The course shelf reduces to one column before
-mobile; controls wrap without hiding their names.
+mobile; controls wrap without hiding their names. A labeled Course tools
+disclosure keeps Practice, Recall, Sources and all other course routes reachable
+without the desktop rail. Focus intentionally omits this disclosure.
 
 Focus removes the rail, search, and library shelf. It has explicit Save & stop,
 exact block/diagram resume, and optional thought parking. No study countdown,
