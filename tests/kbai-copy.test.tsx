@@ -15,6 +15,7 @@ const pack = result.pack;
 function stockV4(): CoursePack {
   return {
     ...structuredClone(pack), contentRevision: 4,
+    provenance: { ...pack.provenance, generator: 'scripts/build-kbai.ts' },
     metadata: { ...pack.metadata, subtitle: LEGACY_KBAI_COPY.subtitle, description: LEGACY_KBAI_COPY.description },
     coverage: { ...pack.coverage, summary: LEGACY_KBAI_COPY.coverage, gaps: pack.coverage.gaps.map(gap => ({ ...gap, description: KBAI_COVERAGE_COPY[gap.id].previous })) },
   };
@@ -23,9 +24,9 @@ beforeEach(() => vi.stubGlobal('indexedDB', new IDBFactory()));
 
 it('uses ordinary course-purpose language rather than release diagnostics', () => {
   expect(pack.metadata.subtitle).toBe(KBAI_COPY.subtitle);
-  expect(pack.metadata.description).toBe(KBAI_COPY.description);
-  expect([pack.metadata.subtitle, pack.metadata.description, pack.coverage.summary, ...pack.coverage.gaps.map(gap => gap.description)].join(' ')).not.toMatch(/benchmark|baseline|preserved|revision|declarative|private inputs|live-exam assistant/i);
-  expect(pack.coverage.summary).toContain('Later lessons offer shorter introductions');
+  expect(pack.metadata.description).toContain('Connected weekly course notes');
+  expect([pack.metadata.subtitle, pack.metadata.description, pack.coverage.summary, ...pack.coverage.gaps.map(gap => gap.description)].join(' ')).not.toMatch(/benchmark|baseline|preserved|revision \d|declarative|private inputs|live-exam assistant/i);
+  expect(pack.coverage.summary).toContain('All 26 ebook lessons');
 });
 it('keeps the original demo label but replaces only its stock product-description sentence', () => {
   expect(samplePack.metadata.subtitle).toBe('An original demonstration course');
@@ -90,8 +91,8 @@ it('places truthful learning limits behind an accessible closed disclosure', () 
   render(<CoverageDetails pack={pack}/>);
   const disclosure = screen.getByText('Coverage & limitations').closest('details')!;
   expect(disclosure.open).toBe(false);
-  expect(screen.getByText(KBAI_COPY.coverage)).not.toBeVisible();
+  expect(screen.getByText(pack.coverage.summary)).not.toBeVisible();
   fireEvent.click(screen.getByText('Coverage & limitations'));
-  expect(screen.getByText(KBAI_COPY.coverage)).toBeVisible();
-  expect(screen.getByText(KBAI_COVERAGE_COPY['gap-full-first-order-logic'].current)).toBeVisible();
+  expect(screen.getByText(pack.coverage.summary)).toBeVisible();
+  expect(screen.getByText(KBAI_COVERAGE_COPY['gap-transcripts'].current)).toBeVisible();
 });

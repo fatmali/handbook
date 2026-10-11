@@ -38,6 +38,16 @@ Visible course language should lead. For example, if a source describes a learni
 
 PDF viewer page numbers and printed page numbers are different locator types. A paragraph under an authentic heading is not automatically supported by that heading's page.
 
+Use the actual source section name in a verified citation, not an invented
+plain-language notes heading. Read multi-column PDFs in column order and inspect
+printed figures where transcripts are incomplete before filling apparent gaps.
+
+For weekly notes, use the real syllabus week/lesson mapping and put assigned
+topic names beside a short connective overview. Explain topics in source
+teaching order, then synthesize their connection. Weeks with no new lessons
+remain revision, consolidation or wrap-up. Keep recall, professional bridges and
+administration secondary; do not substitute repeated prompts for explanation.
+
 ## Explanation depth
 
 For a mechanism, answer:
@@ -66,6 +76,13 @@ A useful diagram must have a teaching purpose and a textual alternative. Types m
 - Structured slot/filler or comparison tables.
 
 Use only types the installed schema supports.
+
+A short static schematic or concrete representation table can teach more than
+a padded animation. Use one diagram state when the explanation is static; do not
+invent extra nodes or steps to meet a numerical quota. The generic weekly reader
+uses existing `syllabus.weeks.notes` as overview followed by synthesis separated
+by a blank line, with `chapterIds` selecting the lesson sections. No extra HTML
+or unsupported schema fields are needed.
 
 Every node and edge must mean something. Define the difference between hierarchy, causal influence, data flow, temporal order, and association. Arrow direction is not decorative.
 

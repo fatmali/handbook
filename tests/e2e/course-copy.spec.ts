@@ -11,6 +11,7 @@ const content = result.pack;
 test('existing stock v4 copy is corrected without losing notes and coverage stays quiet', async ({ page }) => {
   const old = structuredClone(content);
   old.contentRevision = 4;
+  old.provenance.generator = 'scripts/build-kbai.ts';
   old.metadata.subtitle = LEGACY_KBAI_COPY.subtitle;
   old.metadata.description = LEGACY_KBAI_COPY.description;
   old.coverage.summary = LEGACY_KBAI_COPY.coverage;

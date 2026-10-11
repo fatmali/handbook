@@ -56,6 +56,12 @@ library chrome and preserves the exact block and diagram step. Study is untimed
 by default, with no break cues. Optional elapsed time is a current-visit display,
 not a persistent time log.
 
+**Weekly notes** groups the installed course's chapters by its existing syllabus
+weeks. Each week opens with the assigned topic names and a connected overview,
+then the chapter explanations and inline diagrams, followed by a synthesis.
+Recall and administrative details are secondary disclosures. Single-state
+diagrams have no pretend animation controls.
+
 Original multiple-correct practice reports exact matches and skips, not an
 official or predicted grade. Explicitly started KBAI mocks are separate:
 90 minutes, 22 questions, five options and 1–4 supported statements. The stored
@@ -87,8 +93,12 @@ checks remain available through the private archive. See
 
 ## Coverage and rights
 
-KBAI contains all 26 lessons and the 17-week Fall 2026 calendar. Lessons 1–12 are
-the expanded benchmark; 13–26 remain explicitly labeled foundation coverage.
+KBAI revision 6 contains source-grounded notes for all 26 lessons in the 17-week
+Fall 2026 calendar. Weeks without new lessons are consolidation or revision.
+Existing installations see **Review course update** near the top of the course
+and weekly entry; confirmation is required before replacing their installed
+revision. New explanatory anchors are reconciled explicitly, not remapped by
+approximate wording.
 See [the source/coverage report](docs/kbai-coverage.md) for page evidence,
 remaining gaps and the distinction between locator checks and factual review.
 
