@@ -32,7 +32,9 @@ export const blockSchema = z.discriminatedUnion('kind', [
 export const coursePackSchema = z.strictObject({
   schemaVersion: z.literal('1.0'), id, contentRevision: z.number().int().min(1),
   metadata: z.strictObject({
-    title: short, subtitle: short, description: text, language: z.string().regex(/^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/),
+    title: short, subtitle: short,
+    description: text.describe('Learner-facing course purpose: explain what the learner will study or learn to do. No release metrics, preservation history, implementation terminology or QA reports.'),
+    language: z.string().regex(/^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/),
     educationLevel: educationLevelSchema,
     levelInference: z.strictObject({ evidence: z.array(text).max(20), confidence: z.enum(['high', 'medium', 'low', 'unknown']), confirmed: z.boolean(), unknowns: z.array(text).max(20) }),
     institution: short.optional(), courseCode: short.optional(), cover: z.enum(['cube', 'network', 'leaf']),
@@ -68,7 +70,8 @@ export const coursePackSchema = z.strictObject({
     explanation: text, original: z.literal(true), citations,
   })).max(LIMITS.questions),
   coverage: z.strictObject({
-    summary: text, gaps: z.array(z.strictObject({ id, description: text, status: z.enum(['omitted', 'unreadable', 'unverified', 'partial']), chapterIds: ids, sourceIds: ids })).max(200),
+    summary: text.describe('Plain-language learning scope and limitations: explain what is covered and where the learner needs original material. Put QA metrics, implementation details and preservation history in provenance or developer reports.'),
+    gaps: z.array(z.strictObject({ id, description: text, status: z.enum(['omitted', 'unreadable', 'unverified', 'partial']), chapterIds: ids, sourceIds: ids })).max(200),
   }),
   provenance: z.strictObject({
     generatedAt: timestamp, generator: short, method: text, contentLicense: short, sourceRights: text, originalExplanations: z.literal(true),

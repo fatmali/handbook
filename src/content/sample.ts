@@ -1,13 +1,14 @@
 import type { CoursePack } from '../../packages/course-pack/src';
+import { DEMO_DESCRIPTION } from './kbai-copy';
 
 const citation = { sourceId: 'original-notes', verification: 'unverified' as const };
 export const samplePack: CoursePack = {
-  schemaVersion: '1.0', id: 'everyday-evidence', contentRevision: 1,
+  schemaVersion: '1.0', id: 'everyday-evidence', contentRevision: 2,
   metadata: {
     title: 'Everyday evidence', subtitle: 'An original demonstration course',
-    description: 'Learn to separate an observation, a hypothesis, and a test. A small original course showing the same reading, diagram, and practice tools as imported handbooks.',
+    description: DEMO_DESCRIPTION,
     language: 'en', educationLevel: 'unknown', levelInference: { evidence: [], confidence: 'unknown', confirmed: false, unknowns: ['Not aligned to an institutional syllabus.'] },
-    cover: 'leaf', depth: 'introductory', createdAt: '2026-10-11T00:00:00Z', updatedAt: '2026-10-11T00:00:00Z',
+    cover: 'leaf', depth: 'introductory', createdAt: '2026-10-11T00:00:00Z', updatedAt: '2026-10-11T12:36:42.188Z',
   },
   sources: [{ id: 'original-notes', title: 'Handbook original teaching notes', author: 'Handbook contributors', edition: '1', kind: 'original', rights: 'Original examples licensed MIT. No external source verification claimed.', verification: 'original' }],
   assets: [],

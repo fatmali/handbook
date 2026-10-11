@@ -19720,7 +19720,7 @@ var coursePackSchema = external_exports.strictObject({
   metadata: external_exports.strictObject({
     title: short,
     subtitle: short,
-    description: text,
+    description: text.describe("Learner-facing course purpose: explain what the learner will study or learn to do. No release metrics, preservation history, implementation terminology or QA reports."),
     language: external_exports.string().regex(/^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/),
     educationLevel: educationLevelSchema,
     levelInference: external_exports.strictObject({ evidence: external_exports.array(text).max(20), confidence: external_exports.enum(["high", "medium", "low", "unknown"]), confirmed: external_exports.boolean(), unknowns: external_exports.array(text).max(20) }),
@@ -19793,7 +19793,7 @@ var coursePackSchema = external_exports.strictObject({
     citations
   })).max(LIMITS.questions),
   coverage: external_exports.strictObject({
-    summary: text,
+    summary: text.describe("Plain-language learning scope and limitations: explain what is covered and where the learner needs original material. Put QA metrics, implementation details and preservation history in provenance or developer reports."),
     gaps: external_exports.array(external_exports.strictObject({ id, description: text, status: external_exports.enum(["omitted", "unreadable", "unverified", "partial"]), chapterIds: ids, sourceIds: ids })).max(200)
   }),
   provenance: external_exports.strictObject({

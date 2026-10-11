@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0",
   "id": "everyday-evidence",
-  "contentRevision": 1,
+  "contentRevision": 2,
   "metadata": {
     "title": "Everyday evidence",
     "subtitle": "An original demonstration course",
-    "description": "Learn to separate an observation, a hypothesis, and a test. A small original course showing the same reading, diagram, and practice tools as imported handbooks.",
+    "description": "Learn to separate an observation, a hypothesis, and a test. Compare explanations and design a test that can tell them apart.",
     "language": "en",
     "educationLevel": "unknown",
     "levelInference": {
@@ -19,7 +19,7 @@
     "cover": "leaf",
     "depth": "introductory",
     "createdAt": "2026-10-11T00:00:00Z",
-    "updatedAt": "2026-10-11T00:00:00Z"
+    "updatedAt": "2026-10-11T12:36:42.188Z"
   },
   "sources": [
     {

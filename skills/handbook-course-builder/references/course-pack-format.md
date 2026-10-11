@@ -11,6 +11,12 @@ The complete example is `assets/example-course.json`. Top-level fields are
 Every field is strict; use the schema's exact structure, not these headings as
 an alternative loose format.
 
+`metadata.description` is the learner-facing course purpose, not release
+notes. `coverage.summary` describes practical scope and where original sources
+are still needed. The generated schema documents this writing rule; see
+[content quality](content-quality.md). Keep QA metrics, implementation vocabulary
+and preservation history in provenance or a separate report.
+
 The allowed content block `kind` values are `paragraph`, `list`, `callout`,
 `example`, `table`, `recall`, and `diagram`. All use `id`, `conceptIds`, and
 `citations`. Diagrams require `nodes`, `edges`, `steps`, `caption`, and
