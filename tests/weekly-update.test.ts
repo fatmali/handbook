@@ -2,7 +2,7 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import { IDBFactory } from 'fake-indexeddb';
 import { execFileSync } from 'node:child_process';
 import { validateCoursePack } from '../packages/course-pack/src';
-import content from '../src/content/kbai.json';
+import { kbaiFixture as content } from './course-fixtures';
 import { Library } from '../src/storage';
 import { diffPacks, emptyProgress, makeSession, reconcileProgress } from '../src/domain';
 import { migrateLegacy } from '../src/migration';

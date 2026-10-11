@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { KBAI_COPY, LEGACY_KBAI_COPY, KBAI_COVERAGE_COPY } from '../../src/content/kbai-copy';
-import { readFileSync } from 'node:fs';
+import { kbaiFixture } from '../course-fixtures';
 import { validateCoursePack } from '../../packages/course-pack/src';
 import { emptyProgress } from '../../src/domain';
 
-const result = validateCoursePack(JSON.parse(readFileSync(new URL('../../src/content/kbai.json', import.meta.url), 'utf8')));
+const result = validateCoursePack(kbaiFixture);
 if (!result.ok) throw new Error('Invalid KBAI fixture');
 const content = result.pack;
 

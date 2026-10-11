@@ -1,11 +1,17 @@
 # Migration, concurrency and portability
 
-The Pages rename remains on `https://fatmali.github.io`, so a browser can read
-the prior `kbai-study-companion-v1` localStorage key despite the new path.
-The first v1 initialization parses it before writes and transactionally stores:
-bundled packs, converted personal courses, private progress, the **entire original
-snapshot**, and a migration marker. Failure does not delete the old key or
-install a half-migrated library.
+Storage is origin-bound at `https://lab.fatmaali.dev`. Data on an older host does
+not silently move; use a private backup to transfer it. On the same origin, the
+first initialization parses a prior `kbai-study-companion-v1` localStorage key
+before writes and transactionally stores converted personal courses, the
+**entire original snapshot**, and a migration marker. Failure does not delete
+the old key or install a half-migrated library.
+
+New libraries start empty. Existing IndexedDB courses, private progress and
+source attachments remain intact. When legacy KBAI progress exists without a
+local KBAI course, it stays in the private archive until that course is explicitly
+imported. The import connects its old notes and snapshots without downloading a
+public seed or guessing unmatched anchors.
 
 Repeated initialization is idempotent and never reapplies an old snapshot over
 new work. The original localStorage key is retained. A private backup includes
@@ -27,11 +33,11 @@ Personal course text becomes strict typed paragraph blocks. Unsupported source
 links remain in the archive rather than being trusted as verified citations.
 Empty personal courses remain archived, with a visible warning.
 
-The prior standalone [Handbook-v0.html](https://fatmali.github.io/handbook/legacy/Handbook-v0.html)
-remains downloadable. V1 is a PWA plus portable JSON, not a new single-file HTML
-snapshot. To move devices/browsers, export a **private v1 backup**, restore it
-with explicit confirmation, and reattach local source PDFs. To open a historical
-v0 backup in the prior reader, use that reader's validated restore function.
+The prior public standalone course reader is no longer distributed. V1 is a PWA
+plus private portable JSON, not a single-file snapshot with somebody else's
+curriculum. To move devices/browsers, export a **private v1 backup**, restore it
+with explicit confirmation, and reattach local source PDFs. Empty libraries
+and their preferences can also be backed up and restored.
 
 For large libraries, export separate private course backups. **Merge** restores
 their course/progress records without deleting other courses or replacing the

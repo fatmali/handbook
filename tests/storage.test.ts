@@ -8,6 +8,37 @@ import { emptyProgress, MAX_COURSES, validateBackup } from '../src/domain';
 beforeEach(() => { vi.stubGlobal('indexedDB', new IDBFactory()); });
 async function seeded() { const library = await Library.open(); await library.initialize([samplePack], null); return library; }
 describe('transactional local-first library', () => {
+  it('initializes a genuinely empty library and round-trips its private preferences', async () => {
+    const library = await Library.open();
+    await library.initialize([], null);
+    const before = await library.snapshot();
+    expect(before.packs).toEqual([]);
+    expect(before.progress).toEqual([]);
+    await library.saveProfile({ ...defaultProfile, goals: 'My private goal' }, 0);
+    const backup = await library.privateBackup();
+    expect(backup.packs).toEqual([]);
+    expect(backup.progress).toEqual([]);
+    expect(backup.profile.goals).toBe('My private goal');
+    await library.restore(JSON.stringify(backup), 1);
+    await library.initialize([], null);
+    expect((await library.snapshot()).packs).toEqual([]);
+    expect((await library.snapshot()).profile.goals).toBe('My private goal');
+    library.close();
+  });
+  it('empty startup preserves already installed courses, progress and local source attachments', async () => {
+    const library = await seeded();
+    const pack = structuredClone(samplePack);
+    const file = new File(['%PDF-1.4\nprivate fixture'], 'private-source.pdf', { type: 'application/pdf' });
+    Object.defineProperty(file, 'arrayBuffer', { value: async () => new TextEncoder().encode('%PDF-1.4\nprivate fixture').buffer });
+    const fingerprint = await library.bindSource(pack, pack.sources[0].id, file);
+    const progress = (await library.snapshot()).progress[0];
+    await library.saveProgress({ ...progress, notes: { scratch: 'Keep my note' }, noteHighlights: { scratch: [{ start: 0, end: 4 }] }, bookmarks: { 'evidence-01': true } });
+    const before = await library.snapshot();
+    await library.initialize([], null);
+    expect(await library.snapshot()).toEqual(before);
+    expect((await library.getSource(pack.id, pack.sources[0].id))?.fingerprint).toBe(fingerprint);
+    library.close();
+  });
   it('stores courses independently and preserves private notes across export/restore', async () => {
     const library = await seeded();
     const next = structuredClone(samplePack); next.id = 'other-course';

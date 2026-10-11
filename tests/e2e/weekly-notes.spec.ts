@@ -1,6 +1,6 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 import AxeBuilder from '@axe-core/playwright';
-import { readFileSync } from 'node:fs';
+import { kbaiFixture } from '../course-fixtures';
 import { emptyProgress } from '../../src/domain';
 
 test('weekly notes are reachable, source-linked, and readable without trace or practice clutter', async ({ page }, testInfo) => {
@@ -40,14 +40,14 @@ test('weekly notes are reachable, source-linked, and readable without trace or p
   await expect(page.getByRole('heading', { name: 'Week 11: Version Spaces & Constraint Propagation', exact: true })).toBeVisible();
 });
 
-test('an installed v5 course changes only after the real update preview and keeps private records', async ({ page }) => {
-  const old = JSON.parse(readFileSync('src/content/kbai.json', 'utf8'));
+test('an installed v5 course changes only after local update import and keeps private records', async ({ page }) => {
+  const old = structuredClone(kbaiFixture);
   old.contentRevision = 5;
   old.metadata.description = 'My installed v5 course';
   old.chapters[4].blocks = [
     { id: 'lesson-05-callout-1', kind: 'callout', tone: 'note', title: 'Preview', text: 'Old private anchor text', conceptIds: [], citations: [] },
     { id: 'lesson-05-diagram-1', kind: 'diagram', title: 'Old diagram', caption: 'Old diagram caption', alternative: 'Old diagram alternative', nodes: [{ id: 'old-node', label: 'Old node', detail: 'Old detail', column: 0 }], edges: [], steps: [{ title: 'Old step', explanation: 'Old explanation', activeNodeIds: ['old-node'] }], conceptIds: [], citations: [] },
-    ...old.chapters[4].blocks.filter((block: { kind: string }) => block.kind === 'recall'),
+    ...old.chapters[4].blocks.filter(block => block.kind === 'recall'),
   ];
   const progress = {
     ...emptyProgress('kbai'), notes: { scratch: 'Keep my private note' },
@@ -73,10 +73,9 @@ test('an installed v5 course changes only after the real update preview and keep
   await page.goto('./#/course/kbai');
   await page.reload();
   await expect(page.getByText('My installed v5 course', { exact: true })).toBeVisible();
-  const review = page.getByRole('button', { name: 'Review course update' });
-  await expect(review).toBeVisible();
-  expect((await review.boundingBox())!.y).toBeLessThan(500);
-  await review.click();
+  await expect(page.getByRole('button', { name: 'Review course update' })).toHaveCount(0);
+  await page.goto('./#/import');
+  await page.getByLabel('Choose Course Pack JSON').setInputFiles({ name: 'local-kbai-update.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(kbaiFixture)) });
   await expect(page.getByRole('heading', { name: 'Replace revision 5' })).toBeVisible();
   await expect(page.getByText(/Changed or missing annotation anchors will be flagged, never guessed/)).toBeVisible();
   await page.getByRole('button', { name: 'Confirm replace course' }).click();

@@ -9,7 +9,7 @@ export default defineConfig({
     name: 'handbook-offline-shell',
     generateBundle(_, bundle) {
       const files = Object.keys(bundle).filter(file => !file.endsWith('.map'));
-      const publicFiles = ['icon.svg', 'icon-180.png', 'icon-192.png', 'icon-512.png', 'manifest.webmanifest', 'assets/hanken-grotesk-variable.ttf', 'courses/kbai.json', 'courses/everyday-evidence.json', 'downloads/handbook-course-builder.zip', 'downloads/course-pack-v1.schema.json'];
+      const publicFiles = ['icon.svg', 'icon-180.png', 'icon-192.png', 'icon-512.png', 'manifest.webmanifest', 'assets/hanken-grotesk-variable.ttf', 'courses/everyday-evidence.json', 'downloads/handbook-course-builder.zip', 'downloads/course-pack-v1.schema.json'];
       const contents = Object.fromEntries(files.map(file => [file, bundle[file].type === 'chunk' ? bundle[file].code : bundle[file].source]));
       for (const file of publicFiles) contents[file] = readFileSync(`public/${file}`);
       contents['index.html'] = readFileSync('index.html');

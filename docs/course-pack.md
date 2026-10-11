@@ -57,8 +57,8 @@ and supported-option bounds; practice refuses an insufficient in-scope bank.
 20,000 characters per text value. Nested arrays and references are also
 bounded. URLs require HTTPS and no embedded credentials.
 
-The local library and private backup contract both support 32 courses (including
-the two bundled courses and up to 30 legacy personal courses). Private progress
+The local library and private backup contract both support up to 32 courses.
+An empty library with its private profile is also a valid backup. Private progress
 is capped at 8 MB per course; a complete private JSON backup is capped at 64 MB.
 Export validates the same restore contract and refuses oversize data explicitly.
 

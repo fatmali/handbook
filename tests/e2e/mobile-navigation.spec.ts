@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test('visible mobile course tools expose practice, recall and sources without hash guessing', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });

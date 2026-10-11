@@ -2,7 +2,7 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import { IDBFactory } from 'fake-indexeddb';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { validateCoursePack, type CoursePack } from '../packages/course-pack/src';
-import content from '../src/content/kbai.json';
+import { kbaiFixture as content } from './course-fixtures';
 import { KBAI_COPY, KBAI_COVERAGE_COPY, LEGACY_KBAI_COPY, correctStockKBAICopy, correctStockCourseCopy, DEMO_DESCRIPTION, LEGACY_DEMO_DESCRIPTION } from '../src/content/kbai-copy';
 import { CoverageDetails } from '../src/components/CoverageDetails';
 import { Library } from '../src/storage';
@@ -10,7 +10,7 @@ import { samplePack } from '../src/content/sample';
 import { makeSession } from '../src/domain';
 
 const result = validateCoursePack(content);
-if (!result.ok) throw new Error('Invalid bundled course');
+if (!result.ok) throw new Error('Invalid historical course');
 const pack = result.pack;
 function stockV4(): CoursePack {
   return {

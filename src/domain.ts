@@ -141,7 +141,7 @@ export function reconcileProgress(progress: Progress, previous: CoursePack, next
 }
 export const backupSchema = z.strictObject({
   format: z.literal('handbook-private-backup'), version: z.literal(1), exportedAt: z.iso.datetime({ offset: true }),
-  packs: z.array(z.unknown()).min(1).max(MAX_COURSES), progress: z.array(progressSchema).max(MAX_COURSES), profile: privateProfileSchema,
+  packs: z.array(z.unknown()).max(MAX_COURSES), progress: z.array(progressSchema).max(MAX_COURSES), profile: privateProfileSchema,
   legacy: z.unknown().optional(),
 });
 export function validateBackup(raw: string) {

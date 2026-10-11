@@ -1,6 +1,15 @@
 import { expect, it } from 'vitest';
 import { releaseEpoch, renderWorker } from '../scripts/release-epoch';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+
+it('does not distribute the personal KBAI course or automatically fetch a starter course', () => {
+  expect(existsSync('public/courses/kbai.json')).toBe(false);
+  expect(existsSync('public/legacy/Handbook-v0.html')).toBe(false);
+  expect(existsSync('src/content/kbai.json')).toBe(false);
+  expect(readFileSync('src/App.tsx', 'utf8')).not.toMatch(/courses\/kbai\.json|bundledPacks/);
+  expect(readFileSync('vite.config.ts', 'utf8')).not.toContain('courses/kbai.json');
+  expect(readFileSync('scripts/release.ts', 'utf8')).not.toContain('kbai.json');
+});
 
 it('changes the offline release epoch for course-only and skill-only updates', () => {
   const files = { 'index.html': 'shell', 'assets/app-x.js': 'app', 'courses/kbai.json': 'revision1', 'skill.zip': new Uint8Array([1, 2, 3]) };

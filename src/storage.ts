@@ -50,7 +50,8 @@ export class Library {
   async initialize(seeds: CoursePack[], legacyRaw: string | null) {
     let copyCorrected = false;
     const alreadyMigrated = await this.db.get('meta', 'legacyMigrated');
-    const legacy = legacyRaw && !alreadyMigrated ? migrateLegacy(legacyRaw, seeds.find(pack => pack.id === 'kbai')!) : null;
+    const installedKBAI = await this.db.get('packs', 'kbai');
+    const legacy = legacyRaw && !alreadyMigrated ? migrateLegacy(legacyRaw, installedKBAI ?? seeds.find(pack => pack.id === 'kbai')) : null;
     await this.write(['packs', 'progress', 'profile', 'meta'], async tx => {
     const initialized = await tx.objectStore('meta').get('initialized');
     if (!initialized) {
@@ -70,8 +71,9 @@ export class Library {
       for (const progress of legacy.progress) await tx.objectStore('progress').put(progressSchema.parse(progress), progress.courseId);
       await tx.objectStore('meta').put(true, 'legacyMigrated');
       await tx.objectStore('meta').put(legacy.warnings, 'migrationWarnings');
+      await tx.objectStore('meta').put(legacy.pendingKBAI, 'legacyPendingKBAI');
     }
-    if (await tx.objectStore('packs').count() > MAX_COURSES) throw new Error(`A library supports ${MAX_COURSES} courses, including bundled volumes. Legacy data is untouched; export it before selecting courses to migrate.`);
+    if (await tx.objectStore('packs').count() > MAX_COURSES) throw new Error(`A library supports ${MAX_COURSES} courses. Legacy data is untouched; export it before selecting courses to migrate.`);
     for (const id of ['kbai', 'everyday-evidence']) {
       const installedCourse = await tx.objectStore('packs').get(id);
       if (!installedCourse) continue;
@@ -122,6 +124,15 @@ export class Library {
     if (old) {
       if (pack.contentRevision <= old.contentRevision) throw new Error('An update must increase contentRevision. Existing course and notes are untouched.');
       progress = reconcileProgress(progress, old, pack);
+    } else if (pack.id === 'kbai' && await tx.objectStore('meta').get('legacyPendingKBAI')) {
+      const archive = await tx.objectStore('meta').get('legacyBackup');
+      if (!archive) throw new Error('The pending legacy archive is unavailable. No course was installed.');
+      const migrated = migrateLegacy(JSON.stringify(archive), pack);
+      const restored = migrated.progress.find(progress => progress.courseId === pack.id);
+      if (!restored) throw new Error('Legacy course progress could not be connected. The original archive is unchanged.');
+      progress = progressSchema.parse(restored);
+      await tx.objectStore('meta').put(false, 'legacyPendingKBAI');
+      await tx.objectStore('meta').put(migrated.warnings, 'migrationWarnings');
     }
     await tx.objectStore('packs').put(pack, pack.id);
     await tx.objectStore('progress').put({ ...progress, revision: progress.revision + 1 }, pack.id);
@@ -170,7 +181,11 @@ export class Library {
       await tx.objectStore('progress').put({ ...current, revision: Math.max(oldRevision, current.revision) + 1 }, pack.id);
     }
     if (mode === 'replace') await tx.objectStore('profile').put(backup.profile, 'learner');
-    if (backup.legacy && (mode === 'replace' || !await tx.objectStore('meta').get('legacyBackup'))) await tx.objectStore('meta').put(backup.legacy, 'legacyBackup');
+    if (backup.legacy && (mode === 'replace' || !await tx.objectStore('meta').get('legacyBackup'))) {
+      await tx.objectStore('meta').put(backup.legacy, 'legacyBackup');
+      await tx.objectStore('meta').put(true, 'legacyMigrated');
+      await tx.objectStore('meta').put(!await tx.objectStore('packs').get('kbai'), 'legacyPendingKBAI');
+    }
     if (await tx.objectStore('packs').count() > MAX_COURSES) throw new Error(`Merged backup exceeds the ${MAX_COURSES}-course limit. No records were changed.`);
     await tx.objectStore('meta').put(expectedRevision + 1, 'libraryRevision');
     });

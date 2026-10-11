@@ -39,10 +39,11 @@ The shipped instruction tests guard this workflow. Runtime contract tests,
 local import/restore tests and source-quality checks complement them; none
 certifies factual truth, legal compliance or automatic personalization.
 
-The KBAI notes are authored in `src/content/kbai-notes.ts`. Run
-`npx tsx scripts/build-kbai.ts` to regenerate revision 6 from the retained course
-metadata, vocabulary, assessment declarations and recall/question banks.
-Production reads validated JSON; no local PDF or extraction is a build input.
+Generated courses are private files for local import, not build inputs or public
+starter courses. New visitors see an empty library with a generation/import
+guide. No course is installed until the learner reviews and confirms their file.
+Production reads installed courses from IndexedDB; no PDF or extraction is a
+build input.
 
 Course-builder skill version 1.1.0 defaults to source-grounded notes with
 diagrams. Its example pack demonstrates the weekly overview/lesson/synthesis

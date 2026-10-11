@@ -1,12 +1,13 @@
 # Handbook
 
-[Open Handbook](https://fatmali.github.io/handbook/) — a local-first learning
+[Open Handbook](https://lab.fatmaali.dev/handbook/) — a local-first learning
 platform that turns a course pack into source-linked chapters, explanatory
 diagrams, original practice, and a private notebook.
 
-React, TypeScript and Vite power one generic renderer. The bundled KBAI course,
-the clearly labeled original demonstration, and imported courses use the same
-versioned contract and components. There are no accounts, model keys, inference
+React, TypeScript and Vite power one generic renderer. Your imported courses use
+the same versioned contract and components. New libraries start empty, with
+onboarding for importing generated notes or using the course-builder skill.
+No personal course is fetched or installed by default. There are no accounts, model keys, inference
 requests, analytics, or server uploads in v1.
 
 ## Develop and verify
@@ -32,8 +33,9 @@ npm run validate -- path/to/course.json
 The reproducible production source is in `src/`, the canonical Course Pack
 contract in `packages/course-pack/`, and the installable portable agent skill
 in `skills/handbook-course-builder/`. Build output is `dist/`; do not commit it.
-The curriculum JSON is persistent source, not regenerated from private PDFs
-on builds.
+Personal curriculum JSON belongs in the learner's browser or private files,
+not the public site or application bundle. Builds do not read personal PDFs or
+regenerate personal courses.
 
 ## Use your own course
 
@@ -91,7 +93,7 @@ Export backups regularly. Writes are transactional, quota failures are visible,
 and stale concurrent edits require reloading rather than silently overwriting.
 There is no automatic cross-device sync.
 
-The library supports 32 courses, including bundled volumes. Complete private
+The library supports 32 locally installed courses. Complete private
 backups are bounded at 64 MB and validated against the restore contract before
 download. For larger libraries, export separate private course backups; data is
 never truncated to produce a superficially successful backup.
@@ -104,14 +106,15 @@ checks remain available through the private archive. See
 
 ## Coverage and rights
 
-KBAI revision 6 contains source-grounded notes for all 26 lessons in the 17-week
-Fall 2026 calendar. Weeks without new lessons are consolidation or revision.
-Existing installations see **Review course update** near the top of the course
-and weekly entry; confirmation is required before replacing their installed
-revision. New explanatory anchors are reconciled explicitly, not remapped by
-approximate wording.
-See [the source/coverage report](docs/kbai-coverage.md) for page evidence,
-remaining gaps and the distinction between locator checks and factual review.
+The former public KBAI course and standalone course reader are no longer
+distributed. Existing browser-installed courses are preserved, not deleted.
+Course updates are local JSON imports with an explicit preview and confirmation;
+new explanatory anchors are reconciled explicitly, not remapped by wording.
+Previously published/downloaded copies and repository history cannot be revoked.
+
+Historical KBAI compatibility tests load the already-published revision from Git
+history rather than embedding a course in the current source or build. A shallow
+development checkout needs that history (`git fetch --unshallow`).
 
 All explanations, examples, figures and teaching questions are original
 paraphrases/schematics. The supplied textbook, syllabus, readings and lectures
@@ -128,7 +131,7 @@ its full license accompanies the local font. See [third-party rights](THIRD_PART
 GitHub Actions verifies the source on PRs. On `main`, it builds and deploys
 `dist/` to GitHub Pages at `/handbook/`. The service worker caches only public
 release assets and never local profiles or source blobs. A release epoch hashes
-course/schema/skill bytes as well as application outputs. Updates wait for an
+public example/schema/skill bytes as well as application outputs. Updates wait for an
 explicit user action and cannot force a reload during Focus or a mock.
 
 [Contract](docs/course-pack.md) · [Generation workflow](docs/generation.md) ·
