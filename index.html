@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="An offline, source-grounded CS7637 learning workbook: weekly study, retrieval practice, original exam drills, and personal notes.">
+  <meta name="description" content="A personal course handbook for understanding mechanisms, tracing examples, and keeping evidence-based notes. KBAI is the first source-grounded volume.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%2333406b'/%3E%3Cpath d='M8 8h7v17H8zm9 0h7v17h-7z' fill='white'/%3E%3C/svg%3E">
-  <title>KBAI Study Companion | Fall 2026</title>
+  <title>Handbook | Courses, reasoning &amp; field notes</title>
   <!--
-  Extend the existing offline navy/teal workbook into a learning workspace.
-  Untimed Focus mode presents one ebook-aligned section and a saved restart point.
-  No study reminders, timed breaks, forced advancement, streaks, or visual backlog.
-  The full workbook and exam studio remain available outside Focus.
-  Original practice is separate from official course material and submissions.
-  Keep sources, assumptions, self-reported progress, and browser storage visible.
+  THESIS: A senior engineer's course handbook, not a completion dashboard.
+  OWN-WORLD: Inherit navy #33406b, teal #0f6f66, white pages and cool-grey rails.
+  STORY: Continue a saved thought, find a course, explain a mechanism, test a boundary.
+  FIRST VIEWPORT: One resume action above a course shelf; no score or timed backlog.
+  FORM: Extend the established offline reading workspace with course/chapter hierarchy.
+  KBAI remains source-grounded; personal additions remain browser-local.
   -->
   <style>
     :root {
@@ -345,6 +345,89 @@
     .focus-state { background: var(--soft); padding: 16px 18px; border-radius: 5px; line-height: 1.8; }
     .focus-answer { margin-top: 22px; padding-top: 12px; border-top: 1px solid var(--line); }
     .restart-note { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px 0; }
+    .global-handbook-nav { border-bottom: 1px solid var(--line); padding-bottom: 13px; margin-bottom: 15px; }
+    .sidebar-course-title { padding: 0 12px; margin: 20px 0 7px; font-size: .84rem; font-weight: 650; color: var(--ink); }
+    .course-nav-link { align-items: center; }
+    .handbook-mode .app { max-width: 1370px; }
+    .handbook-mode .view-heading h1 { font-size: 2.2rem; }
+    .handbook-breadcrumb { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .82rem; color: var(--muted); margin: 5px 0 24px; }
+    .handbook-breadcrumb > .icon { width: 13px; height: 13px; }
+    .handbook-breadcrumb .text-button { text-decoration: none; }
+    .handbook-breadcrumb [aria-current] { overflow-wrap: anywhere; }
+    .continue-reading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 35px; padding: 27px 28px; margin: 27px 0 33px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; }
+    .continue-course { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: .88rem; margin: 0 0 13px; }
+    .continue-reading h2 { font: 600 1.75rem/1.3 Georgia, "Times New Roman", serif; margin-bottom: 12px; }
+    .continue-reading p:last-child { margin-bottom: 0; }
+    .continue-action { display: flex; flex-direction: column; align-items: start; gap: 10px; max-width: 150px; }
+    .continue-action .button { min-width: 125px; min-height: 46px; }
+    .course-shelf { display: grid; }
+    .course-volume { display: grid; grid-template-columns: 70px minmax(0, 1fr) 20px; gap: 21px; width: 100%; padding: 23px 0; align-items: center; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+    .course-volume:hover { background: var(--soft); }
+    .course-cover { display: flex; align-items: center; justify-content: center; width: 68px; height: 93px; color: var(--primary); background: var(--primary-soft); border: 1px solid var(--line-strong); border-radius: 3px 7px 7px 3px; }
+    .course-cover .icon { width: 27px; height: 27px; }
+    .course-volume-body { display: grid; gap: 5px; }
+    .course-volume-body > strong { font: 600 1.3rem/1.3 Georgia, "Times New Roman", serif; }
+    .course-volume-body > small { color: var(--muted); font-size: .8rem; }
+    .course-volume-body > span { color: var(--muted); font-size: .92rem; max-width: 68ch; }
+    .course-volume > .icon { color: var(--muted); }
+    .bookmark-list { display: grid; }
+    .bookmark-row { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; border-bottom: 1px solid var(--line); background: none; padding: 13px 0; text-align: left; color: var(--ink); }
+    .bookmark-row > span { display: grid; flex: 1; gap: 3px; }
+    .bookmark-row small { color: var(--muted); }
+    .bookmark-row > .icon:first-child { color: var(--teal); }
+    .course-create { margin: 28px 0; }
+    .course-create > summary { display: flex; align-items: center; gap: 8px; }
+    .handbook-form { max-width: 72ch; display: grid; gap: 15px; }
+    .handbook-form label { display: grid; gap: 6px; font-size: .9rem; font-weight: 600; }
+    .handbook-form input, .handbook-form textarea { width: 100%; font-weight: 400; }
+    .handbook-form > button { justify-self: start; }
+    .handbook-form .form-error:empty { display: none; }
+    .form-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .course-toolstrip { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; padding-bottom: 23px; border-bottom: 1px solid var(--line); }
+    .course-tools-menu { margin: 12px 0 20px; }
+    .course-tools-menu > summary { display: flex; align-items: center; gap: 8px; font-size: .86rem; font-weight: 500; }
+    .course-tools-grid { display: flex; gap: 9px; flex-wrap: wrap; padding: 3px 0 18px; }
+    .course-assessment { display: flex; gap: 10px 20px; align-items: center; flex-wrap: wrap; padding: 15px 17px; border: 1px solid var(--line); background: var(--surface); border-radius: 6px; margin: 22px 0; }
+    .course-assessment > span { display: inline-flex; align-items: center; gap: 8px; flex: 1; min-width: 220px; }
+    .course-assessment .button { min-height: 36px; padding: 7px 11px; }
+    .course-assessment p { width: 100%; margin: 0; }
+    .chapter-group { padding: 22px 0 9px; }
+    .chapter-group h2 { font-size: 1rem; color: var(--muted); margin-bottom: 6px; }
+    .chapter-row { width: 100%; display: grid; grid-template-columns: 32px minmax(0, 1fr) 19px; gap: 13px; align-items: center; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 14px 9px; text-align: left; color: var(--ink); }
+    .chapter-row:hover { background: var(--surface); }
+    .chapter-row.last-read { background: var(--primary-soft); }
+    .chapter-number { font-size: .83rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .chapter-row > span:nth-child(2) { display: grid; gap: 4px; }
+    .chapter-row small { font-size: .77rem; color: var(--muted); }
+    .chapter-row > .icon:last-child { color: var(--muted); }
+    .handbook-reader { max-width: 79ch; background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 30px 36px; }
+    .reader-title h1 { font: 600 2rem/1.25 Georgia, "Times New Roman", serif; margin-bottom: 19px; }
+    .chapter-toolbar { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-bottom: 26px; }
+    .chapter-toolbar [aria-pressed="true"] { background: var(--teal-soft); color: var(--teal); border-color: var(--teal); }
+    .chapter-thesis { color: var(--primary); font-size: 1.15rem; line-height: 1.7; }
+    .chapter-source { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; font-size: .8rem; color: var(--muted); margin-bottom: 22px; }
+    .reader-extra { margin: 12px 0; }
+    .reader-extra summary { font-size: .91rem; font-weight: 550; }
+    .reader-index { margin-top: 12px; }
+    .reader-index summary { font-size: .91rem; font-weight: 550; }
+    .chapter-local-toc { display: flex; flex-wrap: wrap; gap: 8px 15px; padding: 15px 0; font-size: .79rem; border-bottom: 1px solid var(--line); }
+    .chapter-local-toc a { color: var(--muted); }
+    .reader-section { padding: 27px 0 4px; scroll-margin-top: 92px; }
+    .reader-section-heading { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-bottom: 12px; }
+    .reader-section-heading h2 { margin: 0; }
+    .reader-section-heading .source-link { flex: 0 0 auto; font-size: .79rem; }
+    .reader-section > p { font-size: 1.01rem; line-height: 1.85; max-width: 68ch; }
+    .reader-section > .small { font-size: .83rem; line-height: 1.65; }
+    .handbook-trace { list-style: none; padding: 0; counter-reset: trace; }
+    .handbook-trace > li { position: relative; padding: 16px 0 14px 38px; border-bottom: 1px solid var(--line); counter-increment: trace; }
+    .handbook-trace > li::before { content: counter(trace); position: absolute; left: 3px; top: 16px; font-size: .9rem; font-weight: 650; color: var(--teal); }
+    .handbook-trace p { margin: 8px 0; }
+    .trace-state { background: var(--soft); border-radius: 4px; padding: 11px 13px; }
+    .engineering-connection { display: grid; grid-template-columns: 23px 1fr; gap: 10px; align-items: start; padding: 14px 0 20px; }
+    .engineering-connection .icon { color: var(--teal); margin-top: 3px; }
+    .engineering-connection p { margin: 0; }
+    .personal-prose p { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .chapter-pagination { display: flex; justify-content: space-between; gap: 13px; flex-wrap: wrap; margin-top: 26px; padding-top: 21px; border-top: 1px solid var(--line); }
     .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 32px); width: max-content; padding: 12px 18px; border-radius: 6px; color: var(--surface); background: var(--ink); z-index: 50; font-size: .88rem; }
     .screen-reader { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; clip: rect(0, 0, 0, 0); overflow: hidden; white-space: nowrap; border: 0; }
     @media (min-width: 1250px) { .app { gap: 48px; } }
@@ -402,12 +485,30 @@
       .focus-actions .button { padding: 10px 11px; }
       .focus-mode .storage-warning { margin: 12px 18px; }
       .note-tools .button { min-height: 44px; width: 44px; }
+      .handbook-mode .view-heading h1 { font-size: 1.85rem; }
+      .continue-reading { grid-template-columns: 1fr; padding: 22px 21px; gap: 18px; }
+      .continue-reading h2 { font-size: 1.5rem; }
+      .continue-action { flex-direction: row; align-items: center; max-width: none; gap: 15px; }
+      .course-volume { grid-template-columns: 48px minmax(0, 1fr) 17px; gap: 14px; }
+      .course-cover { width: 46px; height: 73px; }
+      .course-cover .icon { width: 22px; height: 22px; }
+      .course-volume-body > strong { font-size: 1.12rem; }
+      .handbook-reader { padding: 24px 20px; }
+      .reader-title h1 { font-size: 1.65rem; }
+      .reader-section-heading { flex-wrap: wrap; gap: 5px; }
+      .reader-section h2 { font-size: 1.2rem; }
+      .reader-section > p { font-size: 1rem; }
+      .form-pair { grid-template-columns: 1fr; gap: 15px; }
+      .chapter-row { gap: 9px; padding-left: 3px; padding-right: 3px; }
+      .chapter-local-toc { display: grid; gap: 7px; }
+      .handbook-breadcrumb { margin-bottom: 18px; }
     }
     @media (max-width: 380px) {
       .app { padding-left: 12px; padding-right: 12px; }
       .mast-inner { padding-left: 12px; padding-right: 12px; }
       .lesson, .exam-session, .review-card { padding-left: 14px; padding-right: 14px; }
       .focus-mode .app { padding-left: 15px; padding-right: 15px; }
+      .handbook-reader { padding-left: 15px; padding-right: 15px; }
       .button { padding-left: 11px; padding-right: 11px; }
     }
     @media (prefers-reduced-motion: no-preference) {
@@ -429,6 +530,8 @@
       .note-status { display: none; }
       .deadline-box { background: none !important; border-color: #ccc !important; }
       .focus-bar, .focus-actions { display: none; }
+      .handbook-reader { padding: 0; border: 0; max-width: none; }
+      .handbook-form, .course-create { display: none; }
       .footer { font-size: 9pt; }
       summary { list-style: none; padding-top: 18px; }
       details { border: 0; }
@@ -439,7 +542,7 @@
   <a class="skip" href="#main">Skip to study workspace</a>
   <header class="masthead">
     <div class="mast-inner">
-      <a class="brand" href="#week-7">KBAI Study Companion<span>CS7637 / Fall 2026 / Personal learning workbook</span></a>
+      <a class="brand" href="#home">Handbook<span>Courses, reasoning &amp; field notes</span></a>
       <div class="mast-tools">
         <label class="search-label" for="global-search"><span data-icon="search" aria-hidden="true"></span><span class="screen-reader">Find a concept</span><input id="global-search" type="search" placeholder="Search concepts" autocomplete="off"></label>
         <span class="save-indicator" id="save-indicator" title="Saved in this browser" aria-label="Saved in this browser"></span>
@@ -2779,6 +2882,392 @@ function diagnosticQuestions(exam) {
   <script>
 'use strict';
 
+const KBAI_VOLUME = Object.freeze({
+  id: 'kbai', code: 'CS7637', title: 'Knowledge-Based AI',
+  institution: 'Georgia Tech', term: 'Fall 2026',
+  description: 'How representations, reasoning, memory, and learning work together in a cognitive system.',
+  sourceUrl: 'https://gatech.instructure.com/courses/536204/assignments/syllabus'
+});
+
+const CHAPTER_GROUPS = [
+  ['Foundations', ['01', '02']],
+  ['Representation & problem solving', ['03', '04', '05', '06', '07']],
+  ['Experience, concepts & classification', ['08', '09', '10', '11']],
+  ['Logic & planning', ['12', '13']],
+  ['Understanding & commonsense', ['14', '15', '16']],
+  ['Learning & transfer', ['17', '18', '19']],
+  ['Constraints, configuration & diagnosis', ['20', '21', '22']],
+  ['Metacognition & synthesis', ['23', '24', '25', '26']]
+];
+
+function initialHandbook(lesson = '12') {
+  return {
+    version: 1, activeCourse: 'kbai',
+    last: { course: 'kbai', chapter: lesson, mode: 'focus' },
+    courses: [], bookmarks: {}, sessions: {}
+  };
+}
+
+function handbookCourses(book = state.handbook) {
+  return [KBAI_VOLUME, ...book.courses];
+}
+
+function handbookCourse(id, book = state.handbook) {
+  return handbookCourses(book).find(course => course.id === id);
+}
+
+function handbookChapter(courseId, chapterId, book = state.handbook) {
+  if (courseId === 'kbai') return LESSONS.find(lesson => lesson.id === chapterId);
+  return handbookCourse(courseId, book)?.chapters.find(chapter => chapter.id === chapterId);
+}
+
+function personalChunks(chapter) {
+  return chapter.content.split(/\n\s*\n/).map(text => text.trim()).filter(Boolean);
+}
+
+function validSourceUrl(value) {
+  if (value === '') return true;
+  try {
+    const url = new URL(value);
+    return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
+function validateHandbook(book) {
+  assert(plainObject(book) && book.version === 1, 'Unsupported handbook data.');
+  assert(Object.keys(book).every(key => ['version', 'activeCourse', 'last', 'courses', 'bookmarks', 'sessions'].includes(key)), 'Unknown handbook fields.');
+  assert(Array.isArray(book.courses) && book.courses.length <= 30, 'A handbook can contain up to 30 personal courses.');
+  const identifier = value => typeof value === 'string' && /^[cp]-[a-f0-9-]{12,40}$/.test(value);
+  const shortText = (value, max) => typeof value === 'string' && value.length <= max;
+  for (const course of book.courses) {
+    assert(plainObject(course) && identifier(course.id) && course.id.startsWith('c-'), 'Invalid personal course ID.');
+    assert(Object.keys(course).every(key => ['id', 'code', 'title', 'institution', 'term', 'description', 'sourceUrl', 'chapters'].includes(key)), 'Unknown personal course fields.');
+    assert(shortText(course.title, 120) && course.title.trim(), 'A personal course needs a title.');
+    assert(shortText(course.code, 30) && shortText(course.institution, 100) && shortText(course.term, 60) && shortText(course.description, 1000), 'Personal course metadata is too long.');
+    assert(shortText(course.sourceUrl, 2000) && validSourceUrl(course.sourceUrl), 'Course links must use HTTP or HTTPS without embedded credentials.');
+    assert(Array.isArray(course.chapters) && course.chapters.length <= 100, 'A personal course can contain up to 100 chapters.');
+    for (const chapter of course.chapters) {
+      assert(plainObject(chapter) && identifier(chapter.id) && chapter.id.startsWith('p-'), 'Invalid personal chapter ID.');
+      assert(Object.keys(chapter).every(key => ['id', 'title', 'content', 'sourceUrl'].includes(key)), 'Unknown personal chapter fields.');
+      assert(shortText(chapter.title, 150) && chapter.title.trim(), 'A chapter needs a title.');
+      assert(shortText(chapter.content, 30000) && chapter.content.trim(), 'A chapter needs original content, up to 30,000 characters.');
+      assert(shortText(chapter.sourceUrl, 2000) && validSourceUrl(chapter.sourceUrl), 'Chapter links must use HTTP or HTTPS without embedded credentials.');
+    }
+    assert(new Set(course.chapters.map(chapter => chapter.id)).size === course.chapters.length, 'Duplicate chapter IDs.');
+  }
+  assert(new Set(book.courses.map(course => course.id)).size === book.courses.length, 'Duplicate course IDs.');
+  assert(handbookCourse(book.activeCourse, book), 'Unknown selected course.');
+  const validChapterKey = key => {
+    const parts = key.split(':');
+    return parts.length === 2 && Boolean(handbookChapter(parts[0], parts[1], book));
+  };
+  validateMap(book.bookmarks, validChapterKey, value => typeof value === 'boolean', 'chapter bookmarks');
+  assert(plainObject(book.last) && Object.keys(book.last).every(key => ['course', 'chapter', 'mode'].includes(key)), 'Invalid saved handbook location.');
+  assert(handbookChapter(book.last.course, book.last.chapter, book) && ['chapter', 'focus'].includes(book.last.mode), 'Unknown saved handbook chapter.');
+  validateMap(book.sessions, key => validChapterKey(key) && !key.startsWith('kbai:'), value => plainObject(value) && Object.keys(value).every(key => ['index', 'phase'].includes(key)) && Number.isInteger(value.index) && ['ready', 'reading', 'paused', 'complete'].includes(value.phase), 'personal study positions');
+  for (const [key, session] of Object.entries(book.sessions)) {
+    const [courseId, chapterId] = key.split(':');
+    assert(session.index >= 0 && session.index < personalChunks(handbookChapter(courseId, chapterId, book)).length, 'Personal study position is outside its chapter.');
+  }
+  return JSON.parse(JSON.stringify(book));
+}
+
+function validHandbookNoteKey(key, book) {
+  const parts = key.split(':');
+  if (parts[0] === 'course' && parts.length === 2) return Boolean(handbookCourse(parts[1], book));
+  if (parts[0] === 'chapter' && parts.length === 3 && parts[1] !== 'kbai') return Boolean(handbookChapter(parts[1], parts[2], book));
+  return false;
+}
+
+function chapterNoteKey(courseId, chapterId) {
+  return courseId === 'kbai' ? `lesson:${chapterId}` : `chapter:${courseId}:${chapterId}`;
+}
+
+function courseBreadcrumb(course, chapter = null) {
+  return `<nav class="handbook-breadcrumb no-print" aria-label="Breadcrumb"><button type="button" class="text-button" data-action="handbook-home">Handbook</button>${icon('right')}<button type="button" class="text-button" data-action="handbook-course" data-course="${esc(course.id)}">${esc(course.code || course.title)}</button>${chapter ? `${icon('right')}<span aria-current="page">${esc(chapter.title)}</span>` : ''}</nav>`;
+}
+
+function handbookAction(action, text, course = '', chapter = '', className = '') {
+  return `<button type="button" class="button ${className}" data-action="${action}"${course ? ` data-course="${esc(course)}"` : ''}${chapter ? ` data-chapter="${esc(chapter)}"` : ''}>${icon(action === 'handbook-focus' || action === 'handbook-continue' ? 'play' : action === 'handbook-bookmark' ? 'bookmark' : 'book')}<span>${esc(text)}</span></button>`;
+}
+
+function courseMetadata(course) {
+  return [course.code, course.institution, course.term].filter(Boolean).map(esc).join(' / ');
+}
+
+function renderHandbookHome() {
+  const last = state.handbook.last;
+  const course = handbookCourse(last.course);
+  const chapter = handbookChapter(last.course, last.chapter);
+  const kbai = last.course === 'kbai';
+  const savedSteps = kbai ? focusSteps(last.chapter) : null;
+  const savedIndex = kbai ? state.focus.positions[last.chapter] || 0 : null;
+  const session = kbai ? { index: savedIndex, steps: savedSteps, step: savedSteps[savedIndex] } : state.handbook.sessions[`${last.course}:${last.chapter}`];
+  const context = kbai && last.mode === 'focus'
+    ? `${session.index + 1} / ${session.steps.length}: ${session.step.heading}`
+    : !kbai && last.mode === 'focus' && session
+      ? `Section ${session.index + 1} of ${personalChunks(chapter).length}`
+      : kbai ? chapter.thesis : personalChunks(chapter)[0].slice(0, 180);
+  const restart = kbai ? state.notes[`restart:${last.chapter}`] : null;
+  const saved = Object.entries(state.handbook.bookmarks).filter(([, value]) => value);
+  return viewHeading('Your handbook', 'Keep the mechanism, the evidence, and your own explanation together.') +
+    `<section class="continue-reading"><div><p class="continue-course">${icon('book')}${esc(course.title)}</p><h2>${kbai ? `L${chapter.id}: ` : ''}${esc(chapter.title)}</h2><p class="muted">${esc(context)}</p>${restart ? `<p class="small restart-note"><strong>Next:</strong> ${esc(restart)}</p>` : ''}</div><div class="continue-action">${handbookAction('handbook-continue', 'Continue', last.course, last.chapter, 'primary')}<span class="small muted">${last.mode === 'focus' ? 'One step at a time. No timer.' : 'Return to the chapter.'}</span></div></section>` +
+    `<section class="section"><div class="section-heading"><h2>Courses</h2><button type="button" class="text-button" data-action="navigate" data-view="library">Manage courses</button></div><div class="course-shelf">${handbookCourses().map(item => renderCourseRow(item)).join('')}</div></section>` +
+    `<section class="section"><h2>Keep close</h2>${saved.length ? `<div class="bookmark-list">${saved.map(([key]) => {
+      const [courseId, chapterId] = key.split(':');
+      const volume = handbookCourse(courseId), page = handbookChapter(courseId, chapterId);
+      return `<button type="button" class="bookmark-row" data-action="handbook-chapter" data-course="${esc(courseId)}" data-chapter="${esc(chapterId)}">${icon('bookmark')}<span><strong>${esc(page.title)}</strong><small>${esc(volume.title)}</small></span>${icon('right')}</button>`;
+    }).join('')}</div>` : '<p class="muted small">Bookmark a chapter to make it easy to find here. No backlog or streak to maintain.</p>'}</section>` +
+    `<details class="section"><summary>A handbook, not a completion dashboard</summary><div class="detail-body"><p>Read a chapter to understand a mechanism. Trace a small example to expose your assumptions. Explain it in your own words, then retrieve it without looking. Course practice supports that loop; a visited page is not mastery.</p><p class="small muted">Personal courses, notes, highlights, and restart points stay in this browser. JSON and portable HTML backups carry them to another browser. Nothing you add is published to the public site.</p></div></details>`;
+}
+
+function renderCourseRow(course) {
+  const count = course.id === 'kbai' ? LESSONS.length : course.chapters.length;
+  return `<button type="button" class="course-volume" data-action="handbook-course" data-course="${esc(course.id)}"><span class="course-cover" aria-hidden="true">${icon(course.id === 'kbai' ? 'network' : 'book')}</span><span class="course-volume-body"><strong>${esc(course.title)}</strong><small>${courseMetadata(course) || 'Personal course'}</small><span>${esc(course.description || 'Your original chapter notes and source links.')}</span><small>${count} ${count === 1 ? 'chapter' : 'chapters'}${course.id === 'kbai' ? ' / Source-grounded course guide' : ' / Private to this browser'}</small></span>${icon('right')}</button>`;
+}
+
+function renderCourseForm() {
+  return `<details class="course-create"><summary>${icon('plus')}Add a course</summary><div class="detail-body"><p class="small muted">Create a private volume for another course. Add your own chapters and links; no syllabus or assessment content is invented or uploaded.</p><form data-handbook-form="course" class="handbook-form"><label for="new-course-title">Course title<input id="new-course-title" name="title" required maxlength="120" placeholder="Your course name"></label><div class="form-pair"><label for="new-course-code">Code (optional)<input id="new-course-code" name="code" maxlength="30" placeholder="CS..."></label><label for="new-course-term">Term (optional)<input id="new-course-term" name="term" maxlength="60" placeholder="Your term"></label></div><label for="new-course-institution">Institution (optional)<input id="new-course-institution" name="institution" maxlength="100" placeholder="University or independent study"></label><label for="new-course-description">What this course is about<textarea id="new-course-description" name="description" maxlength="1000" rows="3"></textarea></label><label for="new-course-source">Syllabus or source link (optional)<input id="new-course-source" name="sourceUrl" type="url" maxlength="2000" placeholder="https://..."></label><p class="form-error error-text" role="alert"></p><button type="submit" class="button primary">${icon('plus')}Add course</button></form></div></details>`;
+}
+
+function renderHandbookLibrary() {
+  return viewHeading('Course library', 'One place for your course handbooks. KBAI is the first complete volume.') +
+    `<div class="course-shelf">${handbookCourses().map(course => renderCourseRow(course)).join('')}</div>` +
+    renderCourseForm() +
+    `<p class="small muted section">Personal additions are saved locally and included in backups. Keep course submissions private and use only material you have permission to include.</p>`;
+}
+
+function renderChapterForm(course, editing = null) {
+  return `<details class="course-create"${editing ? ' open' : ''}><summary>${icon(editing ? 'edit' : 'plus')}${editing ? 'Edit chapter' : 'Add a chapter'}</summary><div class="detail-body"><form data-handbook-form="chapter" data-course="${esc(course.id)}"${editing ? ` data-chapter="${esc(editing.id)}"` : ''} class="handbook-form"><label for="personal-chapter-title">Chapter title<input id="personal-chapter-title" name="title" required maxlength="150" value="${esc(editing?.title || '')}"></label><label for="personal-chapter-content">Your original explanation<textarea id="personal-chapter-content" name="content" required maxlength="30000" rows="12" placeholder="Explain the mechanism. Add a worked example, a boundary case, and a question. Separate sections with blank lines.">${esc(editing?.content || '')}</textarea></label><label for="personal-chapter-source">Source link (optional)<input id="personal-chapter-source" name="sourceUrl" type="url" maxlength="2000" value="${esc(editing?.sourceUrl || '')}" placeholder="https://..."></label><p class="small muted">Plain text only. Blank lines separate sections for focused reading. Save changes before leaving this form.</p><p class="form-error error-text" role="alert"></p><button type="submit" class="button primary">${icon('check')}Save chapter</button></form></div></details>`;
+}
+
+function renderHandbookCourse() {
+  const course = handbookCourse(state.handbook.activeCourse);
+  const kbai = course.id === 'kbai';
+  const chapterGroups = kbai ? CHAPTER_GROUPS : [['Chapters', course.chapters.map(chapter => chapter.id)]];
+  const chapters = chapterGroups.map(([name, ids]) => `<section class="chapter-group"><h2>${esc(name)}</h2>${ids.map((id, index) => {
+    const chapter = handbookChapter(course.id, id);
+    const selected = state.handbook.last.course === course.id && state.handbook.last.chapter === id;
+    const bookmark = state.handbook.bookmarks[`${course.id}:${id}`];
+    return `<button type="button" class="chapter-row${selected ? ' last-read' : ''}" data-action="handbook-chapter" data-course="${esc(course.id)}" data-chapter="${esc(id)}"><span class="chapter-number">${kbai ? id : course.chapters.indexOf(chapter) + 1}</span><span><strong>${esc(chapter.title)}</strong><small>${kbai ? `Week ${chapter.week} / ${chapter.family}` : 'Personal chapter'}${selected ? ' / Last opened' : ''}</small></span>${bookmark ? icon('bookmark') : icon('right')}</button>`;
+  }).join('')}</section>`).join('');
+  const exam = kbai ? [1, 2].find(number => new Date(COURSE_INFO[`exam${number}`].deadline).getTime() > Date.now()) : null;
+  return courseBreadcrumb(course) + viewHeading(course.title, `${courseMetadata(course)}<br>${esc(course.description || 'Your own course reference.')}`) +
+    `<div class="course-toolstrip no-print">${kbai ? `${handbookAction('handbook-continue-kbai', 'Continue study', 'kbai', state.focus.lesson, 'primary')}${button('navigate', 'Weekly plan', 'data-view="week"')}${button('navigate', 'Exam studio', 'data-view="exam')}` : ''}${button('print', 'Print this view')}</div>` +
+    `${kbai ? `<details class="course-tools-menu no-print"><summary>${icon('settings')}All course tools</summary><div class="course-tools-grid">${[['course', 'Chapters'], ['focus', 'Focus'], ['week', 'Weekly plan'], ['exam', 'Exam studio'], ['review', 'Recall'], ['notebook', 'Notes'], ['map', 'Connections'], ['sources', 'Sources & settings']].map(([view, label]) => button('navigate', label, `data-view="${view}"`)).join('')}</div></details>` : ''}` +
+    `${exam ? `<aside class="course-assessment"><span>${icon('clipboard')}<strong>Exam ${exam}</strong> / Lessons ${COURSE_INFO[`exam${exam}`].lessons.join('-')}</span>${button('exam', 'Prepare', `data-exam="${exam}"`)}<p class="small muted">Listed ${dateLabel(WEEKS[COURSE_INFO[`exam${exam}`].week - 1].due)}, 23:59 AoE (UTC-12). Verify current Canvas rules.</p></aside>` : ''}` +
+    `${kbai ? '<p class="small muted section">Grouped for reading, not additional official course units. Lesson numbers and ebook wording remain the source anchors.</p>' : course.chapters.length ? '<p class="small muted section">Your private, original course material. No official requirements are inferred.</p>' : '<div class="empty"><h2>Start with one useful explanation</h2><p>Add a chapter from your own study notes. Include a source, a mechanism, and a small example you can reason through.</p></div>'}` +
+    chapters + `${!kbai ? renderChapterForm(course) : ''}` +
+    `<details class="section"><summary>Course notebook</summary><div class="detail-body">${focusNote(`course:${course.id}`, 'Questions, decisions & next actions', 'Keep a question or learning decision for this course.', 6)}</div></details>`;
+}
+
+function renderHandbookChapter() {
+  const { course: courseId, chapter: chapterId } = state.handbook.last;
+  const course = handbookCourse(courseId), chapter = handbookChapter(courseId, chapterId);
+  const kbai = courseId === 'kbai';
+  const guide = kbai ? EBOOK_GUIDES[chapterId] : null;
+  const marked = state.handbook.bookmarks[`${courseId}:${chapterId}`];
+  const toolbar = `<div class="chapter-toolbar no-print">${handbookAction('handbook-focus', 'Focus', courseId, chapterId, 'primary')}<button type="button" class="button icon-button" data-action="handbook-bookmark" data-course="${esc(courseId)}" data-chapter="${esc(chapterId)}" aria-pressed="${Boolean(marked)}" aria-label="${marked ? 'Remove chapter bookmark' : 'Bookmark chapter'}" title="${marked ? 'Remove chapter bookmark' : 'Bookmark chapter'}">${icon('bookmark')}</button>${button('print', 'Print this view')}${kbai ? `<button type="button" class="button icon-button" data-action="notebook-lesson" data-lesson="${chapterId}" aria-label="Open chapter notes" title="Open chapter notes">${icon('notebook')}</button>` : ''}</div>`;
+  let article;
+  if (kbai) {
+    article = `<p class="chapter-thesis">${esc(chapter.thesis)}</p><div class="chapter-source">${resourceLink('ebook', `Core ebook PDF ${chapter.pages.join('-')}`, chapter.pages[0])}<span>${esc(chapter.family)} / Week ${chapter.week}</span></div>` +
+      `<details class="reader-extra"><summary>Before this chapter</summary><div class="detail-body"><p>${chapter.prior.length ? chapter.prior.map(id => `<button type="button" class="text-button" data-action="handbook-chapter" data-course="kbai" data-chapter="${id}">L${id}: ${esc(lessonById.get(id).title)}</button>`).join(' / ') : 'Start here. No prerequisite chapter.'}</p><ul>${chapter.objectives.map(text => `<li>${esc(text)}</li>`).join('')}</ul></div></details>` +
+      `<details class="reader-index"><summary>On this page</summary><div class="detail-body"><nav class="chapter-local-toc" aria-label="On this chapter">${guide.sections.map(([heading], index) => `<a href="#part-${index}">${esc(heading)}</a>`).join('')}<a href="#part-worked">Worked trace</a><a href="#part-transfer">Engineering connection</a><a href="#part-recall">Recall</a></nav></div></details>` +
+      guide.sections.map(([heading, page, content], index) => `<section class="reader-section" id="part-${index}"><div class="reader-section-heading"><h2>${esc(heading)}</h2>${resourceLink('ebook', `p. ${page}`, page)}</div><p>${esc(typeof content === 'number' ? chapter.deep[content] : content)}</p></section>`).join('') +
+      `<section class="reader-section" id="part-worked"><h2>Worked trace</h2><h3>${esc(chapter.worked.title)}</h3><p>${esc(chapter.worked.setup)}</p><ol class="handbook-trace">${chapter.worked.steps.map(([stage, representation, reason]) => `<li><strong>${esc(stage)}</strong><p class="trace-state">${esc(representation)}</p><p>${esc(reason)}</p></li>`).join('')}</ol><p><strong>What follows:</strong> ${esc(chapter.worked.result)}</p><p class="small muted"><strong>Boundary:</strong> ${esc(chapter.worked.limit)} Original teaching example, not an official solution.</p></section>` +
+      `<section class="reader-section" id="part-transfer"><h2>Connect it to engineering</h2><div class="engineering-connection">${icon('code')}<p>${esc(chapter.engineer)}</p></div><h3>Distinguish it from ${esc(chapter.contrast[0])}</h3><p>${esc(chapter.contrast[1])}</p><h3>Test the boundary</h3><ul>${chapter.traps.map(text => `<li>${esc(text)}</li>`).join('')}</ul><details class="reader-extra"><summary>Try an independent example</summary><div class="detail-body"><p>${esc(chapter.exercise.prompt)}</p>${focusNote(`exercise:${chapterId}`, 'Your reasoning', 'Write the mechanism and the assumption you are testing.', 5)}<details><summary>Compare with a sample explanation</summary><div class="detail-body"><p>${esc(chapter.exercise.answer)}</p></div></details></div></details></section>` +
+      `<section class="reader-section" id="part-recall"><h2>Explain it without looking</h2><ol>${chapter.cards.map(([prompt]) => `<li>${esc(prompt)}</li>`).join('')}</ol><div class="button-row no-print">${button('review-lesson', 'Recall this chapter', `data-lesson="${chapterId}"`)}${Number(chapterId) <= 25 ? button('drill-lesson', 'Practice', `data-lesson="${chapterId}"`) : ''}</div></section>` +
+      `<details class="reader-extra"><summary>Vocabulary &amp; optional depth</summary><div class="detail-body"><dl class="term-list">${guide.terms.map(([term, meaning, page]) => `<div><dt>${esc(term)}</dt><dd>${esc(meaning)} ${resourceLink('ebook', `p. ${page}`, page)}</dd></div>`).join('')}</dl>${renderReadingRows(chapter.readings)}</div></details>`;
+  } else {
+    article = `${chapter.sourceUrl ? `<p class="chapter-source">${external(chapter.sourceUrl, 'Your source')} ${icon('link')}</p>` : ''}<p class="small muted">Your original explanation. Plain text is kept private in this browser.</p>${personalChunks(chapter).map((text, index) => `<section class="reader-section personal-prose" id="part-${index}"><p>${esc(text)}</p></section>`).join('')}${renderChapterForm(course, chapter)}`;
+  }
+  const chapterIds = kbai ? LESSONS.map(item => item.id) : course.chapters.map(item => item.id);
+  const position = chapterIds.indexOf(chapterId);
+  return courseBreadcrumb(course, chapter) + `<article class="handbook-reader"><header class="reader-title"><h1 id="view-title" tabindex="-1">${kbai ? `L${chapterId}: ` : ''}${esc(chapter.title)}</h1>${toolbar}</header>${article}<section class="reader-section"><h2>Your explanation</h2>${focusNote(chapterNoteKey(courseId, chapterId), 'Keep what you can defend', 'Mechanism, assumptions, counterexample, evidence, and one remaining question.', 7)}</section><div class="chapter-pagination no-print">${position > 0 ? handbookAction('handbook-chapter', 'Previous chapter', courseId, chapterIds[position - 1]) : '<span></span>'}${position < chapterIds.length - 1 ? handbookAction('handbook-chapter', 'Next chapter', courseId, chapterIds[position + 1]) : handbookAction('handbook-course', 'Course contents', courseId)}</div></article>`;
+}
+
+function renderPersonalFocus() {
+  const { course: courseId, chapter: chapterId } = state.handbook.last;
+  const course = handbookCourse(courseId), chapter = handbookChapter(courseId, chapterId);
+  const key = `${courseId}:${chapterId}`;
+  const session = state.handbook.sessions[key] || { index: 0, phase: 'ready' };
+  const chunks = personalChunks(chapter);
+  const welcome = ['ready', 'paused', 'complete'].includes(session.phase);
+  return `<div class="focus-shell"><header class="focus-bar"><span class="focus-brand">${icon('book')}Handbook</span><div class="focus-bar-actions">${handbookAction('handbook-chapter', 'Chapter', courseId, chapterId)}</div></header><div class="focus-context"><h1 id="view-title" tabindex="-1">${esc(chapter.title)}</h1><span class="small muted">${esc(course.code || course.title)}</span></div><section class="focus-stage">${welcome ? `<h2>${session.phase === 'complete' ? 'Your place is saved' : 'One section at a time'}</h2><p>${session.phase === 'complete' ? 'You reached the end. This records a visit, not mastery.' : `Continue at section ${session.index + 1} of ${chunks.length}. No timer or automatic prompts.`}</p>` : `<div class="focus-step-line">${session.index + 1} / ${chunks.length}</div><p class="focus-text">${esc(chunks[session.index])}</p>`}${chapter.sourceUrl ? `<p class="small">${external(chapter.sourceUrl, 'Your source')}</p>` : ''}<div class="focus-actions">${welcome ? `<button type="button" class="button primary" data-action="personal-focus-start">${icon('play')}${session.phase === 'complete' ? 'Revisit' : 'Continue'}</button>` : `<div><button type="button" class="button icon-button" data-action="personal-focus-prev" aria-label="Previous section"${session.index === 0 ? ' disabled' : ''}>${icon('left')}</button><button type="button" class="button" data-action="personal-focus-stop">Save &amp; stop</button></div><button type="button" class="button primary" data-action="personal-focus-next">${session.index === chunks.length - 1 ? 'Finish' : 'Next'}${icon('right')}</button>`}</div></section><details class="focus-extra"><summary>${icon('notebook')}Chapter notes</summary><div class="detail-body">${focusNote(chapterNoteKey(courseId, chapterId), 'Your explanation', 'Keep a useful idea or next step.', 5)}</div></details></div>`;
+}
+
+function openHandbookCourse(id) {
+  assert(handbookCourse(id), 'That course is not available in this browser.');
+  state.handbook.activeCourse = id;
+  navigate('course');
+}
+
+function openHandbookChapter(courseId, chapterId, mode = 'chapter') {
+  assert(handbookChapter(courseId, chapterId), 'That chapter is not available in this browser.');
+  state.handbook.activeCourse = courseId;
+  state.handbook.last = { course: courseId, chapter: chapterId, mode };
+  if (courseId === 'kbai') {
+    state.preferences.lesson = chapterId;
+    state.preferences.week = lessonById.get(chapterId).week;
+    if (mode === 'focus') {
+      enterFocus(chapterId, true);
+      return;
+    }
+  } else if (mode === 'focus') {
+    state.handbook.sessions[`${courseId}:${chapterId}`] ??= { index: 0, phase: 'ready' };
+  }
+  navigate(mode === 'focus' ? 'personal-focus' : 'chapter');
+}
+
+function handleHandbookAction(target) {
+  const action = target.dataset.action;
+  const courseId = target.dataset.course, chapterId = target.dataset.chapter;
+  if (action === 'handbook-home') navigate('home');
+  else if (action === 'handbook-course') openHandbookCourse(courseId);
+  else if (action === 'handbook-chapter') openHandbookChapter(courseId, chapterId);
+  else if (action === 'handbook-focus') openHandbookChapter(courseId, chapterId, 'focus');
+  else if (action === 'handbook-continue') openHandbookChapter(courseId, chapterId, state.handbook.last.mode);
+  else if (action === 'handbook-continue-kbai') openHandbookChapter('kbai', state.focus.lesson, state.preferences.focusDefault ? 'focus' : 'chapter');
+  else if (action === 'handbook-bookmark') {
+    const key = `${courseId}:${chapterId}`;
+    assert(handbookChapter(courseId, chapterId), 'Cannot bookmark an unknown chapter.');
+    state.handbook.bookmarks[key] = !state.handbook.bookmarks[key];
+    saveState();
+    renderPreservingScroll();
+  } else if (action.startsWith('personal-focus-')) {
+    const last = state.handbook.last, key = `${last.course}:${last.chapter}`;
+    const chapter = handbookChapter(last.course, last.chapter);
+    const session = state.handbook.sessions[key];
+    if (action === 'personal-focus-start') {
+      if (session.phase === 'complete') session.index = 0;
+      session.phase = 'reading';
+    } else if (action === 'personal-focus-stop') session.phase = 'paused';
+    else if (action === 'personal-focus-prev') session.index = Math.max(0, session.index - 1);
+    else if (action === 'personal-focus-next') {
+      if (session.index === personalChunks(chapter).length - 1) session.phase = 'complete';
+      else session.index += 1;
+    } else return false;
+    saveState();
+    render();
+    focusView();
+  } else return false;
+  return true;
+}
+
+function saveHandbookForm(form) {
+  const data = new FormData(form);
+  const field = name => String(data.get(name) || '').trim();
+  let saved, courseId, chapterId;
+  try {
+    const candidate = JSON.parse(JSON.stringify(state.handbook));
+    if (form.dataset.handbookForm === 'course') {
+      courseId = `c-${crypto.randomUUID()}`;
+      candidate.courses.push({ id: courseId, code: field('code'), title: field('title'), institution: field('institution'), term: field('term'), description: field('description'), sourceUrl: field('sourceUrl'), chapters: [] });
+      candidate.activeCourse = courseId;
+    } else {
+      const course = handbookCourse(form.dataset.course, candidate);
+      assert(course && course.id !== 'kbai', 'Only personal chapters can be edited.');
+      courseId = course.id;
+      chapterId = form.dataset.chapter || `p-${crypto.randomUUID()}`;
+      const record = { id: chapterId, title: field('title'), content: field('content'), sourceUrl: field('sourceUrl') };
+      const existing = course.chapters.findIndex(chapter => chapter.id === chapterId);
+      if (existing >= 0) {
+        course.chapters[existing] = record;
+        const session = candidate.sessions[`${courseId}:${chapterId}`];
+        if (session) {
+          session.index = Math.min(session.index, personalChunks(record).length - 1);
+          session.phase = 'ready';
+        }
+      } else course.chapters.push(record);
+      candidate.activeCourse = courseId;
+      candidate.last = { course: courseId, chapter: chapterId, mode: 'chapter' };
+    }
+    saved = validateHandbook(candidate);
+    assert(new TextEncoder().encode(JSON.stringify({ ...state, handbook: saved })).length <= MAX_BACKUP_BYTES, 'This addition would exceed the 5 MB portable-backup limit. Shorten the chapter before saving.');
+  } catch (error) {
+    form.querySelector('.form-error').textContent = `Not saved: ${error.message}`;
+    return;
+  }
+  state.handbook = saved;
+  saveState();
+  if (chapterId) openHandbookChapter(courseId, chapterId);
+  else openHandbookCourse(courseId);
+  notify(form.dataset.handbookForm === 'course' ? 'Course added privately in this browser.' : 'Your chapter is saved in this browser.');
+}
+
+function handbookNavigation() {
+  const screen = state.preferences.screen;
+  const course = handbookCourse(state.handbook.activeCourse);
+  const inKbai = course.id === 'kbai' && !['home', 'library'].includes(screen);
+  const global = [['home', 'Handbook', 'library'], ['library', 'Courses', 'book'], ['sources', 'Settings', 'settings']];
+  const local = inKbai ? [['course', 'Chapters', 'book'], ['focus', 'Focus', 'target'], ['week', 'Weekly plan', 'calendar'], ['exam', 'Exam studio', 'clipboard'], ['review', 'Recall', 'repeat'], ['notebook', 'Notes', 'notebook'], ['map', 'Connections', 'network']] : screen === 'course' || screen === 'chapter' ? [['course', 'Chapters', 'book']] : [];
+  const item = ([key, text, name]) => `<button type="button" class="nav-button" data-action="navigate" data-view="${key}"${screen === key || key === 'course' && screen === 'chapter' ? ' aria-current="page"' : ''}>${icon(name)}<span>${text}</span></button>`;
+  document.getElementById('primary-nav').innerHTML = `<div class="global-handbook-nav">${global.map(item).join('')}</div>${local.length ? `<p class="sidebar-course-title">${esc(course.code || course.title)}</p>${local.map(item).join('')}` : ''}`;
+  document.getElementById('mobile-nav').innerHTML = global.concat(local.filter(([key]) => key === 'course')).map(item).join('');
+  const heading = document.querySelector('.sidebar-heading');
+  const list = document.getElementById('week-list');
+  heading.textContent = inKbai ? screen === 'week' ? 'Semester weeks' : 'Chapter index' : 'Your courses';
+  if (!inKbai) {
+    list.innerHTML = handbookCourses().map(volume => `<button type="button" class="week-link course-nav-link" data-action="handbook-course" data-course="${esc(volume.id)}">${icon('book')}<span>${esc(volume.code || volume.title)}</span></button>`).join('');
+  } else if (screen !== 'week') {
+    list.innerHTML = LESSONS.map(lesson => `<button type="button" class="week-link" data-action="handbook-chapter" data-course="kbai" data-chapter="${lesson.id}"${screen === 'chapter' && state.handbook.last.chapter === lesson.id ? ' aria-current="page"' : ''}><strong>${lesson.id}</strong><span>${esc(lesson.title)}</span></button>`).join('');
+  }
+}
+
+function handbookHash() {
+  const screen = state.preferences.screen;
+  if (screen === 'course') return `course-${state.handbook.activeCourse}`;
+  if (screen === 'chapter' || screen === 'personal-focus') {
+    const { course, chapter } = state.handbook.last;
+    return course === 'kbai' ? `chapter-${chapter}` : `${screen === 'personal-focus' ? 'study' : 'read'}-${course}/${chapter}`;
+  }
+  return null;
+}
+
+function parseHandbookHash(hash) {
+  if (hash === 'home' || hash === 'library') {
+    state.preferences.screen = hash;
+    return true;
+  }
+  if (hash.startsWith('part-')) return true;
+  const course = hash.match(/^course-(.+)$/);
+  const builtin = hash.match(/^chapter-(\d{2})$/);
+  const personal = hash.match(/^(read|study)-(c-[a-f0-9-]+)\/(p-[a-f0-9-]+)$/);
+  if (course) {
+    if (!handbookCourse(course[1])) throw new Error('That personal course is not in this browser. Restore its private backup first.');
+    state.handbook.activeCourse = course[1];
+    state.preferences.screen = 'course';
+    return true;
+  }
+  if (builtin || personal) {
+    const courseId = builtin ? 'kbai' : personal[2], chapterId = builtin ? builtin[1] : personal[3];
+    if (!handbookChapter(courseId, chapterId)) throw new Error('That chapter is not in this browser. Restore its private backup or open a known chapter.');
+    const mode = personal?.[1] === 'study' ? 'focus' : 'chapter';
+    state.handbook.activeCourse = courseId;
+    state.handbook.last = { course: courseId, chapter: chapterId, mode };
+    state.preferences.screen = mode === 'focus' ? 'personal-focus' : 'chapter';
+    if (builtin) {
+      state.preferences.lesson = chapterId;
+      state.preferences.week = lessonById.get(chapterId).week;
+    }
+    if (mode === 'focus') state.handbook.sessions[`${courseId}:${chapterId}`] ??= { index: 0, phase: 'ready' };
+    return true;
+  }
+  return false;
+}
+
+function renderHandbookSearch(term) {
+  const matches = state.handbook.courses.flatMap(course => course.chapters.filter(chapter => `${chapter.title} ${chapter.content}`.toLowerCase().includes(term)).map(chapter => ({ course, chapter })));
+  if (!matches.length) return '';
+  return `<section class="section"><h2>Personal course matches</h2>${matches.map(({ course, chapter }) => `<button type="button" class="chapter-row" data-action="handbook-chapter" data-course="${esc(course.id)}" data-chapter="${esc(chapter.id)}">${icon('book')}<span><strong>${esc(chapter.title)}</strong><small>${esc(course.title)}</small></span>${icon('right')}</button>`).join('')}</section>`;
+}
+
+</script>
+  <script>
+'use strict';
+
 const STORAGE_KEY = 'kbai-study-companion-v1';
 const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 const lessonById = new Map(LESSONS.map(item => [item.id, item]));
@@ -2788,11 +3277,15 @@ const readingById = new Map(READINGS.map(item => [item.id, item]));
 const warnings = new Set();
 const resources = new Map();
 const NAVIGATION = [
+  ['home', 'Handbook', 'library'], ['library', 'Courses', 'book'],
+  ['course', 'Chapters', 'book'], ['chapter', 'Chapter', 'book'], ['personal-focus', 'Study', 'target'],
   ['focus', 'Focus', 'target'],
   ['week', 'Weeks', 'book'], ['exam', 'Exams', 'clipboard'], ['review', 'Recall', 'repeat'],
   ['map', 'Map', 'network'], ['notebook', 'Notes', 'notebook'], ['sources', 'Sources', 'library']
 ];
 const NAVIGATION_NAMES = {
+  home: 'Handbook home', library: 'Course library', course: 'Course chapters',
+  chapter: 'Chapter reading', 'personal-focus': 'Personal focused study',
   focus: 'One-task learning mode',
   week: 'Weekly learning studio', exam: 'Exam preparation', review: 'Spaced recall queue',
   map: 'Course concept map', notebook: 'Personal notebook', sources: 'Sources and settings'
@@ -2834,7 +3327,9 @@ const ICONS = {
   chart: '<path d="M4 3v18h17M8 16v-5m5 5V7m5 9v-8"/>',
   highlighter: '<path d="m15 3 6 6-9 9-6-6Z"/><path d="m6 12-3 6 3 3 6-3M2 22h9"/>',
   eraser: '<path d="m15 3 6 6-12 12H6l-4-4Z"/><path d="m8 11 7 7M9 21h12"/>',
-  edit: '<path d="m15 3 6 6-12 12H3v-6Z"/><path d="m12 6 6 6"/>'
+  edit: '<path d="m15 3 6 6-12 12H3v-6Z"/><path d="m12 6 6 6"/>',
+  bookmark: '<path d="M6 3h12v18l-6-4-6 4Z"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>'
 };
 const ACTION_ICONS = {
   'focus-start': 'play', 'focus-next': 'right', 'focus-prev': 'left',
@@ -2974,10 +3469,11 @@ function initialState() {
   const week = inferredWeek();
   return {
     version: 1, updatedAt: Date.now(),
-    preferences: { week, lesson: WEEKS[week - 1].lessons[0] || '12', hours: COURSE_INFO.defaultHours, theme: 'system', screen: 'focus', focusDefault: true, exam: week <= 7 ? 1 : 2, form: 'A' },
+    preferences: { week, lesson: WEEKS[week - 1].lessons[0] || '12', hours: COURSE_INFO.defaultHours, theme: 'system', screen: 'home', focusDefault: true, exam: week <= 7 ? 1 : 2, form: 'A' },
     notes: {}, drafts: {}, highlights: {}, tasks: {}, objectives: {}, readDone: {}, reviews: {}, reviewLog: [],
     attempts: [], active: null,
-    focus: initialFocus(WEEKS[week - 1].lessons[0] || '12')
+    focus: initialFocus(WEEKS[week - 1].lessons[0] || '12'),
+    handbook: initialHandbook(WEEKS[week - 1].lessons[0] || '12')
   };
 }
 
@@ -3042,7 +3538,7 @@ function validateSession(session, active) {
 function validateState(candidate) {
   assert(plainObject(candidate), 'Backup must contain a workbook state object.');
   assert(candidate.version === 1, 'Unsupported backup version. This workbook reads version 1.');
-  const allowed = ['version', 'updatedAt', 'preferences', 'notes', 'drafts', 'highlights', 'tasks', 'objectives', 'readDone', 'reviews', 'reviewLog', 'attempts', 'active', 'focus'];
+  const allowed = ['version', 'updatedAt', 'preferences', 'notes', 'drafts', 'highlights', 'tasks', 'objectives', 'readDone', 'reviews', 'reviewLog', 'attempts', 'active', 'focus', 'handbook'];
   assert(Object.keys(candidate).every(key => allowed.includes(key)), 'Backup contains unsupported fields.');
   assert(validNumber(candidate.updatedAt), 'Invalid saved time.');
   const prefs = candidate.preferences;
@@ -3054,7 +3550,10 @@ function validateState(candidate) {
   assert(NAVIGATION.some(([key]) => key === prefs.screen), 'Unknown workspace view.');
   assert(prefs.focusDefault === undefined || typeof prefs.focusDefault === 'boolean', 'Invalid focus-mode preference.');
   assert([1, 2].includes(prefs.exam) && ['A', 'B'].includes(prefs.form), 'Unknown exam preference.');
+  const book = candidate.handbook === undefined ? initialHandbook(candidate.focus?.lesson || prefs.lesson) : validateHandbook(candidate.handbook);
+  if (prefs.screen === 'personal-focus') assert(book.last.course !== 'kbai' && book.sessions[`${book.last.course}:${book.last.chapter}`], 'Missing personal focus session.');
   const validNoteKey = key => {
+    if (validHandbookNoteKey(key, book)) return true;
     if (key === 'scratch' || key === 'parking') return true;
     const [kind, id] = key.split(':');
     if (['lesson', 'exercise', 'restart'].includes(kind)) return lessonById.has(id) && key === `${kind}:${id}`;
@@ -3107,6 +3606,7 @@ function validateState(candidate) {
   const normalized = JSON.parse(JSON.stringify(candidate));
   normalized.highlights ??= {};
   normalized.focus ??= initialFocus(prefs.lesson);
+  normalized.handbook = book;
   if (normalized.preferences.focusDefault === undefined) {
     normalized.preferences.focusDefault = true;
     if (!normalized.active && normalized.preferences.screen === 'week') normalized.preferences.screen = 'focus';
@@ -3162,6 +3662,7 @@ function loadState() {
       fresh.preferences.week = oldWeek;
       fresh.preferences.lesson = WEEKS[oldWeek - 1].lessons[0] || '12';
       fresh.focus.lesson = fresh.preferences.lesson;
+      fresh.handbook.last.chapter = fresh.preferences.lesson;
     }
     if (['light', 'dark'].includes(oldTheme)) fresh.preferences.theme = oldTheme;
   } catch (error) {
@@ -3194,7 +3695,8 @@ function saveState() {
 function applyTheme() {
   if (state.preferences.theme === 'system') document.documentElement.removeAttribute('data-theme');
   else document.documentElement.setAttribute('data-theme', state.preferences.theme);
-  document.body.classList.toggle('focus-mode', state.preferences.screen === 'focus' && !ui.search);
+  document.body.classList.toggle('focus-mode', ['focus', 'personal-focus'].includes(state.preferences.screen) && !ui.search);
+  document.body.classList.toggle('handbook-mode', ['home', 'library', 'course', 'chapter'].includes(state.preferences.screen) && !ui.search);
 }
 
 function button(action, label, attributes = '', className = '') {
@@ -3265,6 +3767,7 @@ function renderNavigation() {
     const checks = weekCheckCount(week.number);
     return `<button type="button" class="week-link" data-action="week" data-week="${week.number}"${current === 'week' && state.preferences.week === week.number ? ' aria-current="page"' : ''}><strong>${week.number}</strong><span>${esc(names)}<span class="week-sub">${esc(dateLabel(week.start))}${checks ? ` <span class="week-complete" title="${checks} of ${TASKS.length} self-reported learning checks">${icon('checkCircle')}${checks}/${TASKS.length}</span>` : ''}</span></span></button>`;
   }).join('');
+  handbookNavigation();
 }
 
 function planBudget(week) {
@@ -3522,7 +4025,7 @@ function focusNote(key, label, placeholder, rows = 3) {
 }
 
 function focusBar() {
-  return `<header class="focus-bar"><span class="focus-brand">${icon('book')}KBAI</span><div class="focus-bar-actions"><span id="focus-save-status" class="save-indicator${storageWritable ? '' : ' unsaved'}" title="${storageWritable ? 'Saved in this browser' : 'Memory only: back up before closing'}" aria-label="${storageWritable ? 'Saved in this browser' : 'Memory only: back up before closing'}">${icon(storageWritable ? 'checkCircle' : 'info')}</span><button type="button" class="button icon-button" data-action="export" title="Back up progress" aria-label="Back up progress">${icon('download')}</button>${button('focus-browse', 'Workbook')}</div></header>`;
+  return `<header class="focus-bar"><button type="button" class="focus-brand text-button" data-action="handbook-home">${icon('book')}Handbook</button><div class="focus-bar-actions"><span id="focus-save-status" class="save-indicator${storageWritable ? '' : ' unsaved'}" title="${storageWritable ? 'Saved in this browser' : 'Memory only: back up before closing'}" aria-label="${storageWritable ? 'Saved in this browser' : 'Memory only: back up before closing'}">${icon(storageWritable ? 'checkCircle' : 'info')}</span><button type="button" class="button icon-button" data-action="export" title="Back up progress" aria-label="Back up progress">${icon('download')}</button>${handbookAction('handbook-chapter', 'Chapter', 'kbai', state.focus.lesson)}</div></header>`;
 }
 
 function focusLessonPicker() {
@@ -3568,12 +4071,14 @@ function renderFocus() {
   return `<div class="focus-shell">${focusBar()}${title}${state.active ? `<aside class="notice"><p>An original practice session is still active.${state.active.deadline ? ' Its mock timer continues.' : ''} ${button('resume', 'Resume practice')}</p></aside>` : ''}${content}<details class="focus-extra"><summary>${icon('notebook')}Park a thought</summary><div class="detail-body">${focusNote('parking', 'For later', 'Capture a distraction or question without leaving this step.')}<p class="small muted">No reminders or automatic prompts. Come back to this note when you choose.</p></div></details>${renderCourseVocabulary(id)}<details class="focus-extra"><summary>${icon('code')}Engineering bridge</summary><div class="detail-body"><p>${esc(lesson.engineer)}</p></div></details><p class="focus-footnote">Original learning aid, not a course submission or live-exam assistant.</p></div>`;
 }
 
-function enterFocus(id = state.focus.lesson) {
+function enterFocus(id = state.focus.lesson, continueImmediately = false) {
   assert(lessonById.has(id), 'Choose a known course lesson.');
   state.focus.lesson = id;
-  state.focus.phase = state.focus.completed[id] ? 'complete' : 'ready';
+  state.focus.phase = state.focus.completed[id] ? 'complete' : continueImmediately ? 'reading' : 'ready';
   state.preferences.lesson = id;
   state.preferences.week = lessonById.get(id).week;
+  state.handbook.activeCourse = 'kbai';
+  state.handbook.last = { course: 'kbai', chapter: id, mode: 'focus' };
   navigate('focus');
 }
 
@@ -3854,7 +4359,7 @@ function renderSources() {
   const linked = localReadings.filter(reading => resources.has(reading.id)).length;
   const matching = READINGS.filter(reading => !ui.shelfFilter || `${reading.title} ${reading.use} ${reading.file || ''}`.toLowerCase().includes(ui.shelfFilter));
   return viewHeading('Sources & settings', 'Core ebook first. Optional depth when needed. Canvas governs current requirements.') +
-    `<section class="section"><h2>Learning focus</h2><label class="check-row"><input type="checkbox" id="focus-default"${state.preferences.focusDefault ? ' checked' : ''}><span>Open in one-task Focus mode</span></label><p class="small muted">No study timers, countdowns, break cues, sound, streaks, or overdue prompts. The optional mock exam keeps its separate 90-minute format. Choose a quiet physical workspace if that helps; this workbook cannot block other apps or notifications.</p><details><summary>Research behind this design</summary><div class="detail-body"><p>ADHD-related needs differ. These are evidence-informed accessibility choices, not treatment, a guarantee of concentration, or a claim that this UX has been clinically tested. No special-font or fixed-interval benefit is claimed.</p>${FOCUS_RESEARCH.map(source => `<div class="reading-row"><div><h4>${external(source.url, source.title)}</h4><p>${esc(source.evidence)}</p><p>${esc(source.application)}</p></div></div>`).join('')}<p class="small">${external('https://disabilityservices.gatech.edu/', 'Georgia Tech Office of Disability Services')} can discuss educational barriers and reasonable accommodations. An approved plan, not this app, governs any changes to real assessment conditions.</p><p class="small muted">Sources reviewed October 10, 2026. Your no-timer preference takes precedence over generic break suggestions.</p></div></details></section>` +
+    `<section class="section"><h2>Learning focus</h2><label class="check-row"><input type="checkbox" id="focus-default"${state.preferences.focusDefault ? ' checked' : ''}><span>Use one-task Focus when continuing KBAI study</span></label><p class="small muted">The handbook opens at your saved place through Continue. No study timers, countdowns, break cues, sound, streaks, or overdue prompts appear in Focus. The optional mock exam keeps its separate 90-minute format. Choose a quiet physical workspace if that helps; this handbook cannot block other apps or notifications.</p><details><summary>Research behind this design</summary><div class="detail-body"><p>ADHD-related needs differ. These are evidence-informed accessibility choices, not treatment, a guarantee of concentration, or a claim that this UX has been clinically tested. No special-font or fixed-interval benefit is claimed.</p>${FOCUS_RESEARCH.map(source => `<div class="reading-row"><div><h4>${external(source.url, source.title)}</h4><p>${esc(source.evidence)}</p><p>${esc(source.application)}</p></div></div>`).join('')}<p class="small">${external('https://disabilityservices.gatech.edu/', 'Georgia Tech Office of Disability Services')} can discuss educational barriers and reasonable accommodations. An approved plan, not this app, governs any changes to real assessment conditions.</p><p class="small muted">Sources reviewed October 10, 2026. Your no-timer preference takes precedence over generic break suggestions.</p></div></details></section>` +
     `<div class="toolbar"><label for="settings-hours">Weekly study hours<input id="settings-hours" type="number" min="6" max="40" step="1" value="${state.preferences.hours}"></label><label for="theme-select">Appearance<select id="theme-select">${[['system', 'Follow system'], ['light', 'Light'], ['dark', 'Dark']].map(([value, label]) => `<option value="${value}"${state.preferences.theme === value ? ' selected' : ''}>${label}</option>`).join('')}</select></label></div>` +
     `<section class="source-facts"><div><h2>Core ebook</h2><p>KBAI Ebook / Ashok Goel and David Joyner / 357 PDF pages / last updated October 6, 2016.</p><p>${resourceLink('ebook', resources.has('ebook') ? 'Open attached core ebook' : 'Attach your supplied core ebook')}</p><p class="small muted">Page references in this workbook are PDF viewer pages, matching this supplied edition. Links may depend on your PDF viewer supporting #page. Choose the file again after reload; browser file permissions are not persisted.</p></div><div><h2>Fall 2026 course PDF</h2><p>The supplied Canvas export includes the calendar on PDF p. 3, exam format on p. 4, and academic honesty / AI policy on pp. 5-6.</p><p>${resourceLink('syllabus', 'Open course export at exam policy', 4)} / ${resourceLink('syllabus', 'Open AI collaboration policy', 6)}</p><p class="small muted">Snapshot exported August 24, 2026. ${external(COURSE_INFO.syllabus, 'Live syllabus')} and ${external(COURSE_INFO.exams, 'About the Exams')} take precedence.</p></div></section>` +
     `<section class="section"><h2>Attach optional readings locally</h2><p>Choose <strong>Class_Readings_export</strong> once for this page session. Matching files get local links throughout the guides. Nothing is uploaded; filenames alone are not enough to grant the browser file access.</p><div class="button-row">${button('pick-resource', 'Choose readings folder', 'data-resource="folder"')}${button('detach-resources', 'Detach local files')}</div><p class="small muted">${linked} of ${localReadings.length} locally mapped readings attached. HTML readings open as plain source text for safety; use the original HTML separately for its rendered article.</p></section>` +
@@ -3908,15 +4413,16 @@ function renderSearch() {
   const term = ui.search.toLowerCase().trim();
   const lessons = LESSONS.filter(lesson => `${JSON.stringify(lesson)} ${JSON.stringify(EBOOK_GUIDES[lesson.id])}`.toLowerCase().includes(term));
   const readings = READINGS.filter(reading => `${reading.title} ${reading.use} ${reading.file || ''}`.toLowerCase().includes(term));
-  return viewHeading(`Find "${ui.search}"`, 'Searches the authored lesson guides, recall prompts, and reading annotations. It does not search the full copyrighted PDF texts.') +
-    `<section class="section"><h2>Lesson matches</h2>${lessons.length ? `<div class="table-wrap"><table><thead><tr><th>Open guide</th><th>Key idea</th><th>Source</th></tr></thead><tbody>${lessons.map(lesson => `<tr><td>${lessonButton(lesson.id)}</td><td>${esc(lesson.thesis)}</td><td>${resourceLink('ebook', `PDF pp. ${lesson.pages.join('-')}`, lesson.pages[0])}</td></tr>`).join('')}</tbody></table></div>` : '<p class="muted">No lesson matches. Try a shorter concept such as frame, case, or implication.</p>'}</section>` +
+  return viewHeading(`Find "${ui.search}"`, 'Search chapter explanations, course vocabulary, and reading annotations. Full PDFs are not indexed.') +
+    renderHandbookSearch(term) +
+    `<section class="section"><h2>KBAI chapter matches</h2>${lessons.length ? `<div class="table-wrap"><table><thead><tr><th>Open chapter</th><th>Key idea</th><th>Source</th></tr></thead><tbody>${lessons.map(lesson => `<tr><td><button type="button" class="text-button" data-action="handbook-chapter" data-course="kbai" data-chapter="${lesson.id}">L${lesson.id}: ${esc(lesson.title)}</button></td><td>${esc(lesson.thesis)}</td><td>${resourceLink('ebook', `PDF pp. ${lesson.pages.join('-')}`, lesson.pages[0])}</td></tr>`).join('')}</tbody></table></div>` : '<p class="muted">No KBAI chapter matches. Try a shorter concept such as frame, case, or implication.</p>'}</section>` +
     `<section class="section"><h2>Reading matches</h2>${readings.length ? renderReadingRows(readings.map(reading => reading.id), true) : '<p class="muted">No optional reading matches that term.</p>'}</section>`;
 }
 
 function render() {
   applyTheme();
   renderNavigation();
-  const renderers = { focus: renderFocus, week: renderWeekly, exam: renderExam, review: renderReview, map: renderMap, notebook: renderNotebook, sources: renderSources };
+  const renderers = { home: renderHandbookHome, library: renderHandbookLibrary, course: renderHandbookCourse, chapter: renderHandbookChapter, 'personal-focus': renderPersonalFocus, focus: renderFocus, week: renderWeekly, exam: renderExam, review: renderReview, map: renderMap, notebook: renderNotebook, sources: renderSources };
   const host = document.getElementById('workspace');
   host.innerHTML = ui.search ? renderSearch() : renderers[state.preferences.screen]();
   if (state.active && !['exam', 'focus'].includes(state.preferences.screen) && !ui.search) {
@@ -3936,7 +4442,7 @@ function focusView() {
 
 function updateHash() {
   const prefs = state.preferences;
-  const hash = prefs.screen === 'week' ? `week-${prefs.week}` : prefs.screen === 'exam' ? `exam-${prefs.exam}` : prefs.screen;
+  const hash = handbookHash() || (prefs.screen === 'week' ? `week-${prefs.week}` : prefs.screen === 'exam' ? `exam-${prefs.exam}` : prefs.screen);
   try { history.replaceState(null, '', `#${hash}`); }
   catch (error) { showWarning(`The browser could not update this view's link: ${error.message} Progress still uses the backup controls.`); }
 }
@@ -3949,6 +4455,7 @@ function clearSearch() {
 function navigate(screen, options = {}) {
   clearSearch();
   state.preferences.screen = screen;
+  if (['week', 'exam', 'review', 'map', 'notebook', 'focus'].includes(screen)) state.handbook.activeCourse = 'kbai';
   if (options.week) {
     state.preferences.week = options.week;
     const scheduled = WEEKS[options.week - 1].lessons;
@@ -3969,6 +4476,13 @@ function navigate(screen, options = {}) {
 
 function parseHash() {
   const hash = location.hash.slice(1);
+  try {
+    if (parseHandbookHash(hash)) return;
+  } catch (error) {
+    showWarning(error.message);
+    state.preferences.screen = 'home';
+    return;
+  }
   const week = hash.match(/^week-(\d+)$/);
   const exam = hash.match(/^exam-(\d+)$/);
   if (week) {
@@ -3976,14 +4490,20 @@ function parseHash() {
     if (number < 1 || number > 17) return showWarning('That link names a week outside the 17-week calendar. Your selected week has been kept.');
     state.preferences.week = number;
     state.preferences.screen = 'week';
+    state.handbook.activeCourse = 'kbai';
     state.preferences.lesson = WEEKS[number - 1].lessons[0] || state.preferences.lesson;
   } else if (exam) {
     const number = Number(exam[1]);
     if (![1, 2].includes(number)) return showWarning('That link names an unknown exam. Choose Exam 1 or Exam 2 in the exam studio.');
     state.preferences.exam = number;
     state.preferences.screen = 'exam';
+    state.handbook.activeCourse = 'kbai';
   } else if (NAVIGATION.some(([key]) => key === hash)) {
     state.preferences.screen = hash;
+    if (['focus', 'review', 'map', 'notebook'].includes(hash)) state.handbook.activeCourse = 'kbai';
+    if (hash === 'focus') {
+      state.handbook.last = { course: 'kbai', chapter: state.focus.lesson, mode: 'focus' };
+    }
   }
 }
 
@@ -4030,6 +4550,7 @@ function finishPractice(reason = 'submitted') {
   state.attempts.push(attempt);
   state.attempts = state.attempts.slice(-100);
   state.active = null;
+  state.handbook.activeCourse = 'kbai';
   state.preferences.screen = 'exam';
   state.preferences.exam = attempt.exam;
   ui.lastResult = attempt.id;
@@ -4135,14 +4656,14 @@ function download(content, filename, type) {
 }
 
 function exportProgress() {
-  download(JSON.stringify(state, null, 2), `KBAI-progress-${localDate()}.json`, 'application/json');
+  download(JSON.stringify(state, null, 2), `Handbook-progress-${localDate()}.json`, 'application/json');
   notify('Progress backup created. Keep the downloaded JSON with your private study files.');
 }
 
 function exportNotes() {
   const sections = Object.entries(state.notes).filter(([, text]) => text.trim()).map(([key, text]) => `${key}\n${'-'.repeat(40)}\n${text}`);
   const drafts = Object.entries(state.drafts).filter(([, text]) => text.trim()).map(([id, text]) => `Recall draft ${id}: ${cardById.get(id).prompt}\n${text}`);
-  download(`KBAI personal learning notes / ${localDate()}\nNo actual exam content belongs in this file.\nPlain text does not include highlighting; JSON and portable HTML backups preserve highlights.\n\n${sections.concat(drafts).join('\n\n')}`, `KBAI-notes-${localDate()}.txt`, 'text/plain;charset=utf-8');
+  download(`Handbook personal learning notes / ${localDate()}\nNo actual exam content belongs in this file.\nPlain text does not include highlighting; JSON and portable HTML backups preserve highlights.\n\n${sections.concat(drafts).join('\n\n')}`, `Handbook-notes-${localDate()}.txt`, 'text/plain;charset=utf-8');
   notify('Notes exported as plain text. Use JSON or portable HTML to keep highlights.');
 }
 
@@ -4152,7 +4673,7 @@ function exportPortable() {
   embedded.id = 'portable-progress';
   embedded.textContent = JSON.stringify(state).replace(/</g, '\\u003c');
   const html = ORIGINAL_HTML.replace('</head>', `${embedded.outerHTML}\n</head>`);
-  download(html, `KBAI_Study_Companion_with_progress_${localDate()}.html`, 'text/html;charset=utf-8');
+  download(html, `Handbook_with_progress_${localDate()}.html`, 'text/html;charset=utf-8');
   notify('Portable workbook created with your personal progress. Books are not embedded; keep this copy private.');
 }
 
@@ -4274,6 +4795,7 @@ document.addEventListener('click', event => {
   const target = event.target.closest('[data-action]');
   if (!target || target.disabled) return;
   const action = target.dataset.action;
+  if (handleHandbookAction(target)) return;
   if (['note-highlight', 'note-unhighlight', 'note-toggle', 'note-clear'].includes(action)) {
     const wrapper = target.closest('.note-editor');
     if (wrapper) annotateNote(wrapper, action);
@@ -4314,7 +4836,10 @@ document.addEventListener('click', event => {
       saveState();
       renderPreservingScroll();
     }
-  } else if (action === 'navigate') navigate(target.dataset.view);
+  } else if (action === 'navigate') {
+    if (target.dataset.view === 'focus') enterFocus(state.preferences.lesson);
+    else navigate(target.dataset.view);
+  }
   else if (action === 'week') {
     const week = Number(target.dataset.week);
     if (week >= 1 && week <= 17) navigate('week', { week });
@@ -4324,7 +4849,7 @@ document.addEventListener('click', event => {
         state.preferences.lesson = id;
         saveState();
         renderPreservingScroll();
-      } else navigate('week', { lesson: id });
+      } else openHandbookChapter('kbai', id);
     }
   } else if (action === 'exam') navigate('exam', { exam });
   else if (action === 'diagnostic') startPractice(exam, 'diagnostic');
@@ -4396,7 +4921,7 @@ document.addEventListener('click', event => {
   else if (action === 'export-notes') exportNotes();
   else if (action === 'portable') exportPortable();
   else if (action === 'clean-copy') {
-    download(ORIGINAL_HTML, 'KBAI_Study_Companion.html', 'text/html;charset=utf-8');
+    download(ORIGINAL_HTML, 'Handbook.html', 'text/html;charset=utf-8');
     notify('Clean workbook created without an embedded personal snapshot.');
   }
   else if (action === 'import') document.getElementById('import-picker').click();
@@ -4462,6 +4987,13 @@ document.addEventListener('input', event => {
   } else if (input.id === 'weekly-hours' || input.id === 'settings-hours') {
     input.setCustomValidity('');
   }
+});
+
+document.addEventListener('submit', event => {
+  const form = event.target;
+  if (!(form instanceof HTMLFormElement) || !form.dataset.handbookForm) return;
+  event.preventDefault();
+  if (form.reportValidity()) saveHandbookForm(form);
 });
 
 document.addEventListener('pointerdown', event => {
@@ -4551,11 +5083,11 @@ document.addEventListener('change', event => {
 });
 
 window.addEventListener('hashchange', () => {
-  if (location.hash === '#main') return;
+  if (location.hash === '#main' || location.hash.startsWith('#part-')) return;
   clearSearch();
   ui.lastResult = null;
   parseHash();
-  if (!location.hash && state.preferences.focusDefault && !state.active) state.preferences.screen = 'focus';
+  if (!location.hash && !state.active) state.preferences.screen = 'home';
   saveState();
   render();
 });
@@ -4575,6 +5107,7 @@ window.addEventListener('error', event => {
 });
 
 parseHash();
+if (!location.hash && !state.active) state.preferences.screen = 'home';
 hydrateChrome();
 applyTheme();
 saveState();
