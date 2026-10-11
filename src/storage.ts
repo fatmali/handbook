@@ -65,7 +65,7 @@ export class Library {
     if (legacy && !await tx.objectStore('meta').get('legacyMigrated')) {
       await tx.objectStore('meta').put(JSON.parse(legacyRaw!), 'legacyBackup');
       for (const pack of legacy.packs) await tx.objectStore('packs').put(pack, pack.id);
-      for (const progress of legacy.progress) await tx.objectStore('progress').put(progress, progress.courseId);
+      for (const progress of legacy.progress) await tx.objectStore('progress').put(progressSchema.parse(progress), progress.courseId);
       await tx.objectStore('meta').put(true, 'legacyMigrated');
       await tx.objectStore('meta').put(legacy.warnings, 'migrationWarnings');
     }

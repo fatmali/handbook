@@ -4,6 +4,7 @@ import { migrateLegacy } from '../src/migration';
 import { validateCoursePack } from '../packages/course-pack/src';
 import kbaiJSON from '../src/content/kbai.json';
 import { Library } from '../src/storage';
+import { validateBackup } from '../src/domain';
 
 const result = validateCoursePack(kbaiJSON);
 if (!result.ok) throw new Error('KBAI fixture invalid');
@@ -20,6 +21,21 @@ const legacy = () => ({
 });
 beforeEach(() => vi.stubGlobal('indexedDB', new IDBFactory()));
 describe('legacy migration', () => {
+  it('preserves long legacy notes/drafts and end highlights through subsequent saves and backup restore', async () => {
+    const text = 'n'.repeat(25000);
+    const value = { ...legacy(), notes: { 'lesson:01': text }, drafts: { 'r01-1': text }, highlights: { 'note:lesson:01': [{ start: 24990, end: 25000 }], 'draft:r01-1': [{ start: 24995, end: 25000 }] } };
+    const library = await Library.open();
+    await library.initialize([kbai], JSON.stringify(value));
+    const progress = (await library.snapshot()).progress[0];
+    await library.saveProgress({ ...progress, notes: { ...progress.notes, scratch: 'A later save still works' } });
+    const backup = validateBackup(JSON.stringify(await library.privateBackup()));
+    expect(backup.progress[0].notes['chapter:lesson-01']).toHaveLength(25000);
+    expect(backup.progress[0].notes['recall:r01-1']).toHaveLength(25000);
+    expect(backup.progress[0].noteHighlights['chapter:lesson-01']).toEqual([{ start: 24990, end: 25000 }]);
+    await library.restore(JSON.stringify(backup), 0);
+    expect((await library.snapshot()).progress[0].noteHighlights['recall:r01-1']).toEqual([{ start: 24995, end: 25000 }]);
+    library.close();
+  });
   it('preserves annotations, drafts, checks, resume, reviews and appearance without enabling timers', async () => {
     const raw = JSON.stringify(legacy());
     const migrated = migrateLegacy(raw, kbai);

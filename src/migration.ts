@@ -1,15 +1,15 @@
 import { z } from 'zod';
 import { type CoursePack, coursePackSchema, validateCoursePack } from '../packages/course-pack/src';
-import { type Progress, type PracticeSession, emptyProgress, sessionSchema } from './domain';
+import { type Progress, type PracticeSession, emptyProgress, sessionSchema, MAX_NOTE_CHARS } from './domain';
 import questionBanks from './content/legacy-questions.json';
 import focusMap from './content/legacy-focus-map.json';
 
 export const LEGACY_KEY = 'kbai-study-companion-v1';
-const stringMap = z.record(z.string(), z.string().max(20000));
+const stringMap = z.record(z.string(), z.string().max(MAX_NOTE_CHARS));
 const legacySchema = z.strictObject({
   version: z.literal(1), updatedAt: z.number().min(0),
   preferences: z.object({ theme: z.enum(['light', 'dark', 'system']), lesson: z.string(), screen: z.string() }),
-  notes: stringMap, drafts: z.record(z.string(), z.string().max(4000)), highlights: z.record(z.string(), z.array(z.strictObject({ start: z.number().int().min(0), end: z.number().int().min(1) })).max(200)).optional(),
+  notes: stringMap, drafts: stringMap, highlights: z.record(z.string(), z.array(z.strictObject({ start: z.number().int().min(0), end: z.number().int().min(1) })).max(200)).optional(),
   tasks: z.record(z.string(), z.boolean()), objectives: z.record(z.string(), z.boolean()), readDone: z.record(z.string(), z.boolean()),
   reviews: z.record(z.string(), z.object({ due: z.number().min(0), rating: z.enum(['again', 'hard', 'good', 'easy']), stage: z.number().int().min(0).max(4) })),
   reviewLog: z.array(z.unknown()).max(1000), attempts: z.array(z.unknown()).max(100), active: z.unknown().nullable(),
