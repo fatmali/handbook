@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "ageBand": {
+      "default": "prefer-not-to-say",
+      "type": "string",
+      "enum": [
+        "under-13",
+        "13-15",
+        "16-17",
+        "18-24",
+        "25-plus",
+        "prefer-not-to-say"
+      ]
+    },
+    "goals": {
+      "default": "",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "priorKnowledge": {
+      "default": "",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "scaffolding": {
+      "default": "",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "depth": {
+      "default": "standard",
+      "type": "string",
+      "enum": [
+        "introductory",
+        "standard",
+        "deep"
+      ]
+    },
+    "studyTimers": {
+      "default": false,
+      "type": "boolean"
+    },
+    "timeBudgetMinutes": {
+      "default": null,
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10080
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "ageBand",
+    "goals",
+    "priorKnowledge",
+    "scaffolding",
+    "depth",
+    "studyTimers",
+    "timeBudgetMinutes"
+  ],
+  "additionalProperties": false
+}

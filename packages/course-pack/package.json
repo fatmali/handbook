@@ -1,0 +1,11 @@
+{
+  "name": "@handbook/course-pack",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "description": "The strict typed Course Pack v1 contract shared by Handbook and its portable agent skill",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "bin": { "handbook-validate": "./dist/validate-course-pack.mjs" },
+  "files": ["dist", "schema", "licenses", "LICENSE", "README.md"],
+  "dependencies": { "zod": "^4.1.11" }
+}

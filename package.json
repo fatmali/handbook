@@ -1,0 +1,45 @@
+{
+  "name": "handbook",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "npm run typecheck && tsx scripts/release.ts && vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:skill": "node --test skills/handbook-course-builder/tests/instructions.test.mjs tests/skill-runtime.test.mjs",
+    "validate": "tsx packages/course-pack/cli.ts",
+    "check": "npm run lint && npm run test && npm run build && npm run test:skill && npm run test:e2e"
+  },
+  "dependencies": {
+    "idb": "^8.0.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@eslint/js": "^9.36.0",
+    "@playwright/test": "^1.55.1",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.3",
+    "esbuild": "^0.25.10",
+    "eslint": "^9.36.0",
+    "fake-indexeddb": "^6.2.3",
+    "globals": "^16.4.0",
+    "jsdom": "^27.0.0",
+    "tsx": "^4.20.6",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.44.1",
+    "vite": "^7.1.7",
+    "vitest": "^3.2.4"
+  }
+}
