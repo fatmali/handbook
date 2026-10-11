@@ -20,10 +20,16 @@ Radii vary by role: 11px controls, 18px volumes, 22px reading pages, 23px rail.
 Only book objects use stronger offset shadows and page-edge depth.
 
 Desktop places the floating 224px rail at a 20px inset. Below 780px, a compact
-labeled navigation replaces it. The course shelf reduces to one column before
-mobile; controls wrap without hiding their names. A labeled Course tools
-disclosure keeps Practice, Recall, Sources and all other course routes reachable
-without the desktop rail. Focus intentionally omits this disclosure.
+labeled navigation replaces it. Both are stable app-level navigation: library,
+import, and settings/backups. Opening or switching a course never changes their
+labels, destinations, or layout.
+
+The current course and its tools belong inside the workspace. Desktop shows
+contextual course tabs; mobile uses a labeled Course tools disclosure with the
+same destinations. Change course returns to the library instead of silently
+changing the meaning of global links. The course shelf reduces to one column
+before mobile; controls wrap without hiding their names. Focus intentionally
+omits both global navigation and course tools.
 
 Focus removes the rail, search, and library shelf. It has explicit Save & stop,
 exact block/diagram resume, and optional thought parking. No study countdown,
