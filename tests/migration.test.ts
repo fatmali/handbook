@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { IDBFactory } from 'fake-indexeddb';
 import { migrateLegacy } from '../src/migration';
 import { validateCoursePack } from '../packages/course-pack/src';
-import kbaiJSON from '../src/content/kbai.json';
+import { kbaiFixture as kbaiJSON } from './course-fixtures';
 import { Library } from '../src/storage';
 import { validateBackup } from '../src/domain';
 
@@ -21,6 +21,30 @@ const legacy = () => ({
 });
 beforeEach(() => vi.stubGlobal('indexedDB', new IDBFactory()));
 describe('legacy migration', () => {
+  it('archives legacy KBAI privately without a public seed and connects it only after explicit local import', async () => {
+    const value = legacy();
+    const raw = JSON.stringify(value);
+    const library = await Library.open();
+    const migration = await library.initialize([], raw);
+    expect(migration?.theme).toBe('dark');
+    expect(migration?.pendingKBAI).toBe(true);
+    expect((await library.snapshot()).packs).toEqual([]);
+    expect((await library.snapshot()).progress).toEqual([]);
+    expect(await library.legacyBackup()).toEqual(value);
+    const backup = await library.privateBackup();
+    expect(backup.packs).toEqual([]);
+    expect(backup.legacy).toEqual(value);
+    await library.install(kbai, 0);
+    const installed = await library.snapshot();
+    expect(installed.packs[0]).toEqual(kbai);
+    expect(installed.progress[0].notes['chapter:lesson-01']).toBe('private understanding');
+    expect(installed.progress[0].noteHighlights['chapter:lesson-01']).toEqual([{ start: 0, end: 7 }]);
+    expect(await library.legacyBackup()).toEqual(value);
+    await library.saveProgress({ ...installed.progress[0], notes: { ...installed.progress[0].notes, scratch: 'New work' } });
+    await library.initialize([], raw);
+    expect((await library.snapshot()).progress[0].notes.scratch).toBe('New work');
+    library.close();
+  });
   it('preserves long legacy notes/drafts and end highlights through subsequent saves and backup restore', async () => {
     const text = 'n'.repeat(25000);
     const value = { ...legacy(), notes: { 'lesson:01': text }, drafts: { 'r01-1': text }, highlights: { 'note:lesson:01': [{ start: 24990, end: 25000 }], 'draft:r01-1': [{ start: 24995, end: 25000 }] } };

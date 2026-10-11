@@ -2,10 +2,9 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { validateCoursePack, type Block, type CoursePack, type Question } from '../packages/course-pack/src/index.ts';
-import content from '../src/content/kbai.json';
+import { kbaiFixture as content } from './course-fixtures';
 import legacyQuestions from '../src/content/legacy-questions.json';
 import legacyFocusMap from '../src/content/legacy-focus-map.json';
-import { notes, weeklyNotes } from '../src/content/kbai-notes';
 
 const result = validateCoursePack(content);
 if (!result.ok) throw new Error(JSON.stringify(result.issues, null, 2));
@@ -47,7 +46,7 @@ const requiredTerms = [
   ['Knowledge base', 'Inference engine', 'Soundness', 'Completeness', 'Modus ponens', 'Modus tollens', 'Conjunctive normal form', 'Resolution theorem proving', 'Universal quantifier', 'Existential quantifier'],
 ];
 
-describe('persistent KBAI course pack', () => {
+describe('previously installed KBAI course compatibility', () => {
   it('passes the shared contract without app-only or private-input fields', () => {
     expect(validateCoursePack(content).ok).toBe(true);
     expect(pack.id).toBe('kbai');
@@ -94,15 +93,15 @@ describe('persistent KBAI course pack', () => {
 
   it.each(Array.from({ length: 26 }, (_, i) => i))('keeps Lesson%s sections source-located and linked, without exercise scaffolding', index => {
     const chapter = pack.chapters[index];
-    const authored = notes[index + 1];
-    expect(chapter.summary).toBe(authored.summary);
-    expect(chapter.blocks.filter(block => block.kind === 'callout').map(block => block.kind === 'callout' ? block.title : '')).toEqual([...authored.sections.map(section => section.title), 'What this lesson adds']);
-    authored.sections.forEach(section => {
-      const block = chapter.blocks.find(block => block.id === `${chapter.id}-notes-${section.id}`)!;
-      expect(text(block)).toBe(section.text);
-      expect(block.citations[0]).toMatchObject({ sourceId: 'ebook-2016', pdfPage: section.pages[0], verification: 'verified' });
+    expect(chapter.summary).toBeTruthy();
+    const sections = chapter.blocks.filter((block): block is Extract<Block, { kind: 'callout' }> => block.kind === 'callout' && block.title !== 'What this lesson adds');
+    expect(sections.length).toBeGreaterThan(0);
+    expect(chapter.blocks.some(block => block.kind === 'callout' && block.title === 'What this lesson adds')).toBe(true);
+    sections.forEach(block => {
+      expect(block.citations[0]).toMatchObject({ sourceId: 'ebook-2016', verification: 'verified' });
+      expect(block.citations[0].pdfPage).toBeGreaterThan(0);
       expect(block.citations[0].section).toBeTruthy();
-      expect(block.citations[0].section).not.toBe(section.title);
+      expect(block.citations[0].section).not.toBe(block.title);
       expect(block.conceptIds.length).toBeGreaterThan(0);
     });
     expect(chapter.blocks.map(text).join(' ')).not.toMatch(/Original application:|Original worked trace:|Transfer exercise:|deployment problem|Keep your next step/);
@@ -198,7 +197,7 @@ describe('persistent KBAI course pack', () => {
     expect(pack.syllabus.weeks.map(week => week.assessmentIds)).toEqual(deliverables);
     pack.syllabus.weeks.forEach((week, index) => {
       const expectedDate = new Date(Date.UTC(2026, 7, 30 + index * 7)).toISOString().slice(0, 10);
-      expect(week.notes).toBe(`${weeklyNotes[index + 1].overview}\n\n${weeklyNotes[index + 1].synthesis}`);
+      expect(week.notes.split(/\n\s*\n/)).toHaveLength(2);
       for (const id of week.assessmentIds) {
         expect(pack.syllabus.assessments.find(assessment => assessment.id === id)?.dueAt).toBe(`${expectedDate}T23:59:00-12:00`);
       }
@@ -254,8 +253,8 @@ describe('persistent KBAI course pack', () => {
     expect(prose(22)).toContain('cancellation');
     expect(prose(23)).toContain('union of true-success');
     expect(prose(25)).toContain('analogical representation');
-    expect(notes[26].sections.map(section => section.sourceSection).join(' ')).toContain('The Seventh Principle');
-    expect(weeklyNotes[15].overview).toContain('no new lesson');
-    expect(weeklyNotes[16].overview).toContain('no new lesson');
+    expect(pack.chapters[25].blocks.flatMap(block => block.citations.map(citation => citation.section)).join(' ')).toContain('The Seventh Principle');
+    expect(pack.syllabus.weeks[14].notes).toContain('no new lesson');
+    expect(pack.syllabus.weeks[15].notes).toContain('no new lesson');
   });
 });

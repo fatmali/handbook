@@ -65,8 +65,7 @@ function migrateSession(value: unknown): PracticeSession {
   return sessionSchema.parse(candidate);
 }
 function noteKey(key: string) { return key.startsWith('lesson:') ? `chapter:lesson-${key.slice(7)}` : key; }
-export function migrateLegacy(raw: string, kbai: CoursePack): { packs: CoursePack[]; progress: Progress[]; theme: string; warnings: string[] } {
-  if (!kbai) throw new Error('The KBAI seed is required for legacy migration.');
+export function migrateLegacy(raw: string, kbai?: CoursePack): { packs: CoursePack[]; progress: Progress[]; theme: string; warnings: string[]; pendingKBAI: boolean } {
   if (new TextEncoder().encode(raw).length > 5 * 1024 * 1024) throw new Error('Legacy state exceeds 5 MB. The original storage key is retained; export from the legacy app first.');
   const legacy = legacySchema.parse(JSON.parse(raw));
   const warnings = ['Legacy data was backed up transactionally. Weekly checks, review logs, and historical view settings remain available in the private legacy archive; no historical results were regraded.'];
@@ -81,13 +80,13 @@ export function migrateLegacy(raw: string, kbai: CoursePack): { packs: CoursePac
   }
   progress.checks = { ...legacy.tasks, ...Object.fromEntries(Object.entries(legacy.objectives).map(([key, value]) => [`objective:${key}`, value])), ...Object.fromEntries(Object.entries(legacy.readDone).map(([key, value]) => [`reading:${key}`, value])) };
   progress.recall = Object.fromEntries(Object.entries(legacy.reviews).map(([key, value]) => [key, { due: value.due, rating: value.rating, stage: value.stage }]));
-  progress.history = legacy.attempts.map(migrateSession);
-  if (legacy.active) progress.active = migrateSession(legacy.active);
+  if (kbai) progress.history = legacy.attempts.map(migrateSession);
+  if (legacy.active && kbai) progress.active = migrateSession(legacy.active);
   for (const [key, value] of Object.entries(legacy.focus?.revealed ?? {})) progress.revealed[key] = value;
   const mapping = z.record(z.string(), z.array(z.string().nullable())).parse(focusMap);
-  for (const [lesson, index] of Object.entries(legacy.focus?.positions ?? {})) {
+  for (const [lesson, index] of Object.entries(kbai ? legacy.focus?.positions ?? {} : {})) {
     const blockId = mapping[lesson]?.[index];
-    const chapter = kbai.chapters.find(chapter => chapter.id === `lesson-${lesson}`);
+    const chapter = kbai?.chapters.find(chapter => chapter.id === `lesson-${lesson}`);
     const position = chapter?.blocks.findIndex(block => block.id === blockId) ?? -1;
     if (position >= 0) progress.focusPositions[`lesson-${lesson}`] = position;
     else {
@@ -97,13 +96,14 @@ export function migrateLegacy(raw: string, kbai: CoursePack): { packs: CoursePac
   }
   const focusLesson = legacy.focus?.lesson ?? legacy.preferences.lesson;
   const chapterId = `lesson-${focusLesson}`;
-  const chapter = kbai.chapters.find(chapter => chapter.id === chapterId);
+  const chapter = kbai?.chapters.find(chapter => chapter.id === chapterId);
   if (chapter) {
     const warning = progress.anchorWarnings.find(warning => warning.chapterId === chapterId && warning.kind === 'focus');
     progress.last = { chapterId, mode: legacy.handbook?.last.mode ?? 'focus', blockId: warning ? warning.blockId : chapter.blocks[progress.focusPositions[chapterId] ?? 0]?.id ?? null };
   }
   const packs: CoursePack[] = [];
-  const progresses = [progress];
+  const progresses = kbai ? [progress] : [];
+  if (!kbai) warnings.push('Your earlier KBAI notes and history are preserved in the private legacy archive. Import your KBAI course JSON to connect that progress; no public course was installed.');
   for (const old of legacy.handbook?.courses ?? []) {
     if (!old.chapters.length) { warnings.push(`Empty legacy course “${old.title}” remains in the private archive; add a chapter there before importing it.`); continue; }
     const createdAt = new Date(legacy.updatedAt).toISOString();
@@ -146,5 +146,5 @@ export function migrateLegacy(raw: string, kbai: CoursePack): { packs: CoursePac
     const target = progresses.find(progress => progress.courseId === course);
     if (target) target.bookmarks[course === 'kbai' ? `lesson-${chapter}` : chapter] = marked;
   }
-  return { packs, progress: progresses, theme: legacy.preferences.theme, warnings };
+  return { packs, progress: progresses, theme: legacy.preferences.theme, warnings, pendingKBAI: !kbai };
 }

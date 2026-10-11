@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { kbaiFixture } from '../course-fixtures';
 
 test('legacy appearance migrates before new preferences are written and the original key remains', async ({ page }) => {
   await page.addInitScript(() => {
@@ -11,10 +12,14 @@ test('legacy appearance migrates before new preferences are written and the orig
     }));
   });
   await page.goto('./');
-  await expect(page.getByRole('heading', { name: 'Make room for understanding.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Your course, your handbook.' })).toBeVisible();
   await expect(page.getByLabel('Appearance')).toHaveValue('dark');
   expect(await page.evaluate(() => localStorage.getItem('handbook-theme'))).toBe('dark');
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('kbai-study-companion-v1')!).preferences.theme)).toBe('dark');
+  await page.goto('./#/import');
+  await page.getByLabel('Choose Course Pack JSON').setInputFiles({ name: 'my-kbai.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(kbaiFixture)) });
+  await page.getByRole('button', { name: 'Confirm install course' }).click();
+  await expect(page.getByRole('heading', { name: 'Knowledge-Based AI', level: 1 })).toBeVisible();
   await page.goto('./#/notes/kbai');
   await page.getByText('chapter:lesson-01', { exact: true }).click();
   await expect(page.getByRole('textbox').nth(1)).toHaveValue('An original private note');

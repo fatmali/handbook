@@ -1,5 +1,11 @@
 # KBAI weekly notes: source and correction record
 
+This is a historical correction record. The personal course and its authoring
+source are no longer part of the public app or current repository tree.
+Previously installed copies remain private browser data; compatibility tests
+use the already-published Git revision. New users import their own generated
+course rather than receiving KBAI automatically.
+
 All 26 lessons are summarized in the 17 actual Fall 2026 weeks. Revision 6
 replaces the default reading narrative, not the course identity or private data.
 The ebook is the content authority; the current syllabus is the administrative
@@ -78,10 +84,9 @@ diagram positions are not guessed. Notes, highlights, bookmarks, checks,
 question histories, active snapshots, source attachments and the old private
 archive remain separate and preserved.
 
-Existing courses are **not** replaced on startup. The available-update notice
-shows the installed and candidate revisions near the top of course/weekly entry.
-Custom and imported course data remain untouched until the user confirms a
-replacement. Fresh installations receive revision 6.
+Existing courses are **not** replaced on startup. Custom and imported course
+data remain untouched until the user confirms a replacement through local JSON
+import. Fresh installations now start with an empty personal library.
 
 ## Remaining limitations
 

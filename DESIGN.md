@@ -4,6 +4,11 @@ Handbook preserves its notebook-folio identity: tangible original course covers,
 a sculpted slate rail, mint supporting tabs, and quiet reading pages.
 The library carries the expression; Focus carries one thought at a time.
 
+An empty personal library opens with the same folio identity and two clear paths:
+import generated course notes, or use the course-builder skill with the learner's
+sources. No personal course is preinstalled or used as a public landing page.
+Existing local courses keep their shelf and reading experience.
+
 | Role | Light | Dark |
 |---|---|---|
 | Workspace | `#f3f4f9` | `#181d2d` |

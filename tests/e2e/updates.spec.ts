@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { samplePack } from '../../src/content/sample';
 
 declare global {
