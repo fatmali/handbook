@@ -50,6 +50,11 @@ The manual file handoff is the real v1 installation mechanism, not a remote
 
 ## Learning tools
 
+The sidebar stays at app level: library, import, and settings/backups. Course
+navigation lives in the selected course's workspace, as tabs on desktop and a
+Course tools disclosure on mobile. Changing courses does not repurpose the
+sidebar or its links.
+
 Chapters connect canonical terms to source pages and use interpreted original
 graphs, traces, examples, contrasts and independent recall. Focus hides the
 library chrome and preserves the exact block and diagram step. Study is untimed
