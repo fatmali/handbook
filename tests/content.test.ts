@@ -53,7 +53,7 @@ describe('persistent KBAI course pack', () => {
     expect(validateCoursePack(content).ok).toBe(true);
     expect(pack.id).toBe('kbai');
     expect(pack.schemaVersion).toBe('1.0');
-    expect(pack.contentRevision).toBe(4);
+    expect(pack.contentRevision).toBe(5);
     expect(pack.metadata.cover).toBe('cube');
     expect(pack.assets).toEqual([
       { id: 'asset-ebook-2016-pdf', sourceId: 'ebook-2016', mediaType: 'application/pdf', filename: 'kbai-2016-ebook.pdf', sha256: '9f8e120b152fcdee0e1f59ddec10e7c522c26d3578f594fea91ee69e52e1a6ff' },

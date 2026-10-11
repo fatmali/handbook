@@ -18,7 +18,7 @@ test('content update preserves the exact cursor and marks/removes orphaned annot
   await page.getByRole('button', { name: 'Save selected quote or bookmark this block' }).first().click();
   await expect(page.getByText('Block bookmarked in your private notebook.')).toBeVisible();
   const next = structuredClone(samplePack);
-  next.contentRevision = 2;
+  next.contentRevision = samplePack.contentRevision + 1;
   const original = next.chapters[0].blocks.shift()!;
   next.chapters[0].blocks.unshift({ ...original, id: 'insert-1' }, { ...original, id: 'insert-2' });
   await page.goto('./#/import');

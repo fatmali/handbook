@@ -91,6 +91,11 @@ An example from a learner's profession is a bridge to course terminology, not a 
 
 Write original explanations that preserve standard course terms. Do not reproduce copyrighted chapters, lecture transcripts, textbook figures, or assessed solutions.
 
+Write the course introduction for the learner: describe what they will study,
+not how many items were generated or which implementation was preserved. Keep
+plain-language scope limits in coverage and technical QA detail in provenance
+or the separate quality report.
+
 For each lesson:
 
 - Explain what the concept represents or does.

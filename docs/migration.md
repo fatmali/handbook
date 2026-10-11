@@ -53,3 +53,11 @@ Browser quota, persistence denial and invalid imports show actionable errors.
 Browsers may still evict origin storage; backups are essential. PDF blobs never
 enter course exports, private JSON backups, Git, or the service-worker cache.
 No cross-device sync, model inference, analytics or unattended upload is shipped.
+
+The student-facing KBAI introduction was corrected after v4 shipped. On opening
+an existing v3/v4 stock course, only exact known stock subtitle, description and
+coverage strings are replaced. Edited fields and other imported courses are not
+rewritten. This cosmetic correction does not change content revisions, lessons,
+source anchors or any private progress. Course coverage remains available through
+the closed **Coverage & limitations** disclosure and Sources; implementation
+audits and source-verification detail remain in the developer coverage report.

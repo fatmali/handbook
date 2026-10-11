@@ -2,6 +2,25 @@
 
 The output must support understanding, not merely resemble a course. Its value comes from organized source evidence, explanatory structure, and an effective path from exposure to independent reasoning.
 
+## Write for the learner, not the release report
+
+`metadata.description` explains what the learner will study or learn to do.
+Use ordinary course language and a concise course-purpose introduction. The
+subtitle identifies the course or term. Neither field is a QA report: do not
+list question counts, benchmark targets, preserved baseline content, revision
+history, implementation vocabulary, or defensive release disclaimers.
+
+`coverage.summary` explains practical learning scope and what still needs the
+original material. For example, say that later lessons are shorter introductions
+and recommend the corresponding textbook sections for deeper study. Describe
+missing or unchecked material plainly in coverage gaps; do not hide a genuine
+limitation, but keep it out of the course's introductory pitch.
+
+Put QA metrics, preservation history, generation methods and implementation
+details in `provenance` or a separate developer/quality report. A demonstration
+course may retain its demo label, but its introduction still describes the
+subject being learned rather than the platform's renderer.
+
 ## Source crosswalk
 
 Each concept needs:

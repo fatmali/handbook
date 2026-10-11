@@ -31,7 +31,8 @@
         "description": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 20000
+          "maxLength": 20000,
+          "description": "Learner-facing course purpose: explain what the learner will study or learn to do. No release metrics, preservation history, implementation terminology or QA reports."
         },
         "language": {
           "type": "string",
@@ -1705,7 +1706,8 @@
         "summary": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 20000
+          "maxLength": 20000,
+          "description": "Plain-language learning scope and limitations: explain what is covered and where the learner needs original material. Put QA metrics, implementation details and preservation history in provenance or developer reports."
         },
         "gaps": {
           "maxItems": 200,

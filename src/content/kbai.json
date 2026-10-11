@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0",
   "id": "kbai",
-  "contentRevision": 4,
+  "contentRevision": 5,
   "metadata": {
     "title": "Knowledge-Based AI",
-    "subtitle": "CS7637 · Fall2026 · a source-grounded course pack",
-    "description": "All 26 course lessons and the 17-week Fall2026 plan. Lessons01–12 have expanded benchmark-depth explanations and original diagrams; Lessons13–26 retain the foundation with explicitly limited corrections. Includes 66 original practice questions and 78 preserved recall cards. Not an official course text, assessed submission, or live-exam assistant.",
+    "subtitle": "CS7637 · Fall 2026",
+    "description": "How knowledge, reasoning, memory, and learning work together to build intelligent agents.",
     "language": "en",
     "educationLevel": "masters",
     "levelInference": {
@@ -24,7 +24,7 @@
     "cover": "cube",
     "depth": "deep",
     "createdAt": "2026-10-11T11:22:51.031Z",
-    "updatedAt": "2026-10-11T11:54:11.547Z"
+    "updatedAt": "2026-10-11T12:36:42.188Z"
   },
   "sources": [
     {
@@ -29433,11 +29433,11 @@
     }
   ],
   "coverage": {
-    "summary": "Benchmark expansion covers Lessons01–12 with mechanisms, assumptions, original traces, transfer, vocabulary, and 12 original declarative diagrams. All 26 baseline lessons, 17 syllabus weeks, 66 current original questions, and 78 recall cards are preserved. Exact current practice and three historical answer-key revisions are stored independently of private inputs. Later lessons are foundation, not equivalently deep.",
+    "summary": "Lessons 1–12 include detailed explanations and worked examples. Later lessons offer shorter introductions; use the ebook to study them in greater depth.",
     "gaps": [
       {
         "id": "gap-foundation-depth",
-        "description": "Lessons13–26 are preserved foundation, not full benchmark-depth reconstructions. Verified terminology corrections at pp.175, 202–205, 253, and 317 do not close this depth gap.",
+        "description": "Lessons 13–26 are shorter introductions. Read the corresponding ebook sections for more examples and detail.",
         "status": "partial",
         "chapterIds": [
           "lesson-13",
@@ -29461,7 +29461,7 @@
       },
       {
         "id": "gap-external-readings",
-        "description": "Linked readings remain bibliographic learning pointers. Full texts, editions, exact reading-page claims, and availability were not independently inspected; do not treat them as verified evidence for the new explanations.",
+        "description": "Optional readings are listed for further study. Their full texts and page references have not been checked.",
         "status": "unverified",
         "chapterIds": [
           "lesson-01",
@@ -29549,7 +29549,7 @@
       },
       {
         "id": "gap-baseline-locators",
-        "description": "Some preserved baseline guide heading/page pairings point to where a heading begins near a page boundary rather than where its substantive explanation appears (for example drop-link begins at p.123 and is explained at p.124). They are marked unverified; new mechanism blocks cite the inspected substantive ranges.",
+        "description": "Some page links lead to a section heading; the explanation may continue on the next page. Unchecked links are marked unverified.",
         "status": "unverified",
         "chapterIds": [
           "lesson-01",
@@ -29585,7 +29585,7 @@
       },
       {
         "id": "gap-transcripts",
-        "description": "The ebook itself flags correspondence problems for Lessons02,04,14,25 and incomplete transcripts in Lessons03,05,24,25 on p.3. New explanations use inspectable PDF sections; video-link correspondence, precise timestamps, and missing transcript material were not verified or reconstructed.",
+        "description": "Some ebook transcripts are incomplete or differ from the lectures. Video timestamps and missing lecture material have not been checked.",
         "status": "partial",
         "chapterIds": [
           "lesson-02",
@@ -29602,7 +29602,7 @@
       },
       {
         "id": "gap-live-administration",
-        "description": "Authenticated live Canvas pages, assignment rubrics, opening dates, and exam partial-credit formula were not independently reviewed. The supplied Fall2026 syllabus is the snapshot authority; current official announcements can supersede it.",
+        "description": "The schedule follows the Fall 2026 syllabus. Check Canvas announcements for current deadlines, rubrics, and exam instructions.",
         "status": "unverified",
         "chapterIds": [
           "lesson-01",
@@ -29638,7 +29638,7 @@
       },
       {
         "id": "gap-calendar-display",
-        "description": "The syllabus p.3 weekly table specifies Sunday 23:59 AoE; pp.7–9 render local summary times and the end-of-course survey differs from the week17 planning date. This pack uses the p.3 calendar for planning, flags the discrepancy, and makes no invented reconciliation of the survey deadline.",
+        "description": "The syllabus shows conflicting dates for the end-of-course survey. Confirm its deadline in Canvas. Weekly planning follows the syllabus calendar on PDF page 3.",
         "status": "partial",
         "chapterIds": [
           "lesson-26"
@@ -29649,7 +29649,7 @@
       },
       {
         "id": "gap-full-first-order-logic",
-        "description": "Lesson12 includes predicate/quantifier concepts and original scope counterexamples, but not a complete first-order resolution implementation, unification algorithm, Skolemization treatment, or exhaustive proof-search complexity account. The worked refutation is propositional.",
+        "description": "The Logic lesson introduces predicates and quantifiers, but its worked resolution proof is propositional. First-order resolution, unification, and Skolemization need further reading.",
         "status": "partial",
         "chapterIds": [
           "lesson-12"

@@ -2,6 +2,7 @@ import { openDB, type DBSchema, type IDBPDatabase, type IDBPTransaction, type St
 import { type CoursePack, type PrivateProfile, defaultProfile, privateProfileSchema, validateCoursePack } from '../packages/course-pack/src';
 import { type Progress, emptyProgress, progressSchema, reconcileProgress, validateBackup, MAX_COURSES } from './domain';
 import { migrateLegacy } from './migration';
+import { correctStockCourseCopy } from './content/kbai-copy';
 
 type LocalAsset = { id: string; courseId: string; sourceId: string; fingerprint: string; name: string; blob: Blob };
 interface HandbookDB extends DBSchema {
@@ -47,6 +48,7 @@ export class Library {
     }
   }
   async initialize(seeds: CoursePack[], legacyRaw: string | null) {
+    let copyCorrected = false;
     const alreadyMigrated = await this.db.get('meta', 'legacyMigrated');
     const legacy = legacyRaw && !alreadyMigrated ? migrateLegacy(legacyRaw, seeds.find(pack => pack.id === 'kbai')!) : null;
     await this.write(['packs', 'progress', 'profile', 'meta'], async tx => {
@@ -70,7 +72,20 @@ export class Library {
       await tx.objectStore('meta').put(legacy.warnings, 'migrationWarnings');
     }
     if (await tx.objectStore('packs').count() > MAX_COURSES) throw new Error(`A library supports ${MAX_COURSES} courses, including bundled volumes. Legacy data is untouched; export it before selecting courses to migrate.`);
+    for (const id of ['kbai', 'everyday-evidence']) {
+      const installedCourse = await tx.objectStore('packs').get(id);
+      if (!installedCourse) continue;
+      const corrected = correctStockCourseCopy(installedCourse);
+      if (corrected !== installedCourse) {
+        copyCorrected = true;
+        await tx.objectStore('packs').put(corrected, corrected.id);
+        const revision = await tx.objectStore('meta').get('libraryRevision');
+        if (typeof revision !== 'number') throw new Error('Library revision is unavailable. Course copy was not changed.');
+        await tx.objectStore('meta').put(revision + 1, 'libraryRevision');
+      }
+    }
     });
+    if (copyCorrected) this.notify();
     return legacy;
   }
   async snapshot() {

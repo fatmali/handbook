@@ -9,6 +9,14 @@ const interview = await read('references/learner-interview.md');
 const quality = await read('references/content-quality.md');
 const contract = await read('references/course-pack-format.md');
 
+test('course introductions use learner-facing purpose, with QA detail kept out of metadata', () => {
+  assert.match(quality, /metadata\.description[\s\S]*?what the learner will study/i);
+  assert.match(quality, /coverage\.summary[\s\S]*?original material/i);
+  assert.match(quality, /QA metrics, preservation history[\s\S]*?provenance/i);
+  assert.match(skill, /course introduction for the learner/i);
+  assert.match(contract, /metadata\.description[\s\S]*?not release\s+notes/i);
+});
+
 test('skill metadata meets the portable Agent Skills naming and size limits', () => {
   const frontmatter = skill.match(/^---\n([\s\S]*?)\n---\n/);
   assert.ok(frontmatter, 'SKILL.md must start with YAML frontmatter.');

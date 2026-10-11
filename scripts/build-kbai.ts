@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import vm from 'node:vm';
 import { validateCoursePack, type Block, type Citation, type CoursePack, type Question } from '../packages/course-pack/src/index.ts';
+import { KBAI_COPY, KBAI_COVERAGE_COPY } from '../src/content/kbai-copy';
 
 type LegacyLesson = {
   id: string; title: string; pages: [number, number]; prior: string[]; thesis: string; engineer: string;
@@ -711,12 +712,12 @@ export function buildCoursePack(baseline = readBaseline()): { pack: CoursePack; 
     };
   });
   const pack: CoursePack = {
-    schemaVersion: '1.0', id: 'kbai', contentRevision: 4,
+    schemaVersion: '1.0', id: 'kbai', contentRevision: 5,
     metadata: {
-      title: 'Knowledge-Based AI', subtitle: 'CS7637 · Fall2026 · a source-grounded course pack',
-      description: 'All 26 course lessons and the 17-week Fall2026 plan. Lessons01–12 have expanded benchmark-depth explanations and original diagrams; Lessons13–26 retain the foundation with explicitly limited corrections. Includes 66 original practice questions and 78 preserved recall cards. Not an official course text, assessed submission, or live-exam assistant.',
+      title: 'Knowledge-Based AI', subtitle: KBAI_COPY.subtitle,
+      description: KBAI_COPY.description,
       language: 'en', educationLevel: 'masters', levelInference: { evidence: ['The supplied Fall2026 syllabus identifies OMS CS7637 and distinguishes graduate from undergraduate evaluation on p.3.', 'Designing and evaluating symbolic agents and relating their mechanisms to cognitive science matches postgraduate course expectations.'], confidence: 'high', confirmed: false, unknowns: ['This is a course-level inference, not a confirmation of the individual learner’s age, enrollment, or prior knowledge.'] },
-      institution: 'Georgia Institute of Technology', courseCode: 'CS7637', cover: 'cube', depth: 'deep', createdAt: date, updatedAt: '2026-10-11T11:54:11.547Z',
+      institution: 'Georgia Institute of Technology', courseCode: 'CS7637', cover: 'cube', depth: 'deep', createdAt: date, updatedAt: '2026-10-11T12:36:42.188Z',
     },
     sources: [
       { id: 'ebook-2016', assetId: 'asset-ebook-2016-pdf', title: 'KBAI Ebook: Knowledge-based Artificial Intelligence', author: 'Ashok Goel and David Joyner; ebook design Bhavin Thaker, David Joyner, Ashok Goel', edition: 'Updated October 6, 2016', kind: 'ebook', pageCount: 357, verification: 'verified', rights: 'Source copyright ©2016 Ashok Goel and David Joyner; all rights reserved. Only original paraphrases and bibliographic locators are distributed; no PDF, source figure, or transcript is bundled.' },
@@ -732,8 +733,8 @@ export function buildCoursePack(baseline = readBaseline()): { pack: CoursePack; 
     syllabus: { outcomes, weeks, assessments, policies },
     practice: baseline.questions.map(question => convertQuestion(question, 3)),
     coverage: {
-      summary: 'Benchmark expansion covers Lessons01–12 with mechanisms, assumptions, original traces, transfer, vocabulary, and 12 original declarative diagrams. All 26 baseline lessons, 17 syllabus weeks, 66 current original questions, and 78 recall cards are preserved. Exact current practice and three historical answer-key revisions are stored independently of private inputs. Later lessons are foundation, not equivalently deep.',
-      gaps: [
+      summary: KBAI_COPY.coverage,
+      gaps: ([
         { id: 'gap-foundation-depth', description: 'Lessons13–26 are preserved foundation, not full benchmark-depth reconstructions. Verified terminology corrections at pp.175, 202–205, 253, and 317 do not close this depth gap.', status: 'partial', chapterIds: chapters.slice(12).map(chapter => chapter.id), sourceIds: ['ebook-2016'] },
         { id: 'gap-external-readings', description: 'Linked readings remain bibliographic learning pointers. Full texts, editions, exact reading-page claims, and availability were not independently inspected; do not treat them as verified evidence for the new explanations.', status: 'unverified', chapterIds: chapters.map(chapter => chapter.id), sourceIds: baseline.readings.map(reading => `reading-${reading.id}`) },
         { id: 'gap-baseline-locators', description: 'Some preserved baseline guide heading/page pairings point to where a heading begins near a page boundary rather than where its substantive explanation appears (for example drop-link begins at p.123 and is explained at p.124). They are marked unverified; new mechanism blocks cite the inspected substantive ranges.', status: 'unverified', chapterIds: chapters.map(chapter => chapter.id), sourceIds: ['ebook-2016'] },
@@ -741,7 +742,7 @@ export function buildCoursePack(baseline = readBaseline()): { pack: CoursePack; 
         { id: 'gap-live-administration', description: 'Authenticated live Canvas pages, assignment rubrics, opening dates, and exam partial-credit formula were not independently reviewed. The supplied Fall2026 syllabus is the snapshot authority; current official announcements can supersede it.', status: 'unverified', chapterIds: chapters.map(chapter => chapter.id), sourceIds: ['syllabus-fa26'] },
         { id: 'gap-calendar-display', description: 'The syllabus p.3 weekly table specifies Sunday 23:59 AoE; pp.7–9 render local summary times and the end-of-course survey differs from the week17 planning date. This pack uses the p.3 calendar for planning, flags the discrepancy, and makes no invented reconciliation of the survey deadline.', status: 'partial', chapterIds: ['lesson-26'], sourceIds: ['syllabus-fa26'] },
         { id: 'gap-full-first-order-logic', description: 'Lesson12 includes predicate/quantifier concepts and original scope counterexamples, but not a complete first-order resolution implementation, unification algorithm, Skolemization treatment, or exhaustive proof-search complexity account. The worked refutation is propositional.', status: 'partial', chapterIds: ['lesson-12'], sourceIds: ['ebook-2016'] },
-      ],
+      ] satisfies CoursePack['coverage']['gaps']).map(gap => ({ ...gap, description: KBAI_COVERAGE_COPY[gap.id].current })),
     },
     provenance: {
       generatedAt: '2026-10-11T11:54:11.547Z', generator: 'scripts/build-kbai.ts', contentLicense: 'MIT for original pack material; source rights reserved',

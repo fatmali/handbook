@@ -72,7 +72,7 @@ test('generic practice supports skip, exact feedback and revisioned history with
   await expect(page.getByRole('heading', { name: 'Practice results' })).toBeVisible();
   await expect(page.getByText(/0 \/ 2 exact matches; 2 skipped/)).toBeVisible();
   await page.reload();
-  await expect(page.getByRole('button', { name: /content revision 1, 0 exact matches/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: new RegExp(`content revision ${samplePack.contentRevision}, 0 exact matches`) })).toBeVisible();
 });
 test('90-minute original mocks keep scope, deadline and answers across reload', async ({ page }) => {
   await page.goto('./#/practice/kbai');

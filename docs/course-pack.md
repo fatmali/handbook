@@ -27,6 +27,13 @@ Text is plain text, not Markdown or executable markup. Script-like text is
 displayed literally. Unknown fields, block kinds and versions are rejected,
 not silently dropped.
 
+`metadata.description` explains what the learner will study or learn to do.
+It is not a release report. `coverage.summary` describes practical learning
+scope and where the original material is still needed. QA counts, preservation
+history and implementation terminology belong in provenance/developer reports,
+not course introductions. These descriptions are also published in the JSON
+Schema and course-builder guidance.
+
 Diagrams contain bounded nodes, interpreted edges, step titles/explanations
 and active node IDs, plus a caption and full textual alternative. Cycles are
 permitted in an explanatory state graph; **prerequisite** graphs must be
