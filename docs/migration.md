@@ -18,6 +18,11 @@ have persistent snapshots; historical results are never regraded using a newer
 answer key. Weekly task labels, old review logs and administrative view metadata
 remain in the original private archive when they have no generic v1 view.
 
+Private notes and recall drafts support up to 30,000 characters independently
+of the course-content text limit. Long legacy text and end-of-note highlights
+are validated before migration writes and remain editable, saveable and
+round-trip safe in private backups; no truncation is performed.
+
 Personal course text becomes strict typed paragraph blocks. Unsupported source
 links remain in the archive rather than being trusted as verified citations.
 Empty personal courses remain archived, with a visible warning.

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { adjustNoteHighlights, type Progress } from '../domain';
+import { adjustNoteHighlights, MAX_NOTE_CHARS, type Progress } from '../domain';
 
 export function NoteEditor({ noteKey, progress, onSave, onError, registerDraft }: { noteKey: string; progress: Progress; onSave: (update: Progress) => Promise<void>; onError: (error: unknown) => void; registerDraft: (key: string, save: (() => Promise<void>) | null) => void }) {
   const saved = progress.notes[noteKey] ?? '';
@@ -37,7 +37,7 @@ export function NoteEditor({ noteKey, progress, onSave, onError, registerDraft }
   for (const range of ranges) { parts.push(text.slice(previous, range.start), <mark key={range.start}>{text.slice(range.start, range.end)}</mark>); previous = range.end; }
   parts.push(text.slice(previous));
   return <section className="note-editor"><label htmlFor={`note-${noteKey}`}>Private note</label>
-    {preview ? <div className="note-preview">{parts.length && text ? parts : 'Your note is empty.'}</div> : <textarea id={`note-${noteKey}`} ref={area} maxLength={20000} value={text} onChange={event => { setRanges(adjustNoteHighlights(text, event.target.value, ranges)); setText(event.target.value); }} placeholder="Explain it in your words, or park a question for later."/>}
+    {preview ? <div className="note-preview">{parts.length && text ? parts : 'Your note is empty.'}</div> : <textarea id={`note-${noteKey}`} ref={area} maxLength={MAX_NOTE_CHARS} value={text} onChange={event => { setRanges(adjustNoteHighlights(text, event.target.value, ranges)); setText(event.target.value); }} placeholder="Explain it in your words, or park a question for later."/>}
     <div className="button-row">
       <button className="primary" disabled={saving} onClick={() => void save().catch(onError)}>{saving ? 'Saving…' : 'Save note'}</button>
       {!preview && <button onClick={highlight}>Highlight selection</button>}

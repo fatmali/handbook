@@ -1,9 +1,10 @@
 import { z } from 'zod';
 import { type CoursePack, type Question, coursePackSchema, privateProfileSchema, validateCoursePack } from '../packages/course-pack/src';
 export const MAX_COURSES = 32;
+export const MAX_NOTE_CHARS = 30_000;
 
 const key = z.string().min(1).max(240).refine(value => !['__proto__', 'constructor', 'prototype'].includes(value));
-const stringMap = z.record(key, z.string().max(20_000));
+const stringMap = z.record(key, z.string().max(MAX_NOTE_CHARS));
 const numberMap = z.record(key, z.number().int().min(0).max(10000));
 const boolMap = z.record(key, z.boolean());
 export const annotationSchema = z.strictObject({
