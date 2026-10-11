@@ -9,15 +9,17 @@ summary of every file at once:
    readability. Current administration overrides historical project instructions.
 3. Map outcomes and assessment scope to source sections and canonical concepts.
    Record gaps and contradictions before writing.
-4. Make one representative lesson with coherent source-ordered explanation and
-   a meaningful diagram or compact worked representation. Keep independent
-   practice secondary rather than requiring an exercise wall. Ask for feedback, or
+4. Read the complete assigned source for one representative week and write
+   actual connected notes plus original inline diagrams. Use the source's
+   examples where they explain the mechanism. Independent practice is optional,
+   not a requirement or an exercise wall. Ask for feedback, or
    state assumptions if the learner explicitly delegates.
 5. Generate bounded sections with stable identities. Link the source's real
    vocabulary; professional analogies are bridges, not substitutes.
 6. Cite real source headings rather than claiming an authored notes heading is a
-   source section. Check citation existence separately from interpretation. Review assumptions,
-   diagram relation meaning, objective coverage and option explanations.
+   source section. Check citation existence separately from interpretation. Review
+   source teaching order, mechanisms, distinctions, later-lesson completeness,
+   diagram relation meaning and the rendered weekly flow. Counts are not QA.
 7. Run the shared validator and repair every failure. Export course JSON,
    coverage report and optional **separate** private profile.
 8. Explain manual local import. Do not claim the agent installed a browser course
@@ -41,3 +43,8 @@ The KBAI notes are authored in `src/content/kbai-notes.ts`. Run
 `npx tsx scripts/build-kbai.ts` to regenerate revision 6 from the retained course
 metadata, vocabulary, assessment declarations and recall/question banks.
 Production reads validated JSON; no local PDF or extraction is a build input.
+
+Course-builder skill version 1.1.0 defaults to source-grounded notes with
+diagrams. Its example pack demonstrates the weekly overview/lesson/synthesis
+flow and a static concept diagram with `practice: []`; the application's
+Everyday evidence demo remains a separate example of optional practice tools.

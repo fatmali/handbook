@@ -15,10 +15,10 @@ const schema = JSON.stringify({ ...z.toJSONSchema(coursePackSchema), $id: 'https
 await writeFile('packages/course-pack/schema/course-pack-v1.schema.json', schema);
 await writeFile('skills/handbook-course-builder/assets/course-pack.schema.json', schema);
 await writeFile('skills/handbook-course-builder/assets/private-profile.schema.json', JSON.stringify(z.toJSONSchema(privateProfileSchema), null, 2));
-await writeFile('skills/handbook-course-builder/assets/example-course.json', JSON.stringify(samplePack, null, 2));
+const notesExample = JSON.parse(await readFile('skills/handbook-course-builder/assets/example-course.json', 'utf8'));
 await writeFile('public/courses/everyday-evidence.json', JSON.stringify(samplePack));
 const kbai = JSON.parse(await readFile('src/content/kbai.json', 'utf8'));
-for (const pack of [samplePack, kbai]) {
+for (const pack of [samplePack, kbai, notesExample]) {
   const result = validateCoursePack(pack);
   if (!result.ok) throw new Error(result.issues.map(issue => `${issue.path}: ${issue.message}`).join('\n'));
 }

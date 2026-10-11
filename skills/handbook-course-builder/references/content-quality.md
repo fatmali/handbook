@@ -1,6 +1,9 @@
 # Course content quality
 
-The output must support understanding, not merely resemble a course. Its value comes from organized source evidence, explanatory structure, and an effective path from exposure to independent reasoning.
+The default output is course-content notes plus explanatory diagrams. Its value
+comes from faithful source reading and connected explanation, not from how many
+activities it contains. Retain diagrams that teach the concepts; keep practice
+optional rather than using it as the reading narrative.
 
 ## Write for the learner, not the release report
 
@@ -11,8 +14,8 @@ list question counts, benchmark targets, preserved baseline content, revision
 history, implementation vocabulary, or defensive release disclaimers.
 
 `coverage.summary` explains practical learning scope and what still needs the
-original material. For example, say that later lessons are shorter introductions
-and recommend the corresponding textbook sections for deeper study. Describe
+original material. Complete all requested lessons; if any remain partial,
+identify them honestly rather than describing unfinished work as complete. Describe
 missing or unchecked material plainly in coverage gaps; do not hide a genuine
 limitation, but keep it out of the course's introductory pitch.
 
@@ -30,7 +33,7 @@ Each concept needs:
 - Its definition in original wording.
 - The source edition and locator.
 - Prerequisites and closely related concepts.
-- The explanation, diagram, and practice that use it.
+- The explanation and any diagrams that use it; practice only when requested.
 
 Do not create aliases solely because two words sound similar. State meaningful distinctions rather than collapsing them.
 
@@ -47,6 +50,19 @@ topic names beside a short connective overview. Explain topics in source
 teaching order, then synthesize their connection. Weeks with no new lessons
 remain revision, consolidation or wrap-up. Keep recall, professional bridges and
 administration secondary; do not substitute repeated prompts for explanation.
+
+Each topic should explain the idea, its representation/components, how the
+mechanism works and why, a relevant source example, and the distinction or
+limitation actually taught. Summarize in original prose. Do not replace the
+source with a generic AI textbook, an invented deployment scenario, or a stronger
+algorithm the supplied material does not teach. Preserve the source's example
+context where it helps understanding.
+
+Use ordinary headings and connected paragraphs. Do not break every explanation
+into repeated “What it is,” “Preview,” “Original application,” or “Next step”
+boxes. Place a brief synthesis after the explanation, not dozens of reminders
+between fragments. Concrete inference or representation tables can make prose
+checkable; they complement explanatory diagrams rather than replace them all.
 
 ## Explanation depth
 
@@ -77,12 +93,12 @@ A useful diagram must have a teaching purpose and a textual alternative. Types m
 
 Use only types the installed schema supports.
 
-A short static schematic or concrete representation table can teach more than
-a padded animation. Use one diagram state when the explanation is static; do not
-invent extra nodes or steps to meet a numerical quota. The generic weekly reader
-uses existing `syllabus.weeks.notes` as overview followed by synthesis separated
-by a blank line, with `chapterIds` selecting the lesson sections. No extra HTML
-or unsupported schema fields are needed.
+Include a useful selection of explanatory diagrams across the notes, placed
+inline after their supporting explanations. A short static schematic can teach
+more than a padded animation. Use one diagram state when the explanation is
+static; do not invent extra nodes or steps to meet a numerical quota.
+Tables can show concrete values or clauses alongside the diagrams.
+See [the block recipe](course-pack-format.md) for the existing weekly renderer.
 
 Every node and edge must mean something. Define the difference between hierarchy, causal influence, data flow, temporal order, and association. Arrow direction is not decorative.
 
@@ -96,19 +112,29 @@ For step-through traces, specify:
 
 Do not count a course-cover illustration as an explanatory diagram. Avoid copying textbook figures unless explicit permission and appropriate rights allow it. Prefer original teaching drawings based on the explained mechanism.
 
-## Worked and independent examples
+## Source examples and optional reinforcement
 
-Worked examples should expose the reasoning. Identify which part of the example is stipulated and which part is derived.
+Summarize a source example where it illuminates the actual lesson. Identify which
+part is stipulated and which part is derived. Original explanatory schematics
+are appropriate; copying source figures or transcripts is not.
 
-An independent attempt should change a meaningful condition, representation, or constraint. It should not simply rename the objects while asking for the same memorized output.
+Worked traces are useful only when the steps themselves clarify the mechanism.
+They are not required for every lesson. Independent attempts, recall, quizzes
+and engineering bridges are optional additions when requested, not prerequisites
+for complete notes.
 
-Use feedback to explain the decision. Where helpful, supply a countermodel or a case in which a tempting conclusion fails.
+For requested practice, change a meaningful condition rather than just renaming
+objects. Use feedback to explain the decision. Where helpful, supply a
+countermodel or a case in which a tempting conclusion fails.
 
 Examples grounded in a learner's profession can help transfer. Keep the original course terminology and concept meaning intact.
 
-## Practice
+## Practice, when requested
 
 Practice should reference specific concepts and learning objectives.
+An empty `practice` array is valid for a notes-and-diagrams course. No question,
+recall-card, or exercise count is required. On a content correction, preserve
+existing practice/history rather than generating a new bank by default.
 
 For a choice question:
 
@@ -131,7 +157,8 @@ Old answers must retain their original question revision. When a question's word
 
 ## Coverage and uncertainty
 
-For each syllabus outcome, identify relevant lessons and practice. Record omissions explicitly.
+For each syllabus outcome, identify relevant explanations and diagrams.
+Map practice if it was requested. Record omissions explicitly.
 
 Useful coverage statuses distinguish:
 
@@ -143,7 +170,10 @@ Useful coverage statuses distinguish:
 - Conflicting source statements.
 - Optional enrichment.
 
-Do not claim a course is complete merely because all lesson titles exist. Check whether each important outcome can be explained and attempted independently.
+Do not claim a course is complete merely because all lesson titles exist. Check
+whether each important outcome is actually explained by the notes, using the
+source's representations and distinctions. A learner should be able to follow
+what changed and why without needing to answer a wall of prompts first.
 
 ## Cognitive accessibility
 
@@ -157,21 +187,24 @@ Do not force study timers, reminders, streaks, celebratory animations, or overdu
 
 The software's open-source license and the source material's rights are different.
 
-Generate original educational explanations and original practice. Do not copy complete chapters, source figures, current or prior students' submissions, or real exam questions.
+Generate original educational explanations, diagrams, and optional original
+practice. Do not copy complete chapters, source figures, current or prior
+students' submissions, or real exam questions.
 
 If the course permits AI for discussion but prohibits generated submissions, keep the handbook on the learning side of that boundary. Explain a method and create separate toy practice; do not generate the assessed report or agent implementation.
 
 ## Quality review before release
 
-Inspect at least:
+Inspect the actual notes against the source, not a checklist of content quotas:
 
-- All declared source references and their available locators.
-- A diagram with multiple typed relations.
-- A multi-step example.
-- An invalid but tempting inference.
-- An activity at the chosen level of scaffolding.
-- A question involving more than one correct option, when that format is used.
-- An update that preserves stable identities.
+- Substantive source-page discussions and actual section headings for the summarized material.
+- Teaching order, definitions, mechanisms, source examples and core distinctions.
+- The complete requested lesson/week mapping, including later lessons and weeks without new chapters.
+- Explanatory diagrams: accurate relation labels, inline placement, readable mobile geometry and complete text alternatives.
+- A connected representative week's overview, topic explanations and synthesis as rendered.
+- Unsupported additions, repetition, generic filler, or practice replacing explanation.
+- Questions and worked traces only if included, with their assumptions and feedback.
+- An update that preserves private data and handles changed/orphaned anchors explicitly, if this is an update.
 - The distinction between shared content and private learner data.
 
 Use automated checks for structure and referential integrity. Use explicit review for instructional meaning. Never present one as a substitute for the other.

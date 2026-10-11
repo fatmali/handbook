@@ -1,6 +1,10 @@
 # Learner interview
 
-Ask about the person's situation without making them complete a long intake form. Ask one question at a time and stop asking when enough is known to make a useful representative lesson.
+Ask about missing context without making the learner complete an intake form.
+The default deliverable is readable course-content notes plus diagrams. Reuse
+what the learner has already supplied; do not ask again whether they want notes
+when that is their explicit request. Ask one question at a time and stop when
+enough is known to make a representative week or source unit.
 
 Use short structured choices when the harness supports them. Always respect a learner's free-form answer. Do not make sensitive disclosure necessary to build a course.
 
@@ -10,7 +14,9 @@ Start with the goal:
 
 > What do you want to be able to explain or do after studying this course?
 
-Possible goals include understanding the material, preparing for an upcoming exam, applying a method, completing independent practice, or organizing a backlog of lectures.
+Possible goals include understanding the material, preparing for an upcoming exam,
+or organizing a backlog of lectures. Practice is an optional additional request,
+not the default substitute for course notes.
 
 Then establish the material:
 
@@ -159,7 +165,7 @@ Default to no private profile when consent is absent. Either choice must still a
 
 ## Use feedback to improve
 
-After the representative lesson:
+After the representative week of notes and diagrams (or source unit if unscheduled):
 
 > Does this explanation connect clearly to your course, and is the depth appropriate?
 
