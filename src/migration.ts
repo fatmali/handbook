@@ -90,12 +90,18 @@ export function migrateLegacy(raw: string, kbai: CoursePack): { packs: CoursePac
     const chapter = kbai.chapters.find(chapter => chapter.id === `lesson-${lesson}`);
     const position = chapter?.blocks.findIndex(block => block.id === blockId) ?? -1;
     if (position >= 0) progress.focusPositions[`lesson-${lesson}`] = position;
-    else warnings.push(`Legacy L${lesson} step ${index + 1} is retained in the archive but has no exact new anchor. Resume this lesson manually; no approximate match was invented.`);
+    else {
+      warnings.push(`Legacy L${lesson} step ${index + 1} is retained in the archive but has no exact new anchor. Resume this lesson manually; no approximate match was invented.`);
+      progress.anchorWarnings.push({ chapterId: `lesson-${lesson}`, blockId: blockId ?? null, kind: 'focus', message: 'The legacy reading block is not in this course revision. Its original position remains in the private archive; choose a new anchor deliberately.' });
+    }
   }
   const focusLesson = legacy.focus?.lesson ?? legacy.preferences.lesson;
   const chapterId = `lesson-${focusLesson}`;
   const chapter = kbai.chapters.find(chapter => chapter.id === chapterId);
-  if (chapter) progress.last = { chapterId, mode: legacy.handbook?.last.mode ?? 'focus', blockId: chapter.blocks[progress.focusPositions[chapterId] ?? 0]?.id ?? null };
+  if (chapter) {
+    const warning = progress.anchorWarnings.find(warning => warning.chapterId === chapterId && warning.kind === 'focus');
+    progress.last = { chapterId, mode: legacy.handbook?.last.mode ?? 'focus', blockId: warning ? warning.blockId : chapter.blocks[progress.focusPositions[chapterId] ?? 0]?.id ?? null };
+  }
   const packs: CoursePack[] = [];
   const progresses = [progress];
   for (const old of legacy.handbook?.courses ?? []) {

@@ -5,6 +5,7 @@ import { validateCoursePack, type Block, type CoursePack, type Question } from '
 import content from '../src/content/kbai.json';
 import legacyQuestions from '../src/content/legacy-questions.json';
 import legacyFocusMap from '../src/content/legacy-focus-map.json';
+import { notes, weeklyNotes } from '../src/content/kbai-notes';
 
 const result = validateCoursePack(content);
 if (!result.ok) throw new Error(JSON.stringify(result.issues, null, 2));
@@ -20,7 +21,6 @@ const text = (block: Block): string => {
     case 'diagram': return [block.caption, block.alternative, ...block.nodes.flatMap(node => [node.label, node.detail]), ...block.steps.flatMap(step => [step.title, step.explanation])].join(' ');
   }
 };
-const words = (value: string) => value.match(/\S+/g)?.length ?? 0;
 const unkeyedOptions = (question: Question) => question.options.map(({ text, correct, explanation }) => ({ text, correct, explanation }));
 const snapshotView = (question: Question) => ({ id: question.id, prompt: question.prompt, options: unkeyedOptions(question) });
 const titles = [
@@ -30,7 +30,6 @@ const titles = [
   'Scripts', 'Explanation-Based Learning', 'Analogical Reasoning', 'Version Spaces', 'Constraint Propagation',
   'Configuration', 'Diagnosis', 'Learning by Correcting Mistakes', 'Meta-Reasoning', 'Advanced Topics', 'Wrap-Up',
 ];
-const baselineSizes = [496, 480, 456, 405, 439, 457, 393, 447, 488, 463, 419, 555];
 const focusSizes = [15, 15, 16, 15, 15, 15, 15, 15, 16, 15, 15, 18, 16, 15, 15, 15, 15, 15, 16, 15, 15, 16, 15, 16, 18, 15];
 const lessonId = (number: number) => `lesson-${String(number).padStart(2, '0')}`;
 const requiredTerms = [
@@ -53,7 +52,7 @@ describe('persistent KBAI course pack', () => {
     expect(validateCoursePack(content).ok).toBe(true);
     expect(pack.id).toBe('kbai');
     expect(pack.schemaVersion).toBe('1.0');
-    expect(pack.contentRevision).toBe(5);
+    expect(pack.contentRevision).toBe(6);
     expect(pack.metadata.cover).toBe('cube');
     expect(pack.assets).toEqual([
       { id: 'asset-ebook-2016-pdf', sourceId: 'ebook-2016', mediaType: 'application/pdf', filename: 'kbai-2016-ebook.pdf', sha256: '9f8e120b152fcdee0e1f59ddec10e7c522c26d3578f594fea91ee69e52e1a6ff' },
@@ -83,69 +82,55 @@ describe('persistent KBAI course pack', () => {
     expect(validateCoursePack(orphan).ok).toBe(false);
   });
 
-  it('retains all 26 ordered baseline titles and distinguishes actual depth', () => {
+  it('retains all 26 lesson identities and replaces the full reading narrative', () => {
     expect(pack.chapters).toHaveLength(26);
     expect(pack.chapters.map(chapter => chapter.title)).toEqual(titles);
     expect(pack.chapters.map(chapter => chapter.id)).toEqual(Array.from({ length: 26 }, (_, i) => lessonId(i + 1)));
-    expect(pack.chapters.slice(0, 12).every(chapter => chapter.depth === 'benchmark')).toBe(true);
-    expect(pack.chapters.slice(12).every(chapter => chapter.depth === 'foundation')).toBe(true);
+    expect(pack.chapters.every(chapter => chapter.depth === 'benchmark')).toBe(true);
     for (const chapter of pack.chapters) for (const block of chapter.blocks) {
-      expect(block.id).toMatch(new RegExp(`^${chapter.id}-${block.kind}-[1-9]\\d*$`));
+      expect(block.id).toMatch(new RegExp(`^${chapter.id}-(notes-|recall-)`));
     }
   });
 
-  it.each(Array.from({ length: 12 }, (_, i) => i))('makes Lesson%s materially deeper than its baseline', index => {
+  it.each(Array.from({ length: 26 }, (_, i) => i))('keeps Lesson%s sections source-located and linked, without exercise scaffolding', index => {
     const chapter = pack.chapters[index];
-    const wordCount = words(chapter.blocks.map(text).join(' '));
-    // Baseline inventory includes object keys; this is a conservative 2.5× floor.
-    expect(wordCount).toBeGreaterThan(baselineSizes[index] * 2.5);
-    expect(wordCount).toBeGreaterThan(1500);
-    const mechanisms = chapter.blocks.filter(block => block.kind === 'paragraph' && block.citations.some(citation => citation.sourceId === 'ebook-2016' && citation.verification === 'verified'));
-    expect(mechanisms.length).toBeGreaterThanOrEqual(3);
-    expect(mechanisms.every(block => words(text(block)) >= 75)).toBe(true);
-    expect(chapter.blocks.some(block => block.kind === 'list' && block.title === 'Mechanism assumptions and counterexample checks' && block.items.length >= 3)).toBe(true);
-    const examples = chapter.blocks.filter(block => block.kind === 'example');
-    expect(examples.some(block => block.title.startsWith('Original worked trace:') && block.steps.length >= 4)).toBe(true);
-    expect(examples.some(block => block.title.startsWith('Transfer exercise:') && block.steps.length >= 4)).toBe(true);
-    for (const term of requiredTerms[index]) {
+    const authored = notes[index + 1];
+    expect(chapter.summary).toBe(authored.summary);
+    expect(chapter.blocks.filter(block => block.kind === 'callout').map(block => block.kind === 'callout' ? block.title : '')).toEqual([...authored.sections.map(section => section.title), 'What this lesson adds']);
+    authored.sections.forEach(section => {
+      const block = chapter.blocks.find(block => block.id === `${chapter.id}-notes-${section.id}`)!;
+      expect(text(block)).toBe(section.text);
+      expect(block.citations[0]).toMatchObject({ sourceId: 'ebook-2016', pdfPage: section.pages[0], verification: 'verified' });
+      expect(block.citations[0].section).toBeTruthy();
+      expect(block.citations[0].section).not.toBe(section.title);
+      expect(block.conceptIds.length).toBeGreaterThan(0);
+    });
+    expect(chapter.blocks.map(text).join(' ')).not.toMatch(/Original application:|Original worked trace:|Transfer exercise:|deployment problem|Keep your next step/);
+    for (const term of requiredTerms[index] ?? []) {
       const concept = pack.concepts.find(concept => concept.term === term);
       expect(concept, `Missing canonical term ${term}`).toBeDefined();
       expect(concept?.id).toMatch(/^kbai-[a-z0-9-]+$/);
       expect(concept?.citations.some(citation => citation.verification === 'verified' && citation.pdfPage && citation.section)).toBe(true);
-      const vocabulary = chapter.blocks.find(block => block.kind === 'table' && block.title === 'Canonical course vocabulary');
-      expect(vocabulary?.conceptIds).toContain(concept?.id);
-      expect(vocabulary && text(vocabulary)).toContain(term);
     }
   });
 
-  it('contains original declarative diagrams with real dependencies, steps, captions, and alternatives', () => {
+  it('contains source-topic diagrams with meaningful relations, not padded animation quotas', () => {
     const diagrams = pack.chapters.flatMap(chapter => chapter.blocks.filter(block => block.kind === 'diagram'));
-    expect(diagrams).toHaveLength(12);
-    const signatures = new Set<string>();
-    pack.chapters.slice(0, 12).forEach(chapter => {
-      const diagram = chapter.blocks.find(block => block.kind === 'diagram');
-      expect(diagram?.kind).toBe('diagram');
-      if (!diagram || diagram.kind !== 'diagram') return;
-      expect(diagram.nodes.length).toBeGreaterThanOrEqual(5);
-      expect(diagram.edges.length).toBeGreaterThanOrEqual(4);
-      expect(diagram.steps.length).toBeGreaterThanOrEqual(4);
-      expect(words(diagram.caption)).toBeGreaterThan(15);
-      expect(words(diagram.alternative)).toBeGreaterThan(20);
-      for (const node of diagram.nodes) expect(words(node.detail), `${diagram.id}/${node.id}`).toBeGreaterThanOrEqual(5);
-      for (const step of diagram.steps) {
-        expect(step.activeNodeIds.length, `${diagram.id}/${step.title}`).toBeGreaterThan(0);
-        expect(words(step.explanation), `${diagram.id}/${step.title}`).toBeGreaterThanOrEqual(8);
-      }
+    expect(pack.chapters.every(chapter => chapter.blocks.some(block => block.kind === 'diagram'))).toBe(true);
+    diagrams.forEach(diagram => {
+      expect(diagram.steps).toHaveLength(1);
+      expect(diagram.caption).toBeTruthy();
+      expect(diagram.alternative).toBeTruthy();
+      expect(diagram.nodes.every(node => node.detail && node.column === 0)).toBe(true);
+      expect(diagram.edges.every(edge => edge.label)).toBe(true);
       expect(diagram.citations.some(citation => citation.sourceId === 'original-handbook')).toBe(true);
       expect(diagram.citations.some(citation => citation.sourceId === 'ebook-2016' && citation.verification === 'verified')).toBe(true);
-      signatures.add(JSON.stringify(diagram.nodes.map(node => node.label)));
     });
-    expect(signatures.size).toBe(12);
-    const logic = diagrams.find(diagram => diagram.id.startsWith('lesson-12-'))!;
-    expect(logic.edges.filter(edge => edge.to === 'n7')).toHaveLength(2);
-    const learning = diagrams.find(diagram => diagram.id.startsWith('lesson-10-'))!;
-    expect(learning.edges.some(edge => edge.label === 'positive label')).toBe(true);
-    expect(learning.edges.some(edge => edge.label === 'negative label')).toBe(true);
+    const blocks = diagrams.find(diagram => diagram.id === 'lesson-05-notes-means-ends-diagram-1')!;
+    expect(blocks.edges.map(edge => edge.label)).toEqual(['C to table', 'B onto C', 'A onto B']);
+    expect(blocks.alternative).toMatch(/d=3.*d=2.*d=1.*d=0/);
+    expect(diagrams.find(diagram => diagram.id.startsWith('lesson-06-notes-chunking'))?.alternative).toContain('Parra');
+    expect(diagrams.find(diagram => diagram.id.startsWith('lesson-20-'))?.alternative).toContain('shared edge');
   });
 
   it('preserves all 66 original current questions and 78 recall cards byte-for-byte in learner fields', () => {
@@ -186,21 +171,14 @@ describe('persistent KBAI course pack', () => {
     }
   });
 
-  it('maps every original focus position to its own preserved canonical block', () => {
+  it('retains the historical focus map without silently remapping it to new explanations', () => {
     const map = legacyFocusMap as Record<string, string[]>;
     expect(Object.keys(map)).toHaveLength(26);
     pack.chapters.forEach((chapter, index) => {
       const sequence = map[String(index + 1).padStart(2, '0')];
       expect(sequence).toHaveLength(focusSizes[index]);
       expect(new Set(sequence).size).toBe(sequence.length);
-      expect(sequence).toEqual(chapter.blocks.slice(0, sequence.length).map(block => block.id));
-      const first = chapter.blocks[0];
-      expect(first.kind === 'callout' && first.title).toBe('Preview');
-      const final = chapter.blocks[sequence.length - 1];
-      expect(final.kind === 'callout' && final.title).toBe('Keep your next step');
-      const traces = chapter.blocks.slice(0, sequence.length).filter(block => block.kind === 'example');
-      expect(traces.every(block => block.steps.length === 1 && /— step \d+$/.test(block.title))).toBe(true);
-      expect(chapter.blocks.slice(0, sequence.length).filter(block => block.kind === 'recall')).toHaveLength(3);
+      expect(sequence.filter(id => chapter.blocks.some(block => block.id === id))).toEqual([1, 2, 3].map(i => `${chapter.id}-recall-${i}`));
     });
   });
 
@@ -220,7 +198,7 @@ describe('persistent KBAI course pack', () => {
     expect(pack.syllabus.weeks.map(week => week.assessmentIds)).toEqual(deliverables);
     pack.syllabus.weeks.forEach((week, index) => {
       const expectedDate = new Date(Date.UTC(2026, 7, 30 + index * 7)).toISOString().slice(0, 10);
-      expect(week.notes).toContain(`planning deadline ${expectedDate} at 23:59 AoE`);
+      expect(week.notes).toBe(`${weeklyNotes[index + 1].overview}\n\n${weeklyNotes[index + 1].synthesis}`);
       for (const id of week.assessmentIds) {
         expect(pack.syllabus.assessments.find(assessment => assessment.id === id)?.dueAt).toBe(`${expectedDate}T23:59:00-12:00`);
       }
@@ -253,11 +231,31 @@ describe('persistent KBAI course pack', () => {
       expect(concept?.citations[0]).toMatchObject({ sourceId: 'ebook-2016', pdfPage: start, pdfPageEnd: end, verification: 'verified' });
     }
     expect(pack.coverage.gaps.some(gap => gap.id === 'gap-external-readings' && gap.status === 'unverified')).toBe(true);
-    expect(pack.coverage.gaps.some(gap => gap.id === 'gap-foundation-depth' && gap.chapterIds.length === 14)).toBe(true);
+    expect(pack.coverage.gaps.some(gap => gap.id === 'gap-foundation-depth')).toBe(false);
     expect(pack.coverage.gaps.some(gap => gap.id === 'gap-calendar-display')).toBe(true);
     const report = readFileSync('docs/kbai-coverage.md', 'utf8');
     expect(report).toContain('357');
     expect(report).toContain('unverified');
-    expect(report).toContain('Lessons13–26');
+    expect(report).toContain('All 26');
+  });
+
+  it('preserves source-specific distinctions and concrete representations reviewed against the ebook', () => {
+    const prose = (n: number) => pack.chapters[n - 1].blocks.map(text).join(' ');
+    expect(prose(5)).toMatch(/decompos.*subgoals/);
+    expect(prose(5)).toContain('coupling');
+    expect(prose(6)).toMatch(/architecture.*content/i);
+    expect(prose(6)).toContain('episodic');
+    expect(prose(8)).toContain('k dimensions');
+    const tables = pack.chapters[11].blocks.filter(block => block.kind === 'table');
+    expect(tables.find(table => table.title === 'Implication truth table')?.rows).toEqual([['true', 'true', 'true', 'true'], ['true', 'false', 'false', 'false'], ['false', 'true', 'true', 'true'], ['false', 'false', 'true', 'true']]);
+    expect(prose(12)).toContain('can-move OR NOT battery-full OR NOT liftable');
+    expect(prose(19)).toContain('[Sam’s, any, any, cheap]');
+    expect(prose(20)).toContain('Y, W, L, and T');
+    expect(prose(22)).toContain('cancellation');
+    expect(prose(23)).toContain('union of true-success');
+    expect(prose(25)).toContain('analogical representation');
+    expect(notes[26].sections.map(section => section.sourceSection).join(' ')).toContain('The Seventh Principle');
+    expect(weeklyNotes[15].overview).toContain('no new lesson');
+    expect(weeklyNotes[16].overview).toContain('no new lesson');
   });
 });

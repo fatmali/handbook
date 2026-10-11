@@ -54,20 +54,29 @@ export function Diagram({ block, position, onPosition }: { block: Extract<Block,
   const index = Math.max(0, Math.min(position, block.steps.length - 1));
   const step = block.steps[index];
   const columns = [...new Set(block.nodes.map(node => node.column))].sort((a, b) => a - b);
+  const vertical = columns.length === 1;
   const locations = new Map(block.nodes.map(node => {
     const inColumn = block.nodes.filter(other => other.column === node.column);
-    return [node.id, { x: columns.indexOf(node.column) * 210 + 100, y: inColumn.indexOf(node) * 110 + 50 }];
+    return [node.id, { x: vertical ? 150 : columns.indexOf(node.column) * 210 + 100, y: inColumn.indexOf(node) * (vertical ? 150 : 110) + 50 }];
   }));
-  const height = Math.max(...columns.map(column => block.nodes.filter(node => node.column === column).length)) * 110;
-  const width = columns.length * 210;
+  const height = Math.max(...columns.map(column => block.nodes.filter(node => node.column === column).length)) * (vertical ? 150 : 110);
+  const width = vertical ? 300 : columns.length * 210;
   return <figure className="diagram">
     <h3>{block.title}</h3>
-    <div className="diagram-scroll" tabIndex={0} aria-label="Diagram, scroll horizontally if needed">
+    <div className={vertical ? 'diagram-scroll vertical-diagram' : 'diagram-scroll'} tabIndex={0} aria-label="Diagram, scroll horizontally if needed">
       <svg viewBox={`0 0 ${width} ${height}`} style={{ width, minWidth: width, height }} role="img" aria-label={block.alternative}>
         <defs><marker id={`${block.id}-arrow`} markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="m0 0 8 4-8 4" fill="none" stroke="currentColor"/></marker></defs>
         {block.edges.map((edge, i) => {
           const from = locations.get(edge.from)!; const to = locations.get(edge.to)!;
           const direction = to.x >= from.x ? 1 : -1;
+          if (vertical) {
+            const down = to.y > from.y;
+            const adjacent = Math.abs(to.y - from.y) === 150;
+            const words = edge.label.split(' ');
+            const lines: string[] = [''];
+            words.forEach(word => { const last = lines.length - 1; if (`${lines[last]} ${word}`.trim().length > 17) lines.push(word); else lines[last] = `${lines[last]} ${word}`.trim(); });
+            return <g key={i} className="diagram-edge"><path d={adjacent ? `M150,${from.y + (down ? 34 : -34)} L150,${to.y + (down ? -39 : 39)}` : `M65,${from.y} H18 V${to.y} H60`} markerEnd={`url(#${block.id}-arrow)`}/><text x={163} y={(from.y + to.y) / 2 - (lines.length - 1) * 7} textAnchor="start">{lines.map((line, j) => <tspan key={j} x={163} dy={j ? 14 : 0}>{line}</tspan>)}</text></g>;
+          }
           return <g key={i} className="diagram-edge"><path d={`M${from.x + 85 * direction},${from.y} L${to.x - 90 * direction},${to.y}`} markerEnd={`url(#${block.id}-arrow)`}/><text x={(from.x + to.x) / 2} y={(from.y + to.y) / 2 - 8} textAnchor="middle">{edge.label.length > 24 ? `${edge.label.slice(0, 22)}…` : edge.label}</text></g>;
         })}
         {block.nodes.map(node => {
@@ -79,22 +88,25 @@ export function Diagram({ block, position, onPosition }: { block: Extract<Block,
         })}
       </svg>
     </div>
-    <div className="trace-step" aria-live="polite"><strong>{index + 1} / {block.steps.length}: {step.title}</strong><p>{step.explanation}</p></div>
-    <div className="button-row"><button disabled={index === 0} onClick={() => onPosition(index - 1)}>Previous trace step</button><button disabled={index === block.steps.length - 1} onClick={() => onPosition(index + 1)}>Next trace step</button></div>
+    {block.steps.length > 1 && <><div className="trace-step" aria-live="polite"><strong>{index + 1} / {block.steps.length}: {step.title}</strong><p>{step.explanation}</p></div>
+    <div className="button-row"><button disabled={index === 0} onClick={() => onPosition(index - 1)}>Previous trace step</button><button disabled={index === block.steps.length - 1} onClick={() => onPosition(index + 1)}>Next trace step</button></div></>}
     <figcaption>{block.caption}</figcaption>
     <details><summary>Text alternative and relation details</summary><p>{block.alternative}</p><ul>{block.nodes.map(node => <li key={node.id}><strong>{node.label}:</strong> {node.detail}</li>)}</ul><ul>{block.edges.map((edge, i) => <li key={i}>{block.nodes.find(node => node.id === edge.from)?.label} — {edge.label} — {block.nodes.find(node => node.id === edge.to)?.label}</li>)}</ul></details>
   </figure>;
 }
-export function ContentBlock({ block, pack, library, onError, onConcept, position, onPosition, revealed, onReveal }: {
+export function ContentBlock({ block, pack, library, onError, onConcept, position, onPosition, revealed, onReveal, continuous = false }: {
   block: Block; pack: CoursePack; library: Library; onError: (error: unknown) => void; onConcept: (id: string) => void;
   position: number; onPosition: (index: number) => void; revealed: boolean; onReveal: () => void;
+  continuous?: boolean;
 }) {
   const concepts = pack.concepts.filter(concept => block.conceptIds.includes(concept.id));
   const prose = (text: string) => <LinkedText text={text} concepts={concepts} onConcept={onConcept}/>;
   let content: ReactNode;
   switch (block.kind) {
     case 'paragraph': content = <p>{prose(block.text)}</p>; break;
-    case 'callout': content = <aside className={`callout ${block.tone}`}><h3>{block.title}</h3><p>{prose(block.text)}</p></aside>; break;
+    case 'callout': content = continuous && block.tone === 'note'
+      ? <section className="prose-section"><h3>{block.title}</h3>{block.text.split(/\n\s*\n/).map((text, i) => <p key={i}>{prose(text)}</p>)}</section>
+      : <aside className={`callout ${block.tone}`}><h3>{block.title}</h3><p>{prose(block.text)}</p></aside>; break;
     case 'list': content = <><h3>{block.title}</h3>{block.ordered ? <ol>{block.items.map((item, i) => <li key={i}>{prose(item)}</li>)}</ol> : <ul>{block.items.map((item, i) => <li key={i}>{prose(item)}</li>)}</ul>}</>; break;
     case 'example': content = <section className="worked-example"><h3>{block.title}</h3><p>{prose(block.problem)}</p><ol>{block.steps.map((step, i) => <li key={i}>{prose(step)}</li>)}</ol><p><strong>What follows:</strong> {prose(block.conclusion)}</p></section>; break;
     case 'table': content = <><h3>{block.title}</h3><div className="table-scroll"><table><thead><tr>{block.columns.map((column, i) => <th key={i}>{column}</th>)}</tr></thead><tbody>{block.rows.map((row, i) => <tr key={i}>{row.map((value, j) => <td key={j}>{prose(value)}</td>)}</tr>)}</tbody></table></div></>; break;

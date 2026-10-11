@@ -47,7 +47,11 @@ values, invalidating pre-restore writers.
 
 Course updates preserve private notes and historical snapshots. Removed or
 changed annotation anchors remain visible with a warning and manual reattachment.
-Focus's explicit block ID is retained; no invented nearest-text match occurs.
+Focus's explicit block ID is retained when it still exists; removed blocks need
+a deliberately chosen new anchor. No invented nearest-text match occurs.
+Revision 6 replaces the old KBAI explanatory blocks with `lesson-XX-notes-*` IDs
+and preserves the old focus map unchanged. Both a v5 update and an initial legacy
+migration retain unmatched anchors with explicit warnings.
 
 Browser quota, persistence denial and invalid imports show actionable errors.
 Browsers may still evict origin storage; backups are essential. PDF blobs never
