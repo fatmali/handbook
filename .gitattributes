@@ -1,0 +1,3 @@
+# Preserve the upstream font license and historical standalone artifact verbatim.
+public/assets/HankenGrotesk-OFL.txt -whitespace
+public/legacy/Handbook-v0.html -whitespace
